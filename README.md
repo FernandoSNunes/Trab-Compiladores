@@ -1,6 +1,6 @@
 # Trab-Compiladores
 
-Repositório da matéria de compiladores da UFSCar 2021/1 ministrada pelo Pr. Dr. Daniel Lucredio
+Repositório da matéria de compiladores da UFSCar 2021/1 ministrada pelo Prof. Dr. Daniel Lucrédio
 
 Autores:
 
