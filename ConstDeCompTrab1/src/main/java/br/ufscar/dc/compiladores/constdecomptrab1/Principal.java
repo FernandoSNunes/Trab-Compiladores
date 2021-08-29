@@ -16,7 +16,9 @@ public class Principal {
         try {
             CharStream cs = CharStreams.fromFileName(args[0]);
             
-            try ( /*arquivo de saida*/ FileWriter myWriter = new FileWriter(args[1])) {
+            try (
+                // arquivo de saida
+                FileWriter myWriter = new FileWriter(args[1])) {
                 Lexers lex = new Lexers(cs);
                 Token t = null;
                 boolean continuar = true;
@@ -37,9 +39,19 @@ public class Principal {
                     else if ("PALAVRA_CHAVE".equals(Lexers.VOCABULARY.getDisplayName(t.getType()))){
                         myWriter.write("<'" + t.getText() + "','" + t.getText() + "'>\n");
                     }
+                    else if ("OP_REL".equals(Lexers.VOCABULARY.getDisplayName(t.getType()))){
+                        myWriter.write("<'" + t.getText() + "','" + t.getText() + "'>\n");
+                    }
+                    else if ("OP_COMPR".equals(Lexers.VOCABULARY.getDisplayName(t.getType()))){
+                        myWriter.write("<'" + t.getText() + "','" + t.getText() + "'>\n");
+                    }
+                    else if ("OP_ARIT".equals(Lexers.VOCABULARY.getDisplayName(t.getType()))){
+                        myWriter.write("<'" + t.getText() + "','" + t.getText() + "'>\n");
+                    }
                     else
                         myWriter.write("<'" + t.getText() + "'," + Lexers.VOCABULARY.getDisplayName(t.getType()) + ">\n");
                 }
+                myWriter.close();
             }
         } catch (IOException ex) {
         }
