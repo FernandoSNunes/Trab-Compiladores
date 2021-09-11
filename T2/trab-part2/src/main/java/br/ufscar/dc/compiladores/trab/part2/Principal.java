@@ -11,7 +11,7 @@ public class Principal {
 
     public static void main(String args[]) throws IOException {
         CharStream cs = CharStreams.fromFileName(args[0]);
-        AlgumaLexer lexer = new AlgumaLexer(cs);
+        LALexer lexer = new LALexer(cs);
 
         // Descomentar para depurar o Léxico
         Token t = null;
@@ -19,10 +19,10 @@ public class Principal {
                 // arquivo de saida
                 FileWriter myWriter = new FileWriter(args[1])) {
             while ((t = lexer.nextToken()).getType() != Token.EOF) {
-                myWriter.write("<" + AlgumaLexer.VOCABULARY.getDisplayName(t.getType()) + "," + t.getText() + ">\n");
+                myWriter.write("<" + LALexer.VOCABULARY.getDisplayName(t.getType()) + "," + t.getText() + ">\n");
             }
             CommonTokenStream tokens = new CommonTokenStream(lexer);
-            AlgumaParser parser = new AlgumaParser(tokens);
+            LAParser parser = new LAParser(tokens);
             parser.programa();
         myWriter.close();
         }
