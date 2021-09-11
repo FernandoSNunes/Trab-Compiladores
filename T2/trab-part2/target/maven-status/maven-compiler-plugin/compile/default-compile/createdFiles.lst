@@ -8,6 +8,7 @@ br\ufscar\dc\compiladores\trab\part2\AlgumaLexer.class
 br\ufscar\dc\compiladores\trab\part2\AlgumaParser$FatorAritmeticoContext.class
 br\ufscar\dc\compiladores\trab\part2\AlgumaParser$SubAlgoritmoContext.class
 br\ufscar\dc\compiladores\trab\part2\AlgumaParser$ExpressaoAritmeticaContext.class
+br\ufscar\dc\compiladores\trab\part2\Principal.class
 br\ufscar\dc\compiladores\trab\part2\AlgumaParser$ComandoRepeticaoContext.class
 br\ufscar\dc\compiladores\trab\part2\AlgumaParser$ComandoSaidaContext.class
 br\ufscar\dc\compiladores\trab\part2\AlgumaParser$DeclaracaoContext.class
