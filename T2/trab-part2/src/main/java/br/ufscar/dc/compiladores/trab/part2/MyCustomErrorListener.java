@@ -13,8 +13,9 @@ import org.antlr.v4.runtime.dfa.DFA;
 
 public class MyCustomErrorListener implements ANTLRErrorListener {
    PrintWriter pw;
+   Boolean foundError = false;
    public MyCustomErrorListener(PrintWriter pw) {
-       this.pw = pw;    
+       this.pw = pw;
    }
 
     @Override
@@ -33,12 +34,13 @@ public class MyCustomErrorListener implements ANTLRErrorListener {
     }
 
     @Override
-    public void	syntaxError(Recognizer<?,?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
+    public void syntaxError(Recognizer<?,?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
         // Aqui vamos colocar o tratamento de erro customizado
 
         Token t = (Token) offendingSymbol;
-
-        pw.println("Minha mensagem customizada: Erro na linha "+line+", o token é "+t.getText());
+        if (!foundError) {
+            pw.println("Linha " + line + ": erro sintatico proximo a " + (t.getText().equals("<EOF>") ? "EOF" : t.getText()) );
+            foundError = true;
+        }
     }
-
 }

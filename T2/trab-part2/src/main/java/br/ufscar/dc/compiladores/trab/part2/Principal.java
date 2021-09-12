@@ -18,10 +18,9 @@ public class Principal {
         Token t = null;
         try (
                 // arquivo de saida
-                PrintWriter pw = new PrintWriter(new File(args[1]))) {
+            PrintWriter pw = new PrintWriter(new File(args[1]))) {
             boolean continuar = true;
             while ((t = lexer.nextToken()).getType() != Token.EOF && continuar) {
-
                 //erros na parte do trab 1
                 if ("ERRO".equals(LALexer.VOCABULARY.getDisplayName(t.getType()))) {
                     pw.println("Linha " + t.getLine() + ": " + t.getText() + " - simbolo nao identificado");
@@ -36,16 +35,21 @@ public class Principal {
 
                 //pw.println("<" + LALexer.VOCABULARY.getDisplayName(t.getType()) + "," + t.getText() + ">");
             }
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-            LAParser parser = new LAParser(tokens);
 
-            //remover os erros padroes
-            parser.removeErrorListeners();
-            // Registrar o error lister personalizado aqui
-            MyCustomErrorListener mcel = new MyCustomErrorListener(pw);
-            parser.addErrorListener(mcel);
+            if (continuar) {
+                lexer.reset();
+                CommonTokenStream tokens = new CommonTokenStream(lexer);
+                LAParser parser = new LAParser(tokens);
 
-            parser.programa();
+                //remover os erros padroes
+                parser.removeErrorListeners();
+                // Registrar o error lister personalizado aqui
+                MyCustomErrorListener mcel = new MyCustomErrorListener(pw);
+                parser.addErrorListener(mcel);
+
+                parser.programa();
+            }
+        pw.println("Fim da compilacao");
         }
     }
 }
