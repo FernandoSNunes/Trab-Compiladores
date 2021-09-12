@@ -38,8 +38,10 @@ public class MyCustomErrorListener implements ANTLRErrorListener {
         // Aqui vamos colocar o tratamento de erro customizado
 
         Token t = (Token) offendingSymbol;
+       //evita multiplas saidas de erro (exibe apenas a primeira)
         if (!foundError) {
             pw.println("Linha " + line + ": erro sintatico proximo a " + (t.getText().equals("<EOF>") ? "EOF" : t.getText()) );
+           //seta a variavel impedindo novos erros
             foundError = true;
         }
     }
