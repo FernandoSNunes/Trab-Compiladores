@@ -1,8 +1,8 @@
 package br.ufscar.dc.compiladores.trab.part2;
 
-import java.io.File;
+import java.io.File;    
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.PrintWriter;     //biblioteca 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -14,7 +14,7 @@ public class Principal {
         CharStream cs = CharStreams.fromFileName(args[0]);
         LALexer lexer = new LALexer(cs);
 
-        // Descomentar para depurar o Léxico
+        //parte do trabalho 1, verifica erros lexicos
         Token t = null;
         try (
                 // arquivo de saida
@@ -35,13 +35,15 @@ public class Principal {
 
                 //pw.println("<" + LALexer.VOCABULARY.getDisplayName(t.getType()) + "," + t.getText() + ">");
             }
-
+            
+            //para caso ja tenha encontrado erros lexicos
             if (continuar) {
+                //reinicia a lista de tokens para analisar a sintaxe
                 lexer.reset();
                 CommonTokenStream tokens = new CommonTokenStream(lexer);
                 LAParser parser = new LAParser(tokens);
 
-                //remover os erros padroes
+                //remover os erros padroes do terminal
                 parser.removeErrorListeners();
                 // Registrar o error lister personalizado aqui
                 MyCustomErrorListener mcel = new MyCustomErrorListener(pw);
@@ -49,6 +51,7 @@ public class Principal {
 
                 parser.programa();
             }
+            //necessario pros testes disponibilizados pelo professor
         pw.println("Fim da compilacao");
         }
     }
