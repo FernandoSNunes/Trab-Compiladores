@@ -113,6 +113,7 @@ public class LASemanticoUtils {
         }
         // se não for nenhum dos tipos acima, só pode ser uma expressão
         // entre parêntesis
+        //---------------------probelma aqui, a expressao nao esta aceitando fora de vetor------------------------
         return verificarTipo(tabela, ctx.expressao(0));
     }
     
