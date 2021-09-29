@@ -14,6 +14,7 @@ public class TabelaDeSimbolos {
         REGISTRO,
         INVALIDO,
         LITERAL,
+        TIPO,
         CUSTOMIZADO
     }
 

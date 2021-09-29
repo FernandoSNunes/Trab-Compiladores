@@ -25,18 +25,18 @@ public class LASemantico extends LABaseVisitor<Void> {
     
     @Override
     public Void visitDeclaracao_local(LAParser.Declaracao_localContext ctx) {
-        
         //cobrindo declare apenas, por hora
         if (ctx.variavel() != null){
             int erro_tipo = 0;
+            
             for (LAParser.IdentificadorContext ident : ctx.variavel().identificador()) {
                 
                 //verifica se a variavel ja existe
                 if (tabela.existe(ident.getText())){
                     //arrumar texto
-                    LASemanticoUtils.adicionarErroSemantico(ident.start, "Variável " + ident.getText() + " já existe");
+                    LASemanticoUtils.adicionarErroSemantico(ident.start, "identificador " + ident.getText() + " ja declarado anteriormente");
                 }
-                
+                else{
                 //verificacao do tipo
                 String strTipoVar = ctx.variavel().tipo().getText();
                 TipoLA tipoVar;
@@ -65,8 +65,12 @@ public class LASemantico extends LABaseVisitor<Void> {
                         else {
                             //se for um tipo declarado anteriormente
                             if (tabela.existe(strTipoVar)){
+                                TipoLA tipo_variavel_encontrada = tabela.verificar(strTipoVar);
                                 tipoVar = TipoLA.CUSTOMIZADO;
-                                tabela.adicionar_local(ident.getText(), tipoVar, strTipoVar);
+                                if (tipo_variavel_encontrada == TipoLA.TIPO)
+                                    tabela.adicionar_local(ident.getText(), tipoVar, strTipoVar);
+                                else 
+                                    LASemanticoUtils.adicionarErroSemantico(ident.start, "tipo " + strTipoVar + " nao declarado");
                             }
                             else {
                                 if (erro_tipo == 0){
@@ -77,7 +81,7 @@ public class LASemantico extends LABaseVisitor<Void> {
                         }
                         break;
                 }
-                        
+                }       
             }
     }
         

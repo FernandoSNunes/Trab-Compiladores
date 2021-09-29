@@ -75,7 +75,7 @@ public class LASemanticoUtils {
             return pu;
         }
         else /*(ctx.parcela_nao_unario()!= null) */{
-            TabelaDeSimbolos.TipoLA nu = verificarTipo(tabela, ctx.parcela_unario());
+            TabelaDeSimbolos.TipoLA nu = verificarTipo(tabela, ctx.parcela_nao_unario());
             return nu;
         }
         
@@ -207,6 +207,10 @@ public class LASemanticoUtils {
         }
         return ret;
     }
+    
+    
+    
+    
     
     public static TabelaDeSimbolos.TipoLA verificarTipo(TabelaDeSimbolos tabela, String nomeVar) {
         return tabela.verificar(nomeVar);
