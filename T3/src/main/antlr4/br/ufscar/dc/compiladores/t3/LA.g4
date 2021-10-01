@@ -4,8 +4,14 @@ PALAVRA_CHAVE
 	:	'algoritmo' | 'declare' | 'literal' | 'inteiro' | 'leia' | 'escreva' | 'fim_algoritmo' 
 | 'real' | '<-' | 'logico' | 'se' | 'entao' | 'senao' | 'fim_se' | 'caso' 
 | 'seja' | '..' | 'fim_caso' | 'para' | 'ate' | 'faca' | 'fim_para' | 'enquanto' | 'fim_enquanto' 
-| '%' | '^' | 'registro' | 'fim_registro' | 'tipo' | 'procedimento' | 'var' | 'fim_procedimento' 
-| 'funcao' | 'retorne' | 'fim_funcao' | 'constante' | 'falso' | 'verdadeiro'
+| '%' | 'registro' | 'fim_registro' | 'tipo' | 'procedimento' | 'var' | 'fim_procedimento' 
+|  'retorne' | 'fim_funcao' | 'constante' | 'falso' | 'verdadeiro'
+    ;
+
+INICIO_ENDERECO:  '^'
+    ;
+
+FUNCAO: 'funcao'
     ;
 
 NUM_INT	: ('0'..'9')+

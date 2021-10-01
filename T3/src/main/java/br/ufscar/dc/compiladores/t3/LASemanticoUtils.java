@@ -109,7 +109,13 @@ public class LASemanticoUtils {
         */
         //ponteiro
         if (ctx.identificador() != null) {
-            return TabelaDeSimbolos.TipoLA.PONTEIRO;
+            if (ctx.INICIO_ENDERECO() != null) 
+                return TabelaDeSimbolos.TipoLA.PONTEIRO;
+            else {
+                //naota pronto --------------------------------------------------------------------------------------------------------------------******************************
+                //System.out.println(ctx.identificador().IDENT(0).getText());
+                return TabelaDeSimbolos.TipoLA.CUSTOMIZADO;
+            }
         }
         // se não for nenhum dos tipos acima, só pode ser uma expressão
         // entre parêntesis
@@ -208,7 +214,14 @@ public class LASemanticoUtils {
         return ret;
     }
     
-    
+//     public static String getNomeFunc(TabelaDeSimbolos tabela, LAParser.ExpressaoContext ctx) {
+//        TabelaDeSimbolos.TipoLA ret = null;
+//
+//        for (LAParser.Termo_logicoContext fa : ctx.termo_logico()) {
+//            return 
+//        }
+//        return ret;
+//    }
     
     
     
