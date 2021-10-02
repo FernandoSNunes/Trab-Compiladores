@@ -18,6 +18,7 @@ public class TabelaDeSimbolos {
         FUNCAO,
         PROCEDIMENTO,
         TIPO,
+        CONSTANTE,
         CUSTOMIZADO
     }
 
@@ -25,11 +26,12 @@ public class TabelaDeSimbolos {
 
         String nome;
         TipoLA tipo;
-        String tipo_customizado;
+        String tipo_customizado;        //usado para tipos declarados no codigo e constantes
         List<TipoLA> parametros;        //usado para funcoes e procedimentos
         TipoLA retornoFuncao;
+        
 
-        private EntradaTabelaDeSimbolos(String nome, TipoLA tipo, String tipo_customizado) {
+        private EntradaTabelaDeSimbolos(String nome, TipoLA tipo, String tipo_customizado) {    
             this.nome = nome;
             this.tipo = tipo;
             this.tipo_customizado = tipo_customizado;

@@ -89,6 +89,7 @@ public class LASemantico extends LABaseVisitor<Void> {
     public Void visitDecl_local_global(LAParser.Decl_local_globalContext ctx) {
 
         if (ctx.declaracao_local() != null) {
+
             if (ctx.declaracao_local().variavel() != null) {
                 System.out.println(ctx.declaracao_local().variavel());
                 int erro_tipo = 0;
@@ -126,7 +127,7 @@ public class LASemantico extends LABaseVisitor<Void> {
                                     tipoVar = TipoLA.ENDERECO;
                                     tabela.adicionar(ident.getText(), tipoVar);
                                 } else {
-                                    // se for um tipo declarado anteriormente
+                                    // se for um tipo declarado anteriormente (tipo customizado)
                                     if (tabela.existe(strTipoVar)) {
                                         TipoLA tipo_variavel_encontrada = tabela.verificar(strTipoVar);
                                         tipoVar = TipoLA.CUSTOMIZADO;
@@ -148,6 +149,55 @@ public class LASemantico extends LABaseVisitor<Void> {
                         }
                     }
                 }
+            } else {
+                //declaracao de constante global
+                if (ctx.declaracao_local().valor_constante() != null) {
+
+                    LAParser.Declaracao_localContext dl = ctx.declaracao_local();
+                    String nome_const = dl.IDENT().getText();
+                    // verificacao do tipo
+                    String strTipoVar = dl.tipo_basico().getText();
+                    TipoLA tipoVar;
+                    switch (strTipoVar) {
+                        case "inteiro":
+                            tipoVar = TipoLA.INTEIRO;
+                            tabela.adicionar(nome_const, TipoLA.CONSTANTE, tipoVar.toString());
+                            break;
+                        case "literal":
+                            tipoVar = TipoLA.LITERAL;
+                            tabela.adicionar(nome_const, TipoLA.CONSTANTE, tipoVar.toString());
+                            break;
+                        case "real":
+                            tipoVar = TipoLA.REAL;
+                            tabela.adicionar(nome_const, TipoLA.CONSTANTE, tipoVar.toString());
+                            break;
+                        case "logico":
+                            tipoVar = TipoLA.LOGICO;
+                            tabela.adicionar(nome_const, TipoLA.CONSTANTE, tipoVar.toString());
+                            break;
+                        default:
+                            if ('^' == strTipoVar.charAt(0)) {
+                                tipoVar = TipoLA.ENDERECO;
+                            tabela.adicionar(nome_const, TipoLA.CONSTANTE, tipoVar.toString());
+                            } else {
+                                // se for um tipo declarado anteriormente (tipo customizado)
+                                if (tabela.existe(strTipoVar)) {
+                                    TipoLA tipo_variavel_encontrada = tabela.verificar(strTipoVar);
+                                    //tipoVar = TipoLA.CUSTOMIZADO;     //deixa de ser usado pois o tipo constante aproveita o campo
+                                    if (tipo_variavel_encontrada == TipoLA.TIPO) {
+                                        tabela.adicionar(nome_const, TipoLA.CONSTANTE, strTipoVar);
+                                    } else {
+                                        LASemanticoUtils.adicionarErroSemantico(dl.start,
+                                                "tipo " + strTipoVar + " nao declarado");
+                                    }
+                                } else {
+                                        LASemanticoUtils.adicionarErroSemantico(dl.start,
+                                                "tipo " + strTipoVar + " nao declarado");
+                                }
+                            }
+                            break;
+                    }
+                }
             }
         }
         return super.visitDecl_local_global(ctx); //To change body of generated methods, choose Tools | Templates.
@@ -162,7 +212,7 @@ public class LASemantico extends LABaseVisitor<Void> {
 
     @Override
     public Void visitCmdLeia(LAParser.CmdLeiaContext ctx) {
-        
+
         // talvez precise verificar se e ou nao ponteiro
         for (LAParser.IdentificadorContext ident : ctx.identificador()) {
             if (!(tabela.existe(ident.getText()))) {
@@ -187,10 +237,11 @@ public class LASemantico extends LABaseVisitor<Void> {
 
                                     if (pa.parcela_unario() != null) {
                                         //verificando apenas primeiro caso
-                                        if (pa.parcela_unario().identificador()!=null)
-                                        if (!tabela.existe(pa.parcela_unario().identificador().getText())) {
-                                            LASemanticoUtils.adicionarErroSemantico(pa.start,
-                                                    "identificador " + pa.parcela_unario().identificador().getText() + " nao declarado");
+                                        if (pa.parcela_unario().identificador() != null) {
+                                            if (!tabela.existe(pa.parcela_unario().identificador().getText())) {
+                                                LASemanticoUtils.adicionarErroSemantico(pa.start,
+                                                        "identificador " + pa.parcela_unario().identificador().getText() + " nao declarado");
+                                            }
                                         }
                                     } else {      //pa.parcela_nao_unario()
 
@@ -351,59 +402,4 @@ public class LASemantico extends LABaseVisitor<Void> {
         return super.visitParcela_unario(ctx);
     }
 
-    /*
-     * @Override public Void visitDeclaracao(LAParser.DeclaracaoContext ctx) {
-     * String nomeVar = ctx.VARIAVEL().getText(); String strTipoVar =
-     * ctx.TIPO_VAR().getText(); TipoLA tipoVar = TipoLA.INVALIDO; switch
-     * (strTipoVar) { case "INTEIRO": tipoVar = TipoLA.INTEIRO; break; case "REAL":
-     * tipoVar = TipoLA.REAL; break; default: // Nunca irá acontecer, pois o
-     * analisador sintático // não permite break; }
-     * 
-     * // Verificar se a variável já foi declarada if (tabela.existe(nomeVar)) {
-     * LASemanticoUtils.adicionarErroSemantico(ctx.VARIAVEL().getSymbol(),
-     * "Variável " + nomeVar + " já existe"); } else { tabela.adicionar(nomeVar,
-     * tipoVar); }
-     * 
-     * return super.visitDeclaracao(ctx); }
-     * 
-     * @Override public Void
-     * visitComandoAtribuicao(LAParser.ComandoAtribuicaoContext ctx) { TipoLA
-     * tipoExpressao = LASemanticoUtils.verificarTipo(tabela,
-     * ctx.expressaoAritmetica()); if (tipoExpressao != TipoLA.INVALIDO) { String
-     * nomeVar = ctx.VARIAVEL().getText(); if (!tabela.existe(nomeVar)) {
-     * LASemanticoUtils.adicionarErroSemantico(ctx.VARIAVEL().getSymbol(),
-     * "Variável " + nomeVar + " não foi declarada antes do uso"); } else { TipoLA
-     * tipoVariavel = LASemanticoUtils.verificarTipo(tabela, nomeVar); if
-     * (tipoVariavel != tipoExpressao) {
-     * LASemanticoUtils.adicionarErroSemantico(ctx.VARIAVEL().getSymbol(),
-     * "Tipo da variável " + nomeVar + " não é compatível com o tipo da expressão");
-     * } } } return super.visitComandoAtribuicao(ctx); }
-     * 
-     * @Override public Void visitComandoEntrada(LAParser.ComandoEntradaContext ctx)
-     * { String nomeVar = ctx.VARIAVEL().getText(); if (!tabela.existe(nomeVar)) {
-     * LASemanticoUtils.adicionarErroSemantico(ctx.VARIAVEL().getSymbol(),
-     * "Variável " + nomeVar + " não foi declarada antes do uso"); } return
-     * super.visitComandoEntrada(ctx); }
-     * 
-     * @Override public Void
-     * visitExpressaoAritmetica(LAParser.ExpressaoAritmeticaContext ctx) {
-     * LASemanticoUtils.verificarTipo(tabela, ctx); return
-     * super.visitExpressaoAritmetica(ctx); }
-     */
-    // @Override
-    // public Void visitCmd(LAParser.CmdContext ctx) {
-    // return super.visitCmd(ctx);
-    // }
-    //
-    //
-    //
-    //
-    // @Override
-    // public Void visitParcela_nao_unario(LAParser.Parcela_nao_unarioContext ctx) {
-    //
-    // if (ctx.CADEIA()!= null)
-    // System.out.println(ctx.CADEIA());
-    //
-    // return super.visitParcela_nao_unario(ctx);
-    // }
 }
