@@ -93,7 +93,7 @@ public class LASemantico extends LABaseVisitor<Void> {
         if (ctx.declaracao_local() != null) {
 
             if (ctx.declaracao_local().variavel() != null) {
-                System.out.println(ctx.declaracao_local().variavel());
+                //System.out.println(ctx.declaracao_local().variavel());
                 int erro_tipo = 0;
 
                 for (LAParser.IdentificadorContext ident : ctx.declaracao_local().variavel().identificador()) {
@@ -242,7 +242,7 @@ public class LASemantico extends LABaseVisitor<Void> {
                                     if (pa.parcela_unario() != null) {
                                         //verificando apenas primeiro caso
                                         if (pa.parcela_unario().identificador() != null) {
-                                            System.out.println(pa.parcela_unario().identificador().getText());
+                                            //System.out.println(pa.parcela_unario().identificador().getText());
                                             if (!tabela.existe(pa.parcela_unario().identificador().getText())) {
                                                 LASemanticoUtils.adicionarErroSemantico(pa.start,
                                                         "identificador " + pa.parcela_unario().identificador().getText() + " nao declarado");
