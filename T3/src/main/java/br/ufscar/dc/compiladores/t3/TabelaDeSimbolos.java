@@ -27,19 +27,22 @@ public class TabelaDeSimbolos {
         TipoLA tipo;
         String tipo_customizado;
         List<TipoLA> parametros;        //usado para funcoes e procedimentos
+        TipoLA retornoFuncao;
 
         private EntradaTabelaDeSimbolos(String nome, TipoLA tipo, String tipo_customizado) {
             this.nome = nome;
             this.tipo = tipo;
             this.tipo_customizado = tipo_customizado;
             this.parametros = null;
+            this.retornoFuncao = TipoLA.INVALIDO;
         }
 
-        private EntradaTabelaDeSimbolos(String nome, TipoLA tipo, List<TipoLA> tipos) {
+        private EntradaTabelaDeSimbolos(String nome, TipoLA tipo, List<TipoLA> tipos, TipoLA retornoFuncao) {
             this.nome = nome;
             this.tipo = tipo;
             this.tipo_customizado = "";
             this.parametros = tipos;
+            this.retornoFuncao = retornoFuncao;
         }
     }
 
@@ -64,13 +67,24 @@ public class TabelaDeSimbolos {
         return tabela.get(nome).tipo;
     }*/
     //teste------------------------------------------------------------------------
-    public void adicionar_funcproc(String nome, TipoLA tipo, List<TipoLA> tipos) {
-        tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, tipos));
+    public void adicionar_funcproc(String nome, TipoLA tipo, List<TipoLA> tipos, TipoLA retornoFuncao) {
+        tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, tipos, retornoFuncao));
     }
 
-    //Cuidado, use corretamente ou vai crashar
     public List<TipoLA> get_parametros_funcprop(String nome) {
-        return tabela.get(nome).parametros;
+        EntradaTabelaDeSimbolos ret = tabela.get(nome);
+        if (ret != null) {
+            return ret.parametros;
+        }
+        return null;
+    }
+
+    public TipoLA getRetornoFuncao(String nome) {
+        EntradaTabelaDeSimbolos ret = tabela.get(nome);
+        if (ret != null) {
+            return ret.retornoFuncao;
+        }
+        return null;
     }
 
     public void adicionar(String nome, TipoLA tipo, String tipo_customizado) {

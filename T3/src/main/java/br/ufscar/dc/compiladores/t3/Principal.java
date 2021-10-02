@@ -70,7 +70,7 @@ public class Principal {
         ProgramaContext arvore = parser.programa();
         LASemantico as = new LASemantico();
         as.visitPrograma(arvore);
-        LASemanticoUtils.errosSemanticos.forEach((s) -> System.out.println(s));
+        LASemanticoUtils.errosSemanticos.forEach((s) -> pw.println(s));
 
         // retorna false se a lista de erros semanticos estiver vazia
         // ou seja, false = não há erros
