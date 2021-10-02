@@ -63,11 +63,13 @@ public class LASemantico extends LABaseVisitor<Void> {
                                         if (tipo_variavel_encontrada == TipoLA.TIPO) {
                                             tabela.adicionar_local(ident.getText(), tipoVar, strTipoVar);
                                         } else {
+                                            tabela.adicionar_local(ident.getText(), tipoVar, strTipoVar);
                                             LASemanticoUtils.adicionarErroSemantico(ident.start,
                                                     "tipo " + strTipoVar + " nao declarado");
                                         }
                                     } else {
                                         if (erro_tipo == 0) {
+                                            tabela.adicionar(ident.getText(), TipoLA.INVALIDO);
                                             LASemanticoUtils.adicionarErroSemantico(ident.start,
                                                     "tipo " + strTipoVar + " nao declarado");
                                             erro_tipo++;
@@ -134,11 +136,13 @@ public class LASemantico extends LABaseVisitor<Void> {
                                         if (tipo_variavel_encontrada == TipoLA.TIPO) {
                                             tabela.adicionar(ident.getText(), tipoVar, strTipoVar);
                                         } else {
+                                            tabela.adicionar(ident.getText(), tipoVar, strTipoVar);
                                             LASemanticoUtils.adicionarErroSemantico(ident.start,
                                                     "tipo " + strTipoVar + " nao declarado");
                                         }
                                     } else {
                                         if (erro_tipo == 0) {
+                                            tabela.adicionar(ident.getText(), TipoLA.INVALIDO);
                                             LASemanticoUtils.adicionarErroSemantico(ident.start,
                                                     "tipo " + strTipoVar + " nao declarado");
                                             erro_tipo++;
@@ -238,6 +242,7 @@ public class LASemantico extends LABaseVisitor<Void> {
                                     if (pa.parcela_unario() != null) {
                                         //verificando apenas primeiro caso
                                         if (pa.parcela_unario().identificador() != null) {
+                                            System.out.println(pa.parcela_unario().identificador().getText());
                                             if (!tabela.existe(pa.parcela_unario().identificador().getText())) {
                                                 LASemanticoUtils.adicionarErroSemantico(pa.start,
                                                         "identificador " + pa.parcela_unario().identificador().getText() + " nao declarado");

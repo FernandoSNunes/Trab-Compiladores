@@ -1,12 +1,3 @@
-Linha 8: tipo tRacional nao declarado
-Linha 28: tipo tRacional nao declarado
-Linha 29: identificador simplifiqueRacional ja declarado anteriormente
-Linha 33: identificador numero1.numerador nao declarado
-Linha 35: identificador numero1.denominador nao declarado
-Linha 37: identificador numero2.numerador nao declarado
-Linha 39: identificador numero2.denominador nao declarado
-Linha 50: identificador resultado.numerador nao declarado
-Linha 50: identificador resultado.denominador nao declarado
-Linha 59: identificador resultado.numerador nao declarado
-Linha 59: identificador resultado.denominador nao declarado
+Linha 7: tipo inteir nao declarado
+Linha 11: identificador idades nao declarado
 Fim da compilacao

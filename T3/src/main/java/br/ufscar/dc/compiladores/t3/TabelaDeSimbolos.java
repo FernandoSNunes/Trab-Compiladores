@@ -110,8 +110,10 @@ public class TabelaDeSimbolos {
     }
 
     public boolean existe(String nome) {
-        if (tabela_local != null)
+        if (tabela_local != null){
+            System.out.println(nome);
             return (tabela.containsKey(nome) || tabela_local.containsKey(nome));
+        }
         else return tabela.containsKey(nome);
     }
 
