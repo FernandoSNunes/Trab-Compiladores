@@ -108,7 +108,9 @@ public class TabelaDeSimbolos {
     }
 
     public boolean existe(String nome) {
-        return (tabela.containsKey(nome) || tabela_local.containsKey(nome));
+        if (tabela_local != null)
+            return (tabela.containsKey(nome) || tabela_local.containsKey(nome));
+        else return tabela.containsKey(nome);
     }
 
     public void adicionar_local(String nome, TipoLA tipo) {
