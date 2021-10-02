@@ -186,6 +186,8 @@ public class LASemantico extends LABaseVisitor<Void> {
                                 for (LAParser.ParcelaContext pa : fa.parcela()) {
 
                                     if (pa.parcela_unario() != null) {
+                                        //verificando apenas primeiro caso
+                                        if (pa.parcela_unario().identificador()!=null)
                                         if (!tabela.existe(pa.parcela_unario().identificador().getText())) {
                                             LASemanticoUtils.adicionarErroSemantico(pa.start,
                                                     "identificador " + pa.parcela_unario().identificador().getText() + " nao declarado");
