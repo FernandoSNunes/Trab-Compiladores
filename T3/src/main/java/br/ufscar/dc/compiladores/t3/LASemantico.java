@@ -239,7 +239,7 @@ public class LASemantico extends LABaseVisitor<Void> {
                         for (LAParser.TermoContext te : ea.termo()) {
                             for (LAParser.FatorContext fa : te.fator()) {
                                 for (LAParser.ParcelaContext pa : fa.parcela()) {
-
+ 
                                     if (pa.parcela_unario() != null) {
                                         //verificando apenas primeiro caso
                                         if (pa.parcela_unario().identificador() != null) {
@@ -314,6 +314,7 @@ public class LASemantico extends LABaseVisitor<Void> {
         for (LAParser.ParametroContext pa : ctx.parametros().parametro()) {
 
             String strTipoVar = pa.tipo_estendido().getText();
+            String nomeVar = pa.identificador(0).getText();
             TipoLA tipoVar = TipoLA.INVALIDO;
             switch (strTipoVar) {
                 case "inteiro":
@@ -347,7 +348,7 @@ public class LASemantico extends LABaseVisitor<Void> {
                     break;
             }
             if (tipoVar != TipoLA.INVALIDO) {
-
+                tabela.adicionar_local(nomeVar, tipoVar);
                 parametros.add(tipoVar);
 
             }
@@ -421,14 +422,14 @@ public class LASemantico extends LABaseVisitor<Void> {
             LASemanticoUtils.adicionarErroSemantico(ctx.start,
                     "identificador " + ctx.identificador().getText() + " nao declarado");
         }
-        TipoLA tipoRecebido = verificarTipo(tabela, ctx.expressao());
-
-        if (tipoAlvo != tipoRecebido) {
-
-            System.out.println(tipoAlvo + "    " + tipoRecebido);
-            LASemanticoUtils.adicionarErroSemantico(ctx.start,
-                    "tipos nao compativeis " + ctx.identificador().getText() + " e " + ctx.expressao().getText());
-        }
+//        TipoLA tipoRecebido = verificarTipo(tabela, ctx.expressao());
+//
+//        if (tipoAlvo != tipoRecebido) {
+//
+//            System.out.println(tipoAlvo + "    " + tipoRecebido);
+//            LASemanticoUtils.adicionarErroSemantico(ctx.start,
+//                    "tipos nao compativeis " + ctx.identificador().getText() + " e " + ctx.expressao().getText());
+//        }
 
         return super.visitCmdAtribuicao(ctx); //To change body of generated methods, choose Tools | Templates.
     }
