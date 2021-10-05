@@ -2,6 +2,7 @@ package br.ufscar.dc.compiladores.t3;
 
 import br.ufscar.dc.compiladores.t3.LAParser.ExpressaoContext;
 import br.ufscar.dc.compiladores.t3.LAParser.ParcelaContext;
+import static br.ufscar.dc.compiladores.t3.LASemanticoUtils.verificarTipo;
 import br.ufscar.dc.compiladores.t3.TabelaDeSimbolos.TipoLA;
 import java.util.List;
 import java.util.Vector;
@@ -182,7 +183,7 @@ public class LASemantico extends LABaseVisitor<Void> {
                         default:
                             if ('^' == strTipoVar.charAt(0)) {
                                 tipoVar = TipoLA.ENDERECO;
-                            tabela.adicionar(nome_const, TipoLA.CONSTANTE, tipoVar.toString());
+                                tabela.adicionar(nome_const, TipoLA.CONSTANTE, tipoVar.toString());
                             } else {
                                 // se for um tipo declarado anteriormente (tipo customizado)
                                 if (tabela.existe(strTipoVar)) {
@@ -195,8 +196,8 @@ public class LASemantico extends LABaseVisitor<Void> {
                                                 "tipo " + strTipoVar + " nao declarado");
                                     }
                                 } else {
-                                        LASemanticoUtils.adicionarErroSemantico(dl.start,
-                                                "tipo " + strTipoVar + " nao declarado");
+                                    LASemanticoUtils.adicionarErroSemantico(dl.start,
+                                            "tipo " + strTipoVar + " nao declarado");
                                 }
                             }
                             break;
@@ -407,4 +408,30 @@ public class LASemantico extends LABaseVisitor<Void> {
         return super.visitParcela_unario(ctx);
     }
 
+    @Override
+    public Void visitCmdAtribuicao(LAParser.CmdAtribuicaoContext ctx) {
+
+        TipoLA tipoAlvo = null;
+        if (ctx.INICIO_ENDERECO() != null) {
+            tipoAlvo = TipoLA.ENDERECO;
+        } else {
+            tipoAlvo = tabela.verificar(ctx.identificador().getText());
+        }
+        if (tipoAlvo == null) {
+            LASemanticoUtils.adicionarErroSemantico(ctx.start,
+                    "identificador " + ctx.identificador().getText() + " nao declarado");
+        }
+        TipoLA tipoRecebido = verificarTipo(tabela, ctx.expressao());
+
+        if (tipoAlvo != tipoRecebido) {
+
+            System.out.println(tipoAlvo + "    " + tipoRecebido);
+            LASemanticoUtils.adicionarErroSemantico(ctx.start,
+                    "tipos nao compativeis " + ctx.identificador().getText() + " e " + ctx.expressao().getText());
+        }
+
+        return super.visitCmdAtribuicao(ctx); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
 }
