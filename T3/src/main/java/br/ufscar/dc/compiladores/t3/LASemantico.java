@@ -422,14 +422,14 @@ public class LASemantico extends LABaseVisitor<Void> {
             LASemanticoUtils.adicionarErroSemantico(ctx.start,
                     "identificador " + ctx.identificador().getText() + " nao declarado");
         }
-//        TipoLA tipoRecebido = verificarTipo(tabela, ctx.expressao());
-//
-//        if (tipoAlvo != tipoRecebido) {
-//
-//            System.out.println(tipoAlvo + "    " + tipoRecebido);
-//            LASemanticoUtils.adicionarErroSemantico(ctx.start,
-//                    "tipos nao compativeis " + ctx.identificador().getText() + " e " + ctx.expressao().getText());
-//        }
+        TipoLA tipoRecebido = verificarTipo(tabela, ctx.expressao());
+
+        if (tipoAlvo != tipoRecebido) {
+
+            System.out.println(tipoAlvo + "    " + tipoRecebido);
+            LASemanticoUtils.adicionarErroSemantico(ctx.start,
+                    "atribuicao nao compativel para " + ctx.identificador().getText());
+        }
 
         return super.visitCmdAtribuicao(ctx); //To change body of generated methods, choose Tools | Templates.
     }

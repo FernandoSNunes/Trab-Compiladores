@@ -32,14 +32,20 @@ public class LASemanticoUtils {
                         ret = aux;
                     }
                 } else {
-                    adicionarErroSemantico(ta.start, "Expressão " + ta.getText() + " contém tipos incompatíveis id : 1");
+                    //adicionarErroSemantico(ta.start, "Expressão " + ta.getText() + " contém tipos incompatíveis id : 1");
                     return TabelaDeSimbolos.TipoLA.INVALIDO;
 
                 }
 
             } else {
-                adicionarErroSemantico(ctx.start, "Expressão " + ctx.getText() + " contém tipos incompatíveis  id : 2");
+                
+                if (aux == TabelaDeSimbolos.TipoLA.LITERAL && ret == aux){
+                    ret = aux;
+                    
+                }else {
+                //adicionarErroSemantico(ctx.start, "Expressão " + ctx.getText() + " contém tipos incompatíveis  id : 2");
                 return TabelaDeSimbolos.TipoLA.INVALIDO;
+                }
             }
         }
 
