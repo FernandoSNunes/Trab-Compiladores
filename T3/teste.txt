@@ -1,97 +1,36 @@
-{ obter, para uma relação de dados sobre vinhos, o vinho de maior venda e a lista de todos os vinhos que tenham venda abaixo da média geral do grupo }
+{ determinar, dados os comprimentos dos lados de um triângulo, se o triângulo pode ser formado (se existe) e qual o tipo dele (equilátero, isósceles ou escaleno) }
 
-constante maximoElementos: inteiro = 300
-
-tipo tVinho: registro
-		nome,
-		nomeFabricante,
-		nomeDistribuidor,
-		tipoVinho: literal
-		anoSafra,
-		anoEnvasamento: inteiro
-		preco: real
-		unidades: inteiro
-	fim_registro
-
-procedimento leiaVinho(var vinho: tVinho)
-{ leitura de um registro de vinho }
-
-	escreva("Nome do vinho: ")
-	leia(vinho.nome)
-	escreva("Nome do fabricante: ")
-	leia(vinho.nomeFabricante)
-	escreva("Nome do distribuidor: ")
-	leia(vinho.nomeDistribuidor)
-	escreva("Tipo do vinho (R, T, B): ")
-	leia(vinho.tipoVinho)
-	escreva("Ano da safra: ")
-	leia(vinho.anoSafra)
-	escreva("Ano do envasamento: ")
-	leia(vinho.anoEnvasamento)
-	escreva("Preco da garrafa: ")
-	leia(vinho.preco)
-	escreva("Numero de garrafas: ")
-	leia(vinho.unidades)
-
-fim_procedimento
-
-procedimento escrevaVinho(vinho: tVinho)
-{ escrita de um registro de vinho }
-
-	escreva("Nome do vinho: ", vinho.nome)
-	escreva("Nome do fabricante: ", vinho.nomeFabricante)
-	escreva("Nome do distribuidor: ", vinho.nomeDistribuidor)
-	escreva("Tipo do vinho (R, T, B): ", vinho.tipoVinho)
-	escreva("Ano da safra: ", vinho.anoSafra)
-	escreva("Ano do envasamento: ", vinho.anoEnvasamento)
-	escreva("Preco da garrafa: ", vinho.preco)
-	escreva("Numero de garrafas: ", vinho.unidades)
-	retorne vinho.nome
-fim_procedimento
-
-funcao calculeVendas(vinho: tVinho): real
-{ retorna o produto do preço pelo número de unidades vendidas }
-
-	retorne vinho.unidades * vinho.preco
-fim_funcao
-
-{ parte principal do algoritmo }
 algoritmo
 	declare
-		i, numeroItens: inteiro
+		lado1, lado2, lado3: real
 	declare
-		somaVendas, maiorVenda, mediaVinhos: real
-	declare
-		vinho[maximoElementos]: tVinho
+		existeTriangulo,
+		ehEquilatero, ehIsosceles, ehEscaleno: logico
 
-	{ leitura da relação de dados e cálculo da média e da maior venda }
-	escreva("Digite o numero de itens: ")
-	leia(numeroItens)
-	somaVendas <- 0
-	maiorVenda <- -1
-	para i <- 0 ate numeroItens - 1 faca
-		{ assume-se maior ou igual a 1 }
-		leiaVinho(vinho[i])
-		somaVendas <- somaVendas + calculeVendas(vinho[i])
-		se calculeVendas(vinho[i]) > maiorVenda entao
-			maiorVenda <- calculeVendas(vinho[i])
-		fim_se
-	fim_para
-	mediaVinhos <- somaVendas/numeroItens
+	{ leitura dos comprimentos dos lados }
+	escreva("Lado 1: ")
+	leia(lado1)
+	escreva("Lado 2: ")
+	leia(lado2)
+	escreva("Lado 3: ")
+	leia(lado3)
 
-	{ apresentação da melhor venda }
-	escreva("Vinhos com melhor venda: ")
-	para i <- 0 ate numeroItens - 1 faca
-		se calculeVendas(vinho[i]) = maiorVenda entao
-			escrevaVinho(vinho[i])
-		fim_se
-	fim_para
+	{ verificações necessárias }
+	existeTriangulo <- lado1 < lado2 + lado3 e
+				lado2 < lado1 + lado3 e
+				lado3 < lado1 + lado2
+	
+	ehEquilatero <- existeTriangulo e lado1 = lado2 e lado2 = lado3
 
-	{ apresentação dos vinhos abaixo da média calculada }
-	escreva("Vinhos abaixo da media: ")
-	para i <- 0 ate numeroItens - 1 faca
-		se calculeVendas(vinho[i]) < mediaVinhos entao
-			escrevaVinho(vinho[i])
-		fim_se
-	fim_para
+	ehIsosceles <- existeTriangulo e nao ehEquilatero e
+			(lado1 = lado2 ou lado2 = lado3 ou lado1 = lado3)
+
+	ehEscaleno <- existeTriangulo e nao ehEquilatero e nao ehIsosceles
+
+	{ resultados }
+	escreva("Triangulo existe? ", existeTriangulo)
+	escreva("Eh equilatero? ", ehEquilatero)
+	escreva("Eh isosceles? ", ehIsosceles)
+	escreva("Eh escaleno? ", ehEscaleno)
+   retorne "FIM"
 fim_algoritmo

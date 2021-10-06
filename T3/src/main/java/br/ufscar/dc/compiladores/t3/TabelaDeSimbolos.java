@@ -113,19 +113,19 @@ public class TabelaDeSimbolos {
     }
 
     public TipoLA verificar(String nome) {
-        System.out.println("nome que chegou inicialmente foi " +nome);
+       //// System.out.println("nome que chegou inicialmente foi " +nome);
         if (nome.contains("[")) {
             nome = nome.substring(0, nome.length() - 3);
         }
 
         if (nome.contains(".")) {
-            System.out.println(" nome que chegou com . foi " +nome);
+           //// System.out.println(" nome que chegou com . foi " +nome);
             String[] parts = nome.split("\\.", 2);
-            System.out.println("Dividido em :" + parts[0] + " e " + parts[1]);
+           //// System.out.println("Dividido em :" + parts[0] + " e " + parts[1]);
 
             TipoLA tipo = this.verificar(parts[0]);
             if (tipo == TipoLA.CUSTOMIZADO) {
-            System.out.println(parts[0] + " e um tipo CUSTOMIZADO");
+           //// System.out.println(parts[0] + " e um tipo CUSTOMIZADO");
                 
                 EntradaTabelaDeSimbolos aux = tabela.get(parts[0]);
                 if (aux == null && tabela_local != null) {
@@ -136,7 +136,7 @@ public class TabelaDeSimbolos {
             
                 
             } else {
-                System.out.println(parts[0] + " e um TIPO");
+               //// System.out.println(parts[0] + " e um TIPO");
                 
                 TabelaDeSimbolos tabelaInterna = this.get_tabela_interna(parts[0]);
 
@@ -148,7 +148,7 @@ public class TabelaDeSimbolos {
             }
 
         } else {
-            System.out.println(" nome que chegou sem . foi " +nome);
+           //// System.out.println(" nome que chegou sem . foi " +nome);
              
             //System.out.println(nome);
             EntradaTabelaDeSimbolos aux = tabela.get(nome);
