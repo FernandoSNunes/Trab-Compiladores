@@ -170,6 +170,9 @@ public class LASemanticoUtils {
                 return TabelaDeSimbolos.TipoLA.PONTEIRO;
             } else {
                 String nomeVar = ctx.identificador().getText();
+
+                System.out.println(ctx.getText());
+
                 TabelaDeSimbolos.TipoLA tipoVar = tabela.verificar(nomeVar);
                 //System.out.println("166 " + ctx.identificador().getText() + "tipoVar = " + tipoVar);
                 if (tipoVar != TabelaDeSimbolos.TipoLA.FUNCAO) {
@@ -198,7 +201,7 @@ public class LASemanticoUtils {
     public static TabelaDeSimbolos.TipoLA verificarTipo(TabelaDeSimbolos tabela,
             LAParser.Parcela_nao_unarioContext ctx) {
         if (ctx.identificador() != null) {
-            return TabelaDeSimbolos.TipoLA.PONTEIRO;
+            return TabelaDeSimbolos.TipoLA.ENDERECO;
         }
 
         // String
@@ -270,7 +273,7 @@ public class LASemanticoUtils {
                     ret = aux;
 
                 } else {
-                    adicionarErroSemantico(pa.start, "Expressão " + pa.getText() + " contém tipos incompatíveis id : 9");
+                    // adicionarErroSemantico(pa.start, "Expressão " + pa.getText() + " contém tipos incompatíveis id : 9");
                     return TabelaDeSimbolos.TipoLA.INVALIDO;
 
                 }
@@ -307,22 +310,24 @@ public class LASemanticoUtils {
     public static TabelaDeSimbolos.TipoLA verificarTipo(TabelaDeSimbolos tabela, LAParser.Exp_relacionalContext ctx) {
         TabelaDeSimbolos.TipoLA tipo1 = verificarTipo(tabela, ctx.exp_aritmetica(0));
 
+        // System.out.println("passou aqui");
+
         if (ctx.exp_aritmetica().size() == 1) {      //sem segunda operacao
             return tipo1;
         } else {    //
-            TabelaDeSimbolos.TipoLA tipo2 = verificarTipo(tabela, ctx.exp_aritmetica(0));
+            TabelaDeSimbolos.TipoLA tipo2 = verificarTipo(tabela, ctx.exp_aritmetica(1));
             if (tipo2 == tipo1 && "=".equals(ctx.op_relacional().getText())) {  //operacao de igualdade
                 return TabelaDeSimbolos.TipoLA.LOGICO;
             } else {
                 if (tipo2 != tipo1) {
-                    adicionarErroSemantico(ctx.start, "Expressão " + ctx.getText() + " contém tipos incompatíveis id : 11");
+                    // adicionarErroSemantico(ctx.start, "Expressão " + ctx.getText() + " contém tipos incompatíveis id : 11");
                     return TabelaDeSimbolos.TipoLA.INVALIDO;
                 }
                 if ((tipo1 == TabelaDeSimbolos.TipoLA.INTEIRO || tipo1 == TabelaDeSimbolos.TipoLA.REAL)
                         && (tipo2 == TabelaDeSimbolos.TipoLA.INTEIRO || tipo2 == TabelaDeSimbolos.TipoLA.REAL)) {
                     return TabelaDeSimbolos.TipoLA.LOGICO;
                 } else {
-                    adicionarErroSemantico(ctx.start, "Expressão " + ctx.getText() + " contém tipos incompatíveis id : 12");
+                    // adicionarErroSemantico(ctx.start, "Expressão " + ctx.getText() + " contém tipos incompatíveis id : 12");
                     return TabelaDeSimbolos.TipoLA.INVALIDO;
                 }
             }

@@ -1,2 +1,4 @@
-Linha 12: atribuicao nao compativel para formato2
+Linha 11: atribuicao nao compativel para valorTotal
+Linha 16: identificador preco_final nao declarado
+Linha 16: Expressão preco_final<>0 contém tipos incompatíveis id : 11
 Fim da compilacao

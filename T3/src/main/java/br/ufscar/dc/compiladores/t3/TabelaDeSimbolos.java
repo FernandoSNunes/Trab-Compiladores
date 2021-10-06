@@ -22,6 +22,7 @@ public class TabelaDeSimbolos {
         CUSTOMIZADO
     }
 
+    boolean isProcedimento;
     class EntradaTabelaDeSimbolos {
 
         String nome;
@@ -29,6 +30,7 @@ public class TabelaDeSimbolos {
         String tipo_customizado;        //usado para tipos declarados no codigo e constantes
         List<TipoLA> parametros;        //usado para funcoes e procedimentos
         TipoLA retornoFuncao;
+        boolean vetor;
         
 
         private EntradaTabelaDeSimbolos(String nome, TipoLA tipo, String tipo_customizado) {    
@@ -39,12 +41,28 @@ public class TabelaDeSimbolos {
             this.retornoFuncao = TipoLA.INVALIDO;
         }
 
+        private EntradaTabelaDeSimbolos(String nome, TipoLA tipo, String tipo_customizado, boolean vetor) {    
+            this.nome = nome;
+            this.tipo = tipo;
+            this.tipo_customizado = tipo_customizado;
+            this.parametros = null;
+            this.retornoFuncao = TipoLA.INVALIDO;
+            this.vetor = vetor;
+        }
+
         private EntradaTabelaDeSimbolos(String nome, TipoLA tipo, List<TipoLA> tipos, TipoLA retornoFuncao) {
             this.nome = nome;
             this.tipo = tipo;
             this.tipo_customizado = "";
             this.parametros = tipos;
             this.retornoFuncao = retornoFuncao;
+        }
+
+        private EntradaTabelaDeSimbolos(String nome, TipoLA tipo, boolean vetor) {
+            this.nome = nome;
+            this.tipo = tipo;
+            this.tipo_customizado = "";
+            this.vetor = vetor;
         }
     }
 
@@ -58,6 +76,10 @@ public class TabelaDeSimbolos {
 
     public void adicionar(String nome, TipoLA tipo) {
         tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, ""));
+    }
+
+    public void adicionar(String nome, TipoLA tipo, boolean vetor) {
+        tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, vetor));
     }
 
     /*
@@ -93,11 +115,25 @@ public class TabelaDeSimbolos {
         tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, tipo_customizado));
     }
 
-    public void novo_local() {
+    public void adicionar(String nome, TipoLA tipo, String tipo_customizado, boolean vetor) {
+        tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, tipo_customizado, vetor));
+    }
+
+    public void novo_local(boolean isProcedimento) {
         this.tabela_local = new HashMap<>();
+        this.isProcedimento = isProcedimento;
+    }
+
+    public boolean isProcedimento() {
+        return isProcedimento;
     }
 
     public TipoLA verificar(String nome) {
+
+        if (nome.contains("[")) {
+            nome = nome.substring(0, nome.length() - 3);
+        }
+
         EntradaTabelaDeSimbolos aux = tabela.get(nome);
         if (aux == null) {
             aux = tabela_local.get(nome);
@@ -121,8 +157,12 @@ public class TabelaDeSimbolos {
         tabela_local.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, ""));
     }
 
-    public void adicionar_local(String nome, TipoLA tipo, String tipo_customizado) {
-        tabela_local.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, tipo_customizado));
+    public void adicionar_local(String nome, TipoLA tipo, String tipo_customizado, boolean vetor) {
+        tabela_local.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, tipo_customizado, vetor));
+    }
+
+    public void adicionar_local(String nome, TipoLA tipo, boolean vetor) {
+        tabela_local.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, vetor));
     }
 
     public void fim_local() {

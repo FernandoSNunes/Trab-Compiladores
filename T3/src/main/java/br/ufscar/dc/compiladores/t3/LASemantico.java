@@ -1,5 +1,7 @@
 package br.ufscar.dc.compiladores.t3;
 
+import br.ufscar.dc.compiladores.t3.LAParser.CmdEnquantoContext;
+import br.ufscar.dc.compiladores.t3.LAParser.CmdRetorneContext;
 import br.ufscar.dc.compiladores.t3.LAParser.ExpressaoContext;
 import br.ufscar.dc.compiladores.t3.LAParser.ParcelaContext;
 import static br.ufscar.dc.compiladores.t3.LASemanticoUtils.verificarTipo;
@@ -20,57 +22,59 @@ public class LASemantico extends LABaseVisitor<Void> {
     // criar o escopo local da main
     @Override
     public Void visitCorpo(LAParser.CorpoContext ctx2) {
-        tabela.novo_local();
+        tabela.novo_local(true);
         for (LAParser.Declaracao_localContext ctx : ctx2.declaracao_local()) {
             if (ctx.variavel() != null) {
                 int erro_tipo = 0;
                 for (LAParser.IdentificadorContext ident : ctx.variavel().identificador()) {
 
                     // verifica se a variavel ja existe
-                    if (tabela.existe(ident.getText())) {
+                    if (tabela.existe(ident.IDENT(0).getText())) {
                         // arrumar texto
                         LASemanticoUtils.adicionarErroSemantico(ident.start,
-                                "identificador " + ident.getText() + " ja declarado anteriormente");
+                                "identificador " + ident.IDENT(0).getText() + " ja declarado anteriormente");
                     } else {
                         // verificacao do tipo
                         String strTipoVar = ctx.variavel().tipo().getText();
                         TipoLA tipoVar;
+                        boolean vetor = (ctx.variavel().identificador(0).dimensao() != null);
+
                         switch (strTipoVar) {
                             case "inteiro":
                                 tipoVar = TipoLA.INTEIRO;
-                                tabela.adicionar_local(ident.getText(), tipoVar);
+                                tabela.adicionar_local(ident.IDENT(0).getText(), tipoVar, vetor);
                                 break;
                             case "literal":
                                 tipoVar = TipoLA.LITERAL;
-                                tabela.adicionar_local(ident.getText(), tipoVar);
+                                tabela.adicionar_local(ident.IDENT(0).getText(), tipoVar, vetor);
                                 break;
                             case "real":
                                 tipoVar = TipoLA.REAL;
-                                tabela.adicionar_local(ident.getText(), tipoVar);
+                                tabela.adicionar_local(ident.IDENT(0).getText(), tipoVar, vetor);
                                 break;
                             case "logico":
                                 tipoVar = TipoLA.LOGICO;
-                                tabela.adicionar_local(ident.getText(), tipoVar);
+                                tabela.adicionar_local(ident.IDENT(0).getText(), tipoVar, vetor);
                                 break;
                             default:
                                 if ('^' == strTipoVar.charAt(0)) {
                                     tipoVar = TipoLA.ENDERECO;
-                                    tabela.adicionar_local(ident.getText(), tipoVar);
+                                    tabela.adicionar_local(ident.IDENT(0).getText(), tipoVar, vetor);
                                 } else {
                                     // se for um tipo declarado anteriormente
                                     if (tabela.existe(strTipoVar)) {
                                         TipoLA tipo_variavel_encontrada = tabela.verificar(strTipoVar);
                                         tipoVar = TipoLA.CUSTOMIZADO;
                                         if (tipo_variavel_encontrada == TipoLA.TIPO) {
-                                            tabela.adicionar_local(ident.getText(), tipoVar, strTipoVar);
+                                            tabela.adicionar_local(ident.IDENT(0).getText(), tipoVar, strTipoVar, vetor);
                                         } else {
-                                            tabela.adicionar_local(ident.getText(), tipoVar, strTipoVar);
+                                            tabela.adicionar_local(ident.IDENT(0).getText(), tipoVar, strTipoVar, vetor);
                                             LASemanticoUtils.adicionarErroSemantico(ident.start,
                                                     "tipo " + strTipoVar + " nao declarado");
                                         }
                                     } else {
                                         if (erro_tipo == 0) {
-                                            tabela.adicionar(ident.getText(), TipoLA.INVALIDO);
+                                            tabela.adicionar(ident.IDENT(0).getText(), TipoLA.INVALIDO);
                                             LASemanticoUtils.adicionarErroSemantico(ident.start,
                                                     "tipo " + strTipoVar + " nao declarado");
                                             erro_tipo++;
@@ -100,50 +104,52 @@ public class LASemantico extends LABaseVisitor<Void> {
                 for (LAParser.IdentificadorContext ident : ctx.declaracao_local().variavel().identificador()) {
 
                     // verifica se a variavel ja existe
-                    if (tabela.existe(ident.getText())) {
+                    if (tabela.existe(ident.IDENT(0).getText())) {
                         // arrumar texto
                         LASemanticoUtils.adicionarErroSemantico(ident.start,
-                                "identificador " + ident.getText() + " ja declarado anteriormente");
+                                "identificador " + ident.IDENT(0).getText() + " ja declarado anteriormente");
                     } else {
                         // verificacao do tipo
                         String strTipoVar = ctx.declaracao_local().variavel().tipo().getText();
                         TipoLA tipoVar;
+                        boolean vetor = (ctx.declaracao_local().variavel().identificador(0).dimensao() != null);
+
                         switch (strTipoVar) {
                             case "inteiro":
                                 tipoVar = TipoLA.INTEIRO;
-                                tabela.adicionar(ident.getText(), tipoVar);
+                                tabela.adicionar(ident.IDENT(0).getText(), tipoVar, vetor);
                                 break;
                             case "literal":
                                 tipoVar = TipoLA.LITERAL;
-                                tabela.adicionar(ident.getText(), tipoVar);
+                                tabela.adicionar(ident.IDENT(0).getText(), tipoVar, vetor);
                                 break;
                             case "real":
                                 tipoVar = TipoLA.REAL;
-                                tabela.adicionar(ident.getText(), tipoVar);
+                                tabela.adicionar(ident.IDENT(0).getText(), tipoVar, vetor);
                                 break;
                             case "logico":
                                 tipoVar = TipoLA.LOGICO;
-                                tabela.adicionar(ident.getText(), tipoVar);
+                                tabela.adicionar(ident.IDENT(0).getText(), tipoVar, vetor);
                                 break;
                             default:
                                 if ('^' == strTipoVar.charAt(0)) {
                                     tipoVar = TipoLA.ENDERECO;
-                                    tabela.adicionar(ident.getText(), tipoVar);
+                                    tabela.adicionar(ident.IDENT(0).getText(), tipoVar, vetor);
                                 } else {
                                     // se for um tipo declarado anteriormente (tipo customizado)
                                     if (tabela.existe(strTipoVar)) {
                                         TipoLA tipo_variavel_encontrada = tabela.verificar(strTipoVar);
                                         tipoVar = TipoLA.CUSTOMIZADO;
                                         if (tipo_variavel_encontrada == TipoLA.TIPO) {
-                                            tabela.adicionar(ident.getText(), tipoVar, strTipoVar);
+                                            tabela.adicionar(ident.IDENT(0).getText(), tipoVar, strTipoVar, vetor);
                                         } else {
-                                            tabela.adicionar(ident.getText(), tipoVar, strTipoVar);
+                                            tabela.adicionar(ident.IDENT(0).getText(), tipoVar, strTipoVar, vetor);
                                             LASemanticoUtils.adicionarErroSemantico(ident.start,
                                                     "tipo " + strTipoVar + " nao declarado");
                                         }
                                     } else {
                                         if (erro_tipo == 0) {
-                                            tabela.adicionar(ident.getText(), TipoLA.INVALIDO);
+                                            tabela.adicionar(ident.IDENT(0).getText(), TipoLA.INVALIDO, vetor);
                                             LASemanticoUtils.adicionarErroSemantico(ident.start,
                                                     "tipo " + strTipoVar + " nao declarado");
                                             erro_tipo++;
@@ -220,10 +226,10 @@ public class LASemantico extends LABaseVisitor<Void> {
 
         // talvez precise verificar se e ou nao ponteiro
         for (LAParser.IdentificadorContext ident : ctx.identificador()) {
-            if (!(tabela.existe(ident.getText()))) {
+            if (!(tabela.existe(ident.IDENT(0).getText()))) {
                 // arrumar texto
                 LASemanticoUtils.adicionarErroSemantico(ident.start,
-                        "identificador " + ident.getText() + " nao declarado");
+                        "identificador " + ident.IDENT(0).getText() + " nao declarado");
             }
         }
 
@@ -269,10 +275,10 @@ public class LASemantico extends LABaseVisitor<Void> {
         TipoLA novotipo;
         if (ctx.FUNCAO() != null) {
             novotipo = TipoLA.FUNCAO;
-            tabela.novo_local();
+            tabela.novo_local(false);
         } else {
             novotipo = TipoLA.PROCEDIMENTO;
-            tabela.novo_local();
+            tabela.novo_local(true);
         }
         List<TipoLA> parametros = new Vector<>();
         TipoLA retornoFuncao = TipoLA.INVALIDO;
@@ -424,15 +430,40 @@ public class LASemantico extends LABaseVisitor<Void> {
         }
         TipoLA tipoRecebido = verificarTipo(tabela, ctx.expressao());
 
-        if (tipoAlvo != tipoRecebido) {
+        if (tipoAlvo != tipoRecebido && (tipoAlvo != TipoLA.REAL || tipoRecebido != TipoLA.INTEIRO)) {
 
             System.out.println(tipoAlvo + "    " + tipoRecebido);
-            LASemanticoUtils.adicionarErroSemantico(ctx.start,
+
+            if (tipoAlvo == TipoLA.ENDERECO) {
+                LASemanticoUtils.adicionarErroSemantico(ctx.start,
+                    "atribuicao nao compativel para ^" + ctx.identificador().getText());
+            } else if (tipoAlvo != null) {
+                LASemanticoUtils.adicionarErroSemantico(ctx.start,
                     "atribuicao nao compativel para " + ctx.identificador().getText());
+            }
+            
         }
 
         return super.visitCmdAtribuicao(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
+    @Override
+    public Void visitCmdEnquanto(CmdEnquantoContext ctx) {
+        
+        verificarTipo(tabela, ctx.expressao());
+
+        return super.visitCmdEnquanto(ctx);
+    }
+
+    @Override
+    public Void visitCmdRetorne(CmdRetorneContext ctx) {
+
+        System.out.println("entrou no cmd retorne");
+        
+        if (tabela.isProcedimento()) {
+            LASemanticoUtils.adicionarErroSemantico(ctx.start, "comando retorne nao permitido nesse escopo");
+        }
+
+        return super.visitCmdRetorne(ctx);
+    }
 }
