@@ -171,7 +171,7 @@ public class LASemanticoUtils {
             } else {
                 String nomeVar = ctx.identificador().getText();
 
-                System.out.println(ctx.getText());
+               // System.out.println(ctx.getText());
 
                 TabelaDeSimbolos.TipoLA tipoVar = tabela.verificar(nomeVar);
                 //System.out.println("166 " + ctx.identificador().getText() + "tipoVar = " + tipoVar);
@@ -310,7 +310,7 @@ public class LASemanticoUtils {
     public static TabelaDeSimbolos.TipoLA verificarTipo(TabelaDeSimbolos tabela, LAParser.Exp_relacionalContext ctx) {
         TabelaDeSimbolos.TipoLA tipo1 = verificarTipo(tabela, ctx.exp_aritmetica(0));
 
-        // System.out.println("passou aqui");
+        //// System.out.println("passou aqui");
 
         if (ctx.exp_aritmetica().size() == 1) {      //sem segunda operacao
             return tipo1;

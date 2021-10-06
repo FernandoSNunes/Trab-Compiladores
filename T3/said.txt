@@ -1,4 +1,2 @@
-Linha 11: atribuicao nao compativel para valorTotal
-Linha 16: identificador preco_final nao declarado
-Linha 16: Expressão preco_final<>0 contém tipos incompatíveis id : 11
+Linha 35: comando retorne nao permitido nesse escopo
 Fim da compilacao

@@ -1,32 +1,36 @@
-{ dada uma relação de preços e quantidade relativas a mídias de DVD virgens, calcular o valor total em estoque (em reais) e o preço médio da unidade de DVD; o fim dos dados é indicado por preço e quantidade iguais a zero }
+{ determinar, dados os comprimentos dos lados de um triângulo, se o triângulo pode ser formado (se existe) e qual o tipo dele (equilátero, isósceles ou escaleno) }
 
 algoritmo
 	declare
-		numeroItens, quantidade: inteiro
+		lado1, lado2, lado3: real
 	declare
-		preco, valorTotal, somaUnitarios: real
+		existeTriangulo,
+		ehEquilatero, ehIsosceles, ehEscaleno: logico
 
-	{ valores iniciais dos contadores }
-	numeroItens <- 0
-	valorTotal <- 0 + "NADA"
-	somaUnitarios <- 0
+	{ leitura dos comprimentos dos lados }
+	escreva("Lado 1: ")
+	leia(lado1)
+	escreva("Lado 2: ")
+	leia(lado2)
+	escreva("Lado 3: ")
+	leia(lado3)
 
-	{ leitura dos dados }
-	leia(preco, quantidade)
-	enquanto preco_final <> 0 e quantidade <> 0 faca
-		{ conta e acumula }
-		numeroItens <- numeroItens + 1
-		valorTotal <- valorTotal + preco * quantidade
-		somaUnitarios <- somaUnitarios + preco
-		{ obtém o próximo item }
-		leia(preco, quantidade)
-	fim_enquanto
+	{ verificações necessárias }
+	existeTriangulo <- lado1 < lado2 + lado3 e
+				lado2 < lado1 + lado3 e
+				lado3 < lado1 + lado2
+	
+	ehEquilatero <- existeTriangulo e lado1 = lado2 e lado2 = lado3
+
+	ehIsosceles <- existeTriangulo e nao ehEquilatero e
+			(lado1 = lado2 ou lado2 = lado3 ou lado1 = lado3)
+
+	ehEscaleno <- existeTriangulo e nao ehEquilatero e nao ehIsosceles
 
 	{ resultados }
-	escreva("Valor total: R$", valorTotal)
-	se numeroItens = 0 entao
-		escreva("Nao eh possivel calcular o preco medio unitario")
-	senao
-		escreva("Valor unitario medio: R$", 1.0 * somaUnitarios/numeroItens)
-	fim_se
+	escreva("Triangulo existe? ", existeTriangulo)
+	escreva("Eh equilatero? ", ehEquilatero)
+	escreva("Eh isosceles? ", ehIsosceles)
+	escreva("Eh escaleno? ", ehEscaleno)
+   retorne "FIM"
 fim_algoritmo
