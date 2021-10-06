@@ -1,22 +1,2 @@
-Linha 13: identificador valor1 nao declarado
-Linha 13: identificador racional.numerador nao declarado
-Linha 14: identificador valor2 nao declarado
-Linha 14: identificador racional.denominador nao declarado
-Linha 16: identificador resto nao declarado
-Linha 16: identificador valor1 nao declarado
-Linha 16: identificador valor2 nao declarado
-Linha 16: Expressão valor1%valor2 contém tipos incompatíveis id : 6
-Linha 17: identificador valor1 nao declarado
-Linha 17: identificador valor2 nao declarado
-Linha 18: identificador valor2 nao declarado
-Linha 18: identificador resto nao declarado
-Linha 22: identificador racional.numerador nao declarado
-Linha 22: identificador racional.numerador nao declarado
-Linha 22: identificador valor1 nao declarado
-Linha 22: Expressão racional.numerador/valor1 contém tipos incompatíveis id : 4
-Linha 23: identificador racional.denominador nao declarado
-Linha 23: identificador racional.denominador nao declarado
-Linha 23: identificador valor1 nao declarado
-Linha 23: Expressão racional.denominador/valor1 contém tipos incompatíveis id : 4
-Linha 29: identificador simplifiqueRacional ja declarado anteriormente
+Linha 49: comando retorne nao permitido nesse escopo
 Fim da compilacao

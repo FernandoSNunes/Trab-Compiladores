@@ -79,14 +79,6 @@ public class TabelaDeSimbolos {
         this.tabela_local = null;
     }
 
-    public void adicionar(String nome, TipoLA tipo) {
-        tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, ""));
-    }
-
-    public void adicionar(String nome, TipoLA tipo, boolean vetor) {
-        tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, vetor));
-    }
-
     public void adicionar_funcproc(String nome, TipoLA tipo, List<TipoLA> tipos, TipoLA retornoFuncao) {
         tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, tipos, retornoFuncao));
     }
@@ -107,13 +99,9 @@ public class TabelaDeSimbolos {
         return null;
     }
 
-    public void adicionar(String nome, TipoLA tipo, String tipo_customizado) {
-        tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, tipo_customizado));
-    }
 
-    public void adicionar(String nome, TipoLA tipo, String tipo_customizado, boolean vetor) {
-        tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, tipo_customizado, vetor));
-    }
+
+   
 
     public void novo_local(boolean isProcedimento) {
         this.tabela_local = new HashMap<>();
@@ -183,16 +171,32 @@ public class TabelaDeSimbolos {
             return tabela.containsKey(nome);
         }
     }
-
-    public void adicionar_local(String nome, TipoLA tipo) {
-        tabela_local.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, ""));
+    
+        public void adicionar(String nome, TipoLA tipo, String tipo_customizado) {
+            if (tabela_local == null)
+            tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, ""));
+        else
+        tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, tipo_customizado));
     }
 
-    public void adicionar_local(String nome, TipoLA tipo, String tipo_customizado, boolean vetor) {
+    public void adicionar(String nome, TipoLA tipo) {
+        if (tabela_local == null)
+            tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, ""));
+        else
+            tabela_local.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, ""));
+    }
+
+    public void adicionar(String nome, TipoLA tipo, String tipo_customizado, boolean vetor) {
+        if (tabela_local == null)
+            tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, tipo_customizado, vetor));
+        else
         tabela_local.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, tipo_customizado, vetor));
     }
 
-    public void adicionar_local(String nome, TipoLA tipo, boolean vetor) {
+    public void adicionar(String nome, TipoLA tipo, boolean vetor) {
+        if (tabela_local == null)
+            tabela.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, vetor));
+        else
         tabela_local.put(nome, new EntradaTabelaDeSimbolos(nome, tipo, vetor));
     }
 

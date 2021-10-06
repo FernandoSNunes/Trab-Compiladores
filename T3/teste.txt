@@ -1,60 +1,97 @@
-{ a partir de dois números racionais, calcular e apresentar a soma e a multiplicação de ambos }
+{ obter, para uma relação de dados sobre vinhos, o vinho de maior venda e a lista de todos os vinhos que tenham venda abaixo da média geral do grupo }
 
-{ definição do tipo }
-tipo tRacional: registro
-			numerador, denominador: inteiro
-		fim_registro
+constante maximoElementos: inteiro = 300
 
-procedimento simplifiqueRacional(var racional: tRacional)
-{ modifica um racional para que fique na forma mais simples }
-	declare valor1, valor2, resto: inteiro
+tipo tVinho: registro
+		nome,
+		nomeFabricante,
+		nomeDistribuidor,
+		tipoVinho: literal
+		anoSafra,
+		anoEnvasamento: inteiro
+		preco: real
+		unidades: inteiro
+	fim_registro
 
-	{ cálculo do MDC }
-	valor1 <- racional.numerador
-	valor2 <- racional.denominador
-	faca
-		resto <- valor1 % valor2
-		valor1 <- valor2
-		valor2 <- resto
-	ate resto = 0 	{ resultado do MDC fica em valor1 }
+procedimento leiaVinho(var vinho: tVinho)
+{ leitura de um registro de vinho }
 
-	{ simplificação da razão }
-	racional.numerador <- racional.numerador/valor1
-	racional.denominador <- racional.denominador/valor1
+	escreva("Nome do vinho: ")
+	leia(vinho.nome)
+	escreva("Nome do fabricante: ")
+	leia(vinho.nomeFabricante)
+	escreva("Nome do distribuidor: ")
+	leia(vinho.nomeDistribuidor)
+	escreva("Tipo do vinho (R, T, B): ")
+	leia(vinho.tipoVinho)
+	escreva("Ano da safra: ")
+	leia(vinho.anoSafra)
+	escreva("Ano do envasamento: ")
+	leia(vinho.anoEnvasamento)
+	escreva("Preco da garrafa: ")
+	leia(vinho.preco)
+	escreva("Numero de garrafas: ")
+	leia(vinho.unidades)
 
 fim_procedimento
 
+procedimento escrevaVinho(vinho: tVinho)
+{ escrita de um registro de vinho }
+
+	escreva("Nome do vinho: ", vinho.nome)
+	escreva("Nome do fabricante: ", vinho.nomeFabricante)
+	escreva("Nome do distribuidor: ", vinho.nomeDistribuidor)
+	escreva("Tipo do vinho (R, T, B): ", vinho.tipoVinho)
+	escreva("Ano da safra: ", vinho.anoSafra)
+	escreva("Ano do envasamento: ", vinho.anoEnvasamento)
+	escreva("Preco da garrafa: ", vinho.preco)
+	escreva("Numero de garrafas: ", vinho.unidades)
+	retorne vinho.nome
+fim_procedimento
+
+funcao calculeVendas(vinho: tVinho): real
+{ retorna o produto do preço pelo número de unidades vendidas }
+
+	retorne vinho.unidades * vinho.preco
+fim_funcao
+
+{ parte principal do algoritmo }
 algoritmo
-	declare numero1, numero2, resultado: tRacional
-	declare simplifiqueRacional: inteiro
+	declare
+		i, numeroItens: inteiro
+	declare
+		somaVendas, maiorVenda, mediaVinhos: real
+	declare
+		vinho[maximoElementos]: tVinho
 
-	{ obtenção dos números }
-	escreva("Numerador do primeiro racional: ")
-	leia(numero1.numerador)
-	escreva("Denominador do primeiro racional: ")
-	leia(numero1.denominador)
-	escreva("Numerador do segundo racional: ")
-	leia(numero2.numerador)
-	escreva("Denominador do segundo racional: ")
-	leia(numero2.denominador)
+	{ leitura da relação de dados e cálculo da média e da maior venda }
+	escreva("Digite o numero de itens: ")
+	leia(numeroItens)
+	somaVendas <- 0
+	maiorVenda <- -1
+	para i <- 0 ate numeroItens - 1 faca
+		{ assume-se maior ou igual a 1 }
+		leiaVinho(vinho[i])
+		somaVendas <- somaVendas + calculeVendas(vinho[i])
+		se calculeVendas(vinho[i]) > maiorVenda entao
+			maiorVenda <- calculeVendas(vinho[i])
+		fim_se
+	fim_para
+	mediaVinhos <- somaVendas/numeroItens
 
-	{ cálculo da soma }
-	resultado.numerador <- numero1.numerador * numero2.denominador +
-				numero1.denominador * numero2.numerador
+	{ apresentação da melhor venda }
+	escreva("Vinhos com melhor venda: ")
+	para i <- 0 ate numeroItens - 1 faca
+		se calculeVendas(vinho[i]) = maiorVenda entao
+			escrevaVinho(vinho[i])
+		fim_se
+	fim_para
 
-	resultado.denominador <- numero1.denominador * numero2.denominador 
-
-	simplifiqueRacional(resultado)
-
-	{ escrita da soma }
-	escreva(resultado.numerador, "/", resultado.denominador)
-
-	{ cálculo do produto }
-	resultado.numerador <- numero1.numerador * numero2.numerador
-	resultado.denominador <- numero1.denominador * numero2.denominador
-
-	simplifiqueRacional(resultado)
-
-	{ escrita do produto }
-	escreva(resultado.numerador, "/", resultado.denominador)
+	{ apresentação dos vinhos abaixo da média calculada }
+	escreva("Vinhos abaixo da media: ")
+	para i <- 0 ate numeroItens - 1 faca
+		se calculeVendas(vinho[i]) < mediaVinhos entao
+			escrevaVinho(vinho[i])
+		fim_se
+	fim_para
 fim_algoritmo
