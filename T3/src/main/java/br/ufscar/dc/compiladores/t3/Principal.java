@@ -90,7 +90,21 @@ public class Principal {
                     hasErrosSemanticos = hasErrosSemanticos(args, pw);
 
                     if (!hasErrosSemanticos) {
-                        // gerar código C
+                        CharStream cs = CharStreams.fromFileName(args[0]);
+                        LALexer lexer = new LALexer(cs);
+                        CommonTokenStream tokens = new CommonTokenStream(lexer);
+                        LAParser parser = new LAParser(tokens);
+                        ProgramaContext arvore = parser.programa();
+                        LASemantico as = new LASemantico();
+                        as.visitPrograma(arvore);
+                        LAGeradorC lagc = new LAGeradorC();
+                        lagc.visitPrograma(arvore);
+                        try{
+                            pw.print(lagc.saida.toString());
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
