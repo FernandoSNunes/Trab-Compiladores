@@ -20,11 +20,9 @@ NUM_INT	: ('0'..'9')+
 NUM_REAL	: ('0'..'9')+ ('.' ('0'..'9')+)?
     ;
 
-CADEIA 	: '"' ( ESC_SEQ | ~('"'|'\\'|'\n') )* '"'
+CADEIA 	: '"' ( ~('"'|'\r'|'\n') )* '"'
     ;
-fragment /*parte da cadeia, permite o uso de aspas duplas dentro de uma cadeia usando \" */
-ESC_SEQ	: '\\"'
-    ;   
+
 
 ERRO_CADEIA : 
     '"' | '"' /*por algum motivo, se tiver apenas uma coisa o Lexers.VOCABULARY.getDisplayName(t.getType()) retorna o '{' ao inves de ERRO_CADEIA */
