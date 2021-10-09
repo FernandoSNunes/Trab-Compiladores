@@ -1708,6 +1708,9 @@ public class LAParser extends Parser {
 	}
 
 	public static class CmdSeContext extends ParserRuleContext {
+		public CmdContext cmd;
+		public List<CmdContext> faca = new ArrayList<CmdContext>();
+		public List<CmdContext> senao = new ArrayList<CmdContext>();
 		public ExpressaoContext expressao() {
 			return getRuleContext(ExpressaoContext.class,0);
 		}
@@ -1756,7 +1759,8 @@ public class LAParser extends Parser {
 				{
 				{
 				setState(311);
-				cmd();
+				((CmdSeContext)_localctx).cmd = cmd();
+				((CmdSeContext)_localctx).faca.add(((CmdSeContext)_localctx).cmd);
 				}
 				}
 				setState(316);
@@ -1777,7 +1781,8 @@ public class LAParser extends Parser {
 					{
 					{
 					setState(318);
-					cmd();
+					((CmdSeContext)_localctx).cmd = cmd();
+					((CmdSeContext)_localctx).senao.add(((CmdSeContext)_localctx).cmd);
 					}
 					}
 					setState(323);
