@@ -30,8 +30,10 @@ ERRO_CADEIA :
 
 OP_REL	:	'>' | '>=' | '<' | '<=' | '<>' | '='
 	;
-OP_COMPR:  'e' | 'ou' | 'nao' | '&'
-    ;
+OP_COMPR:  'e' | 'ou'  | '&'
+        ;
+OP_NAO: 'nao'
+        ;
 OP_ARIT :	'+' | '-' | '*' | '/'
 	;
 DELIM	:	':'
@@ -193,10 +195,12 @@ expressao:      termo_logico (op_logico_1 termo_logico)*;
 
 termo_logico:       fator_logico (op_logico_2 fator_logico)*;
 
-fator_logico:       ('nao')? parcela_logica;
+fator_logico:       (OP_NAO)? parcela_logica;
 
-parcela_logica:     ('verdadeiro' | 'falso')
+parcela_logica:     OP_bool
                     | exp_relacional;
+
+OP_bool:            'verdadeiro' | 'falso';
 
 op_logico_1:        'ou';
 

@@ -6,7 +6,6 @@ br\ufscar\dc\compiladores\t3\LAParser$CmdParaContext.class
 br\ufscar\dc\compiladores\t3\LAParser$Fator_logicoContext.class
 br\ufscar\dc\compiladores\t3\LAParser$Op_logico_1Context.class
 br\ufscar\dc\compiladores\t3\LAParser$Parcela_nao_unarioContext.class
-br\ufscar\dc\compiladores\t3\LALexer.class
 br\ufscar\dc\compiladores\t3\LAParser$CmdChamadaContext.class
 br\ufscar\dc\compiladores\t3\LASemanticoUtils.class
 br\ufscar\dc\compiladores\t3\LAParser$RegistroContext.class
@@ -54,14 +53,12 @@ br\ufscar\dc\compiladores\t3\LAParser$Termo_logicoContext.class
 br\ufscar\dc\compiladores\t3\LASemantico.class
 br\ufscar\dc\compiladores\t3\LAParser$ConstantesContext.class
 br\ufscar\dc\compiladores\t3\LABaseListener.class
-br\ufscar\dc\compiladores\t3\LAGeradorC.class
 br\ufscar\dc\compiladores\t3\LAParser$IdentificadorContext.class
 br\ufscar\dc\compiladores\t3\LAParser$Tipo_basico_identContext.class
 br\ufscar\dc\compiladores\t3\LAParser$ParametroContext.class
 br\ufscar\dc\compiladores\t3\Principal.class
 br\ufscar\dc\compiladores\t3\LAParser$DimensaoContext.class
 br\ufscar\dc\compiladores\t3\LAParser$CmdFacaContext.class
-br\ufscar\dc\compiladores\t3\LAGeradorC$1.class
 br\ufscar\dc\compiladores\t3\LAParser$CmdCasoContext.class
 br\ufscar\dc\compiladores\t3\LAParser$TermoContext.class
 br\ufscar\dc\compiladores\t3\LAParser$CmdEnquantoContext.class

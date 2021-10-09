@@ -298,71 +298,20 @@ public class LAGeradorC extends LABaseVisitor<Void> {
 
     @Override
     public Void visitCmdSe(LAParser.CmdSeContext ctx) {
-//        saida.append("if (");
-
-//        String VetorSemOU[] = ctx.expressao().getText().split("ou");
-//        String TextoLimpo = VetorSemOU[0];
-//        System.out.println(ctx.expressao().getText());
-//        for (int i = 1; i < VetorSemOU.length; i++) {
-//            if (TextoLimpo.charAt(TextoLimpo.length() - 1) == ' ' || VetorSemOU[1].charAt(0) == ' ') {
-//                TextoLimpo += "ou";
-//            } else {
-//                TextoLimpo += " || ";
-//            }
-//            TextoLimpo += VetorSemOU[i];
-//        }
-//
-//        String VetorSemE[] = TextoLimpo.split("e");
-//        TextoLimpo = VetorSemE[0];
-//        for (int i = 1; i < VetorSemE.length; i++) {
-//            if (TextoLimpo.charAt(TextoLimpo.length() - 1) == ' ' || VetorSemOU[1].charAt(0) == ' ') {
-//                TextoLimpo += "ou";
-//            } else {
-//                TextoLimpo += " && ";
-//            }
-//            TextoLimpo += VetorSemE[i];
-//        }
-//
-//        String VetorSemNao[] = TextoLimpo.split("nao");
-//        TextoLimpo = VetorSemNao[0];
-//        for (int i = 1; i < VetorSemNao.length; i++) {
-//            if (TextoLimpo.charAt(TextoLimpo.length() - 1) == ' ' || VetorSemOU[1].charAt(0) == ' ') {
-//                TextoLimpo += "ou";
-//            } else {
-//                TextoLimpo += " ! ";
-//            }
-//            TextoLimpo += VetorSemNao[i];
-//        }
-//
-//        String VetorSemIgual[] = TextoLimpo.split("=");
-//        TextoLimpo = VetorSemIgual[0];
-//        for (int i = 1; i < VetorSemIgual.length; i++) {
-//            if (TextoLimpo.charAt(TextoLimpo.length() - 1) == '>' || TextoLimpo.charAt(TextoLimpo.length() - 1) == '<') {
-//                TextoLimpo += "=";
-//            } else {
-//                TextoLimpo += " == ";
-//            }
-//            TextoLimpo += VetorSemIgual[i];
-//        }
-//
-//        String VetorSemDiferente[] = TextoLimpo.split("<>");
-//        TextoLimpo = VetorSemDiferente[0];
-//        for (int i = 1; i < VetorSemDiferente.length; i++) {
-//            TextoLimpo += " != ";
-//            TextoLimpo += VetorSemDiferente[i];
-//        }
-//        saida.append(TextoLimpo + "){\n");
-//        for (LAParser.CmdContext cmd : ctx.faca) {
-//            visitCmd(cmd);
-//        }
-//        saida.append("}\n");
-//        if (!ctx.senao.isEmpty()) {      //else
-//            saida.append("else{\n");
-//            for (LAParser.CmdContext cmd : ctx.senao) {
-//                visitCmd(cmd);
-//            }
-//            saida.append("}\n");
-//        }
+        saida.append("if (");
+        saida.append (LAGeradorCUtils.imprimirConteudo(ctx.expressao()) + "){\n");
+        
+        for (LAParser.CmdContext cmd : ctx.faca) {
+            visitCmd(cmd);
+        }
+        saida.append("}\n");
+        if (!ctx.senao.isEmpty()) {      //else
+            saida.append("else{\n");
+            for (LAParser.CmdContext cmd : ctx.senao) {
+                visitCmd(cmd);
+            }
+            saida.append("}\n");
+        }
 
         return null;
     }
