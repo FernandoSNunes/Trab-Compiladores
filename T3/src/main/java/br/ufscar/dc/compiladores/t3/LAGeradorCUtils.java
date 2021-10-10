@@ -226,7 +226,7 @@ public class LAGeradorCUtils {
         for (int i = 0; i < ctx.fator().size(); i++) {
 
             if (i != 0) {
-                retorno += (" " + ctx.op2(i - 1) + " ");
+                retorno += (" " + ctx.op2(i - 1).getText() + " ");
             }
             retorno += imprimirConteudo(ctx.fator(i));
 

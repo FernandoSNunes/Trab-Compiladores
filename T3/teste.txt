@@ -1,7 +1,7 @@
-procedimento proc_imprime(mensagem: literal)
-  escreva(mensagem,"\n")
-fim_procedimento
+funcao dobro(x: inteiro): inteiro
+  retorne 2*x
+fim_funcao
 
 algoritmo
-  proc_imprime("teste")
+  escreva(dobro(4))
 fim_algoritmo

@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-void proc_imprime(char* mensagem){
-printf("%s\n", mensagem);
+int dobro(int x){
+return 2  * x;
 }
 int main(){
-proc_imprime("teste");
+printf("%d", dobro(4));
 return 0;
 }
