@@ -197,7 +197,8 @@ termo_logico:       fator_logico (op_logico_2 fator_logico)*;
 
 fator_logico:       (OP_NAO)? parcela_logica;
 
-parcela_logica:     OP_bool
+parcela_logica:     ('verdadeiro' | 'falso')
+                    | OP_bool
                     | exp_relacional;
 
 OP_bool:            'verdadeiro' | 'falso';
