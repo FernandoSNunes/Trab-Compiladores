@@ -484,7 +484,7 @@ public class LASemantico extends LABaseVisitor<Void> {
         }
         TipoLA tipoRecebido = verificarTipo(tabela, ctx.expressao());
 
-        if (tipoAlvo != tipoRecebido && (tipoAlvo != TipoLA.REAL || tipoRecebido != TipoLA.INTEIRO)) {
+        if (tipoAlvo != tipoRecebido && (tipoAlvo != TipoLA.REAL || tipoRecebido != TipoLA.INTEIRO) && (tipoAlvo != TipoLA.ENDERECO || tipoRecebido != TipoLA.INTEIRO)) {
 
             //System.out.println(tipoAlvo + "    " + tipoRecebido);
             if (tipoAlvo == TipoLA.ENDERECO) {

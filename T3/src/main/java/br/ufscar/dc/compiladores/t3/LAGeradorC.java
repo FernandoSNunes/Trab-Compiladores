@@ -38,21 +38,26 @@ public class LAGeradorC extends LABaseVisitor<Void> {
 
     @Override
     public Void visitDecl_local_global(LAParser.Decl_local_globalContext ctx) {
-        String nomeVar = ctx.declaracao_local().variavel().identificador(0).IDENT(0).getText();
-        String tipoVar = ctx.declaracao_local().variavel().tipo().getText();
-        switch (tipoVar) {
-            case "inteiro":
-                tipoVar = "int";
-                break;
-            case "real":
-                tipoVar = "float";
-                break;
-            case "literal":
-                tipoVar = "char[500]";
-                break;
+        if (ctx.declaracao_global() != null) {
+            visitDeclaracao_global(ctx.declaracao_global());
+        } else {
+            visitDeclaracao_local(ctx.declaracao_local());
         }
-
-        saida.append(tipoVar + " " + nomeVar + ";\n");
+//        String nomeVar = ctx.declaracao_local().variavel().identificador(0).IDENT(0).getText();
+//        String tipoVar = ctx.declaracao_local().variavel().tipo().getText();
+//        switch (tipoVar) {
+//            case "inteiro":
+//                tipoVar = "int";
+//                break;
+//            case "real":
+//                tipoVar = "float";
+//                break;
+//            case "literal":
+//                tipoVar = "char[500]";
+//                break;
+//        }
+//
+//        saida.append(tipoVar + " " + nomeVar + ";\n");
         return null;
     }
 
@@ -165,13 +170,18 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                     String strTipoVar = ctx.variavel().tipo().getText();
                     TabelaDeSimbolos.TipoLA tipoVar;
                     boolean vetor = (ctx.variavel().identificador(0).dimensao() != null);
+                    String ponteiro = "";
+                    if (strTipoVar.charAt(0) == '^') {
+                        ponteiro = "*";
+                        strTipoVar = strTipoVar.substring(1);
+                    }
 
                     switch (strTipoVar) {
                         case "inteiro":
                             tipoVar = TabelaDeSimbolos.TipoLA.INTEIRO;
                             tabela.adicionar(ident.IDENT(0).getText(), tipoVar, vetor);
                             if (cont == 0) {
-                                saida.append("int " + ident.getText());
+                                saida.append("int" + ponteiro + " " + ident.getText());
                                 cont++;
                             } else {
                                 saida.append(", " + ident.getText());
@@ -181,17 +191,17 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                             tipoVar = TabelaDeSimbolos.TipoLA.LITERAL;
                             tabela.adicionar(ident.IDENT(0).getText(), tipoVar, vetor);
                             if (cont == 0) {
-                                saida.append("char " + ident.getText() +  "[500]");
+                                saida.append("char " + ident.getText() + "[500]");
                                 cont++;
                             } else {
-                                saida.append(", " + ident.getText() +  "[500]");
+                                saida.append(", " + ident.getText() + "[500]");
                             }
                             break;
                         case "real":
                             tipoVar = TabelaDeSimbolos.TipoLA.REAL;
                             tabela.adicionar(ident.IDENT(0).getText(), tipoVar, vetor);
                             if (cont == 0) {
-                                saida.append("float " + ident.getText());
+                                saida.append("float" + ponteiro + " " + ident.getText());
                                 cont++;
                             } else {
                                 saida.append(", " + ident.getText());
@@ -201,83 +211,39 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                             tipoVar = TabelaDeSimbolos.TipoLA.LOGICO;
                             tabela.adicionar(ident.IDENT(0).getText(), tipoVar, vetor);
                             if (cont == 0) {
-                                saida.append("bool " + ident.getText());
+                                saida.append("bool" + ponteiro + " " + ident.getText());
                                 cont++;
                             } else {
                                 saida.append(", " + ident.getText());
                             }
                             break;
                         default:
-                            if ('^' == strTipoVar.charAt(0)) {
-                                tipoVar = TabelaDeSimbolos.TipoLA.ENDERECO;
-                                tabela.adicionar(ident.getText(), tipoVar, vetor);
-                            } else {
-                                // se for um tipo declarado anteriormente (tipo customizado)
-                                tipoVar = TabelaDeSimbolos.TipoLA.CUSTOMIZADO;
-                                tabela.adicionar(ident.IDENT(0).getText(), tipoVar, strTipoVar, vetor);
-                                if (cont == 0) {
-                                    saida.append(strTipoVar + " " + ident.getText());
-                                    cont++;
-                                } else {
-                                    saida.append(", " + ident.getText());
-                                }
 
+                            // se for um tipo declarado anteriormente (tipo customizado)
+                            tipoVar = TabelaDeSimbolos.TipoLA.CUSTOMIZADO;
+                            tabela.adicionar(ident.IDENT(0).getText(), tipoVar, strTipoVar, vetor);
+                            if (cont == 0) {
+                                saida.append(strTipoVar + " " + ident.getText());
+                                cont++;
+                            } else {
+                                saida.append(", " + ident.getText());
                             }
+
                             break;
                     }
                 }
 
             }
-            
-                    saida.append(";\n");
+
+            saida.append(";\n");
         } else {
             //declaracao de constante global
             if (ctx.valor_constante() != null) {
-
+                saida.append("#define ");
                 LAParser.Declaracao_localContext dl = ctx;
                 String nome_const = dl.IDENT().getText();
-                // verificacao do tipo
-                String strTipoVar = dl.tipo_basico().getText();
-                TabelaDeSimbolos.TipoLA tipoVar;
-                switch (strTipoVar) {
-                    case "inteiro":
-                        tipoVar = TabelaDeSimbolos.TipoLA.INTEIRO;
-                        tabela.adicionar(nome_const, TabelaDeSimbolos.TipoLA.CONSTANTE, tipoVar.toString());
-                        break;
-                    case "literal":
-                        tipoVar = TabelaDeSimbolos.TipoLA.LITERAL;
-                        tabela.adicionar(nome_const, TabelaDeSimbolos.TipoLA.CONSTANTE, tipoVar.toString());
-                        break;
-                    case "real":
-                        tipoVar = TabelaDeSimbolos.TipoLA.REAL;
-                        tabela.adicionar(nome_const, TabelaDeSimbolos.TipoLA.CONSTANTE, tipoVar.toString());
-                        break;
-                    case "logico":
-                        tipoVar = TabelaDeSimbolos.TipoLA.LOGICO;
-                        tabela.adicionar(nome_const, TabelaDeSimbolos.TipoLA.CONSTANTE, tipoVar.toString());
-                        break;
-                    default:
-                        if ('^' == strTipoVar.charAt(0)) {
-                            tipoVar = TabelaDeSimbolos.TipoLA.ENDERECO;
-                            tabela.adicionar(nome_const, TabelaDeSimbolos.TipoLA.CONSTANTE, tipoVar.toString());
-                        } else {
-                            // se for um tipo declarado anteriormente (tipo customizado)
-                            if (tabela.existe(strTipoVar)) {
-                                TabelaDeSimbolos.TipoLA tipo_variavel_encontrada = tabela.verificar(strTipoVar);
-                                //tipoVar = TipoLA.CUSTOMIZADO;     //deixa de ser usado pois o tipo constante aproveita o campo
-                                if (tipo_variavel_encontrada == TabelaDeSimbolos.TipoLA.TIPO) {
-                                    tabela.adicionar(nome_const, TabelaDeSimbolos.TipoLA.CONSTANTE, strTipoVar);
-                                } else {
-                                    LASemanticoUtils.adicionarErroSemantico(dl.start,
-                                            "tipo " + strTipoVar + " nao declarado");
-                                }
-                            } else {
-                                LASemanticoUtils.adicionarErroSemantico(dl.start,
-                                        "tipo " + strTipoVar + " nao declarado");
-                            }
-                        }
-                        break;
-                }
+                saida.append(nome_const + " " + dl.valor_constante().getText() + "\n");
+
             } else {          //declaracao de tipo
 
                 if (ctx.tipo().registro() != null) {
@@ -309,7 +275,7 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                                     tipoVarInterna = TabelaDeSimbolos.TipoLA.LITERAL;
                                     tabelaInterna.adicionar(nomeVarInterna, tipoVarInterna, vetor);
                                     if (cont2 == 0) {
-                                        saida.append("char[500] " + nomeVarInterna);
+                                        saida.append("char " + nomeVarInterna + "[500]");
                                         cont2++;
                                     } else {
                                         saida.append(", " + nomeVarInterna);
@@ -462,6 +428,8 @@ public class LAGeradorC extends LABaseVisitor<Void> {
 
     @Override
     public Void visitCmdAtribuicao(LAParser.CmdAtribuicaoContext ctx) {
+        if (ctx.getText().charAt(0) == '^')
+            saida.append("*");
         saida.append(ctx.identificador().getText() + " = ");
         saida.append(LAGeradorCUtils.imprimirConteudo(ctx.expressao()) + ";\n");
         return null;
@@ -473,7 +441,7 @@ public class LAGeradorC extends LABaseVisitor<Void> {
         for (LAParser.CmdContext ident : ctx.cmd()) {
             visitCmd(ident);
         }
-        saida.append("while(");
+        saida.append("}while(");
         saida.append(LAGeradorCUtils.imprimirConteudo(ctx.expressao()));
         saida.append(");\n");
 
