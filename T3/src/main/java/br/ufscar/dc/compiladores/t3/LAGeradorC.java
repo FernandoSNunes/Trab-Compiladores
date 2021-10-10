@@ -409,10 +409,9 @@ public class LAGeradorC extends LABaseVisitor<Void> {
             visitCmdFaca(ctx.cmdFaca());
         } else if (ctx.cmdRetorne() != null) {
             visitCmdRetorne(ctx.cmdRetorne());
-        } else if(ctx.cmdCaso() != null){
+        } else if (ctx.cmdCaso() != null) {
             visitCmdCaso(ctx.cmdCaso());
-        }
-        else{
+        } else {
             System.out.println("FALTA CHAMAR OU IMPLEMENTAR ESSE METODO SEU VAGABUNDO");
         }
         return null;
@@ -483,58 +482,51 @@ public class LAGeradorC extends LABaseVisitor<Void> {
     @Override
     public Void visitCmdCaso(LAParser.CmdCasoContext ctx) {
         saida.append("switch(" + LAGeradorCUtils.imprimirConteudo(ctx.exp_aritmetica()) + "){");
-        
-        for (LAParser.Item_selecaoContext ident : ctx.selecao().item_selecao()){
+
+        for (LAParser.Item_selecaoContext ident : ctx.selecao().item_selecao()) {
             visitSelecao(ident);
-            for (LAParser.CmdContext ident2 : ident.cmd()){
+            for (LAParser.CmdContext ident2 : ident.cmd()) {
                 visitCmd(ident2);
             }
             saida.append("break;\n");
         }
-        
-        if(ctx.getText().contains("senao")){
+
+        if (ctx.getText().contains("senao")) {
             saida.append("defaut:\n");
-            for (LAParser.CmdContext ident : ctx.cmd()){
+            for (LAParser.CmdContext ident : ctx.cmd()) {
                 visitCmd(ident);
             }
         }
-        
+
         saida.append("}");
         return null;
     }
 
     public Void visitSelecao(LAParser.Item_selecaoContext ctx) {
-        
-        for (LAParser.Numero_intervaloContext ident : ctx.constantes().numero_intervalo()){
+
+        for (LAParser.Numero_intervaloContext ident : ctx.constantes().numero_intervalo()) {
             int i = Integer.parseInt(ident.NUM_INT(0).getText());
             int fim = 0;
             //System.out.println("AAAA" + i + "AAAA");
-            if(ident.NUM_INT(1) != null){
+            if (ident.NUM_INT(1) != null) {
                 fim = Integer.parseInt(ident.NUM_INT(1).getText());
-                
-                while(i < fim){
-                    saida.append("case" + i + ":\n");
+
+                while (i < fim) {
+                    saida.append("case " + i + ":\n");
                     i++;
                 }
-            }
-            else{
+            } else {
                 saida.append("case " + i + ":\n");
             }
-            
-            
+
         }
-        
+
         TerminalNode aux = ctx.constantes().numero_intervalo(0).NUM_INT(1);
-        if(aux == null){
-            saida.append("case " + ctx.constantes().numero_intervalo(0).NUM_INT(0) + ":\n");
-        }
-        else{
+        if (aux != null) {
             saida.append("case " + ctx.constantes().numero_intervalo(0).NUM_INT(1) + ":\n");
         }
-        
-        
+
         return null;
     }
-    
-    
+
 }
