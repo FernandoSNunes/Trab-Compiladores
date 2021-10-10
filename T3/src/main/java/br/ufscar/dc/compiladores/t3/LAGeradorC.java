@@ -181,10 +181,10 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                             tipoVar = TabelaDeSimbolos.TipoLA.LITERAL;
                             tabela.adicionar(ident.IDENT(0).getText(), tipoVar, vetor);
                             if (cont == 0) {
-                                saida.append("char[500] " + ident.getText());
+                                saida.append("char " + ident.getText() +  "[500]");
                                 cont++;
                             } else {
-                                saida.append(", " + ident.getText());
+                                saida.append(", " + ident.getText() +  "[500]");
                             }
                             break;
                         case "real":
