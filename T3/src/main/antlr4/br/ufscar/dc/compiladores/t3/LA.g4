@@ -137,7 +137,7 @@ cmdSe:      'se' expressao 'entao' (faca+=cmd)* ('senao' (senao+=cmd)*)? 'fim_se
 
 cmdCaso:        'caso' exp_aritmetica 'seja' selecao ('senao' (cmd)*)? 'fim_caso';
 
-cmdPara:        'para' IDENT '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' (cmd)* 'fim_para';
+cmdPara:        'para' IDENT '<-' exp1=exp_aritmetica 'ate' exp2=exp_aritmetica 'faca' (cmd)* 'fim_para';
 
 cmdEnquanto:        'enquanto' expressao 'faca' (cmd)* 'fim_enquanto';
 

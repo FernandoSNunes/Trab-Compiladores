@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 int main(){
-struct {
-char nome[500];
-int idade;
-}reg;
-strcpy(reg.nome, "Maria");
-reg.idade = 24 ;
-printf("%s tem %d anos", reg.nome, reg.idade);
+int vetor[5];
+int i;
+for(i = 0 ;i <= 4;i++){
+vetor[i] = i + 1 ;
+}printf("%d", vetor[0]);
 return 0;
 }

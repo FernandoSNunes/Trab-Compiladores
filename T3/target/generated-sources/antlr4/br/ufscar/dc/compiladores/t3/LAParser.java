@@ -1893,6 +1893,8 @@ public class LAParser extends Parser {
 	}
 
 	public static class CmdParaContext extends ParserRuleContext {
+		public Exp_aritmeticaContext exp1;
+		public Exp_aritmeticaContext exp2;
 		public TerminalNode IDENT() { return getToken(LAParser.IDENT, 0); }
 		public List<Exp_aritmeticaContext> exp_aritmetica() {
 			return getRuleContexts(Exp_aritmeticaContext.class);
@@ -1939,11 +1941,11 @@ public class LAParser extends Parser {
 			setState(345);
 			match(T__29);
 			setState(346);
-			exp_aritmetica();
+			((CmdParaContext)_localctx).exp1 = exp_aritmetica();
 			setState(347);
 			match(T__30);
 			setState(348);
-			exp_aritmetica();
+			((CmdParaContext)_localctx).exp2 = exp_aritmetica();
 			setState(349);
 			match(T__31);
 			setState(353);

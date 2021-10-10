@@ -393,6 +393,8 @@ public class LAGeradorC extends LABaseVisitor<Void> {
             visitCmdRetorne(ctx.cmdRetorne());
         } else if (ctx.cmdCaso() != null) {
             visitCmdCaso(ctx.cmdCaso());
+        } else if(ctx.cmdPara() != null){
+            visitCmdPara(ctx.cmdPara());
         } else {
             System.out.println("FALTA CHAMAR OU IMPLEMENTAR ESSE METODO SEU VAGABUNDO");
         }
@@ -520,4 +522,28 @@ public class LAGeradorC extends LABaseVisitor<Void> {
         return null;
     }
 
+    @Override
+    public Void visitCmdPara(LAParser.CmdParaContext ctx) {
+        
+        saida.append("for(" + ctx.IDENT() + " = " + LAGeradorCUtils.imprimirConteudo(ctx.exp1) + ";");
+        if(Integer.parseInt(ctx.exp1.getText()) <= Integer.parseInt(ctx.exp2.getText()) ){
+            saida.append(ctx.IDENT() + " <= " + ctx.exp2.getText() + ";");
+            saida.append(ctx.IDENT() + "++){\n");
+        }
+        else if(Integer.parseInt(ctx.exp1.getText()) > Integer.parseInt(ctx.exp2.getText())){
+            saida.append(ctx.IDENT() + " > " + ctx.exp2.getText() + ";");
+            saida.append(ctx.IDENT() + "--){\n");
+        }
+        
+        for (LAParser.CmdContext ident : ctx.cmd()) {
+            visitCmd(ident);
+        }
+        
+        saida.append("}");
+        System.out.println(ctx.IDENT());
+        
+        
+        return null;
+    }
+    
 }

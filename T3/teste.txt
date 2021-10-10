@@ -1,10 +1,8 @@
 algoritmo
-  declare 
-     reg: registro
-            nome: literal
-            idade: inteiro
-          fim_registro
-  reg.nome <- "Maria"
-  reg.idade <- 24
-  escreva(reg.nome," tem ",reg.idade," anos")
+  declare vetor[5]: inteiro
+  declare i: inteiro
+  para i <- 0 ate 4 faca
+    vetor[i] <- i+1
+  fim_para
+  escreva(vetor[0])
 fim_algoritmo
