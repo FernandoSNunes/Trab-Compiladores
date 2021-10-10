@@ -1,6 +1,6 @@
 # Trabalho 3
 
-## Analisador semântico com ANTLR em Java
+## Analisador semântico e geração de código com ANTLR em Java
 
 Autores:
 
@@ -16,4 +16,5 @@ Antes de executar o projeto, verificar se as versões de Java e JDK estão corre
 Em seguida, o arquivo compilado estará disponível no caminho `target/T3-1.0-SNAPSHOT-jar-with-dependencies.jar`.  
 
 Para o programa executar a análise de um arquivo, basta executar o comando "java -jar target/T3-1.0-SNAPSHOT-jar-with-dependencies.jar entrada.txt saida.txt", o arquivo entrada.txt é o programa que irá ser analisado, e o arquivo saida.txt conterá o resultado da análise.
-##### Nota: existem comentários nas classes Principal.java,LASemanticoUtils.java e LASemantico.java
+
+##### Nota: existem comentários em diversas classes sobre o funcionamento do código
