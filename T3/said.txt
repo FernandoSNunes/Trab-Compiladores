@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 int main(){
-if (4  > 3  && 4  < 5 ){
-printf("4 eh maior do que 3 e menor do que 5");
-}
+char[500] x;
+gets(x);
+printf("oi");
 return 0;
 }
