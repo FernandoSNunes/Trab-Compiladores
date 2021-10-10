@@ -1,6 +1,5 @@
 package br.ufscar.dc.compiladores.t3;
 
-import com.ibm.icu.number.Rounder;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import static br.ufscar.dc.compiladores.t3.LAGeradorCUtils.imprimirConteudoFormatado;
 import static br.ufscar.dc.compiladores.t3.LASemanticoUtils.verificarTipo;
@@ -22,7 +21,6 @@ public class LAGeradorC extends LABaseVisitor<Void> {
     public Void visitPrograma(LAParser.ProgramaContext ctx) {
         saida.append("#include <stdio.h>\n");
         saida.append("#include <stdlib.h>\n");
-        //saida.append("#include <string.h>\n");
 
         ctx.declaracoes().decl_local_global().forEach(dec -> visitDecl_local_global(dec));
 
@@ -46,28 +44,12 @@ public class LAGeradorC extends LABaseVisitor<Void> {
         } else {
             visitDeclaracao_local(ctx.declaracao_local());
         }
-//        String nomeVar = ctx.declaracao_local().variavel().identificador(0).IDENT(0).getText();
-//        String tipoVar = ctx.declaracao_local().variavel().tipo().getText();
-//        switch (tipoVar) {
-//            case "inteiro":
-//                tipoVar = "int";
-//                break;
-//            case "real":
-//                tipoVar = "float";
-//                break;
-//            case "literal":
-//                tipoVar = "char[500]";
-//                break;
-//        }
-//
-//        saida.append(tipoVar + " " + nomeVar + ";\n");
         return null;
     }
 
     @Override
     public Void visitDeclaracao_local(LAParser.Declaracao_localContext ctx) {
         if (ctx.variavel() != null) {
-            ////System.out.println(ctx.declaracao_local().variavel());
             int erro_tipo = 0;
 
             int cont = 0;
@@ -77,7 +59,7 @@ public class LAGeradorC extends LABaseVisitor<Void> {
             }
             for (LAParser.IdentificadorContext ident : ctx.variavel().identificador()) {
                 if (ctx.variavel().tipo().registro() != null) {
-                    //adicionar registro
+                    // adicionar registro
                     variaveis.add(ident.getText());
                     tabela.adicionar(ident.getText(), TabelaDeSimbolos.TipoLA.REGISTRO, false);
                     TabelaDeSimbolos tabelaInterna = tabela.get_tabela_interna(ident.getText());
@@ -139,10 +121,12 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                                     } else {
                                         // se for um tipo declarado anteriormente
                                         if (tabelaInterna.existe(strTipoVarInterna)) {
-                                            TabelaDeSimbolos.TipoLA tipo_variavel_encontrada = tabela.verificar(strTipoVarInterna);
+                                            TabelaDeSimbolos.TipoLA tipo_variavel_encontrada = tabela
+                                                    .verificar(strTipoVarInterna);
                                             tipoVarInterna = TabelaDeSimbolos.TipoLA.CUSTOMIZADO;
                                             if (tipo_variavel_encontrada == TabelaDeSimbolos.TipoLA.TIPO) {
-                                                tabelaInterna.adicionar(nomeVarInterna, tipoVarInterna, strTipoVarInterna, vetor);
+                                                tabelaInterna.adicionar(nomeVarInterna, tipoVarInterna,
+                                                        strTipoVarInterna, vetor);
                                                 if (cont == 0) {
                                                     saida.append(strTipoVarInterna + " " + nomeVarInterna);
                                                     cont++;
@@ -150,13 +134,15 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                                                     saida.append(", " + nomeVarInterna);
                                                 }
                                             } else {
-                                                tabelaInterna.adicionar(nomeVarInterna, tipoVarInterna, strTipoVarInterna, vetor);
+                                                tabelaInterna.adicionar(nomeVarInterna, tipoVarInterna,
+                                                        strTipoVarInterna, vetor);
                                                 LASemanticoUtils.adicionarErroSemantico(ident.start,
                                                         "tipo " + strTipoVarInterna + " nao declarado");
                                             }
                                         } else {
                                             if (erro_tipo == 0) {
-                                                tabelaInterna.adicionar(nomeVarInterna, TabelaDeSimbolos.TipoLA.INVALIDO);
+                                                tabelaInterna.adicionar(nomeVarInterna,
+                                                        TabelaDeSimbolos.TipoLA.INVALIDO);
                                                 LASemanticoUtils.adicionarErroSemantico(ident.start,
                                                         "tipo " + strTipoVarInterna + " nao declarado");
                                                 erro_tipo++;
@@ -240,7 +226,6 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                             break;
                     }
                 }
-
             }
             if (ctx.variavel().tipo().registro() != null) {
                 saida.append("}" + variaveis.get(0));
@@ -254,17 +239,17 @@ public class LAGeradorC extends LABaseVisitor<Void> {
 
             saida.append(";\n");
         } else {
-            //declaracao de constante global
+            // declaracao de constante global
             if (ctx.valor_constante() != null) {
                 saida.append("#define ");
                 LAParser.Declaracao_localContext dl = ctx;
                 String nome_const = dl.IDENT().getText();
                 saida.append(nome_const + " " + dl.valor_constante().getText() + "\n");
 
-            } else {          //declaracao de tipo
+            } else { // declaracao de tipo
 
                 if (ctx.tipo().registro() != null) {
-                    //novo tipo registro
+                    // novo tipo registro
                     saida.append("typedef struct {\n");
 
                     tabela.adicionar(ctx.IDENT().getText(), TabelaDeSimbolos.TipoLA.TIPO, false);
@@ -325,10 +310,12 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                                     } else {
                                         // se for um tipo declarado anteriormente
                                         if (tabelaInterna.existe(strTipoVarInterna)) {
-                                            TabelaDeSimbolos.TipoLA tipo_variavel_encontrada = tabela.verificar(strTipoVarInterna);
+                                            TabelaDeSimbolos.TipoLA tipo_variavel_encontrada = tabela
+                                                    .verificar(strTipoVarInterna);
                                             tipoVarInterna = TabelaDeSimbolos.TipoLA.CUSTOMIZADO;
                                             if (tipo_variavel_encontrada == TabelaDeSimbolos.TipoLA.TIPO) {
-                                                tabelaInterna.adicionar(nomeVarInterna, tipoVarInterna, strTipoVarInterna, vetor);
+                                                tabelaInterna.adicionar(nomeVarInterna, tipoVarInterna,
+                                                        strTipoVarInterna, vetor);
                                                 if (cont2 == 0) {
                                                     saida.append(strTipoVarInterna + " " + nomeVarInterna);
                                                     cont2++;
@@ -336,7 +323,8 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                                                     saida.append(", " + nomeVarInterna);
                                                 }
                                             } else {
-                                                tabelaInterna.adicionar(nomeVarInterna, tipoVarInterna, strTipoVarInterna, vetor);
+                                                tabelaInterna.adicionar(nomeVarInterna, tipoVarInterna,
+                                                        strTipoVarInterna, vetor);
                                                 LASemanticoUtils.adicionarErroSemantico(ctx.start,
                                                         "tipo " + strTipoVarInterna + " nao declarado");
                                             }
@@ -344,12 +332,10 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                                     }
                                     break;
                             }
-
                         }
                         saida.append(";\n");
                     }
                     saida.append("}" + ctx.IDENT().getText() + ";\n");
-
                 }
             }
         }
@@ -365,8 +351,10 @@ public class LAGeradorC extends LABaseVisitor<Void> {
         for (LAParser.CmdContext cmd : ctx.faca) {
             visitCmd(cmd);
         }
+
         saida.append("}\n");
-        if (!ctx.senao.isEmpty()) {      //else
+
+        if (!ctx.senao.isEmpty()) { // else
             saida.append("else{\n");
             for (LAParser.CmdContext cmd : ctx.senao) {
                 visitCmd(cmd);
@@ -400,7 +388,6 @@ public class LAGeradorC extends LABaseVisitor<Void> {
         } else {
             System.out.println(ctx.getText());
             saida.append(ctx.getText() + ";\n");
-            //System.out.println("FALTA CHAMAR OU IMPLEMENTAR ESSE METODO SEU VAGABUNDO");
         }
         return null;
     }
@@ -452,7 +439,7 @@ public class LAGeradorC extends LABaseVisitor<Void> {
 
         }
         saida.append("\"");
-        if (variaveis.size() > 0) {      //acho que nem precisa de if
+        if (variaveis.size() > 0) {
             for (String aux : variaveis) {
                 saida.append(", " + aux);
             }
@@ -472,7 +459,8 @@ public class LAGeradorC extends LABaseVisitor<Void> {
             saida.append(ctx.identificador().getText() + " = ");
             saida.append(LAGeradorCUtils.imprimirConteudo(ctx.expressao()) + ";\n");
         } else {
-            saida.append("strcpy(" + ctx.identificador().getText() + ", " + LAGeradorCUtils.imprimirConteudo(ctx.expressao()) + ");\n");
+            saida.append("strcpy(" + ctx.identificador().getText() + ", "
+                    + LAGeradorCUtils.imprimirConteudo(ctx.expressao()) + ");\n");
 
         }
         return null;
@@ -519,7 +507,6 @@ public class LAGeradorC extends LABaseVisitor<Void> {
         for (LAParser.Numero_intervaloContext ident : ctx.constantes().numero_intervalo()) {
             int i = Integer.parseInt(ident.NUM_INT(0).getText());
             int fim = 0;
-            //System.out.println("AAAA" + i + "AAAA");
             if (ident.NUM_INT(1) != null) {
                 fim = Integer.parseInt(ident.NUM_INT(1).getText());
 
@@ -610,7 +597,6 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                     } else {
                         // se for um tipo declarado anteriormente
                         if (tabela.existe(strTipoRetornoFuncao)) {
-                            TipoLA tipo_variavel_encontrada = tabela.verificar(strTipoRetornoFuncao);
                             retornoFuncao = TipoLA.CUSTOMIZADO;
                         } else {
                             LASemanticoUtils.adicionarErroSemantico(ctx.start,
@@ -623,7 +609,6 @@ public class LAGeradorC extends LABaseVisitor<Void> {
             retornoFuncao = TipoLA.INVALIDO;
         }
 
-        int erro_tipo = 0;
         for (LAParser.ParametroContext pa : ctx.parametros().parametro()) {
 
             String strTipoVar = pa.tipo_estendido().getText();
@@ -672,44 +657,41 @@ public class LAGeradorC extends LABaseVisitor<Void> {
 
         }
 
-        // checar tipo dos parametros
-        // //System.out.println(parametros);
         tabela.adicionar_funcproc(ctx.IDENT().getText(), novotipo, tipoDosParametros, retornoFuncao);
-        System.out.println("nome da " + novotipo + ": " + ctx.IDENT().getText() + "\nParametros: " + parametros + "\nTipos dos parametros: " + tipoDosParametros + "\nRetorno: " + retornoFuncao);
-        
-        //procedimento
+        System.out.println("nome da " + novotipo + ": " + ctx.IDENT().getText() + "\nParametros: " + parametros
+                + "\nTipos dos parametros: " + tipoDosParametros + "\nRetorno: " + retornoFuncao);
+
+        // procedimento
         System.out.println(ctx.getText());
-        if(retornoFuncao == TipoLA.INVALIDO){
+        if (retornoFuncao == TipoLA.INVALIDO) {
             saida.append("void " + ctx.IDENT().getText() + "(");
             int i = 0;
             for (String parametro : parametros) {
                 TipoLA aux = tabela.verificar(parametro);
-                if(aux == TipoLA.LITERAL){
+                if (aux == TipoLA.LITERAL) {
                     saida.append("char* " + parametro);
-                }
-                else if(aux == TipoLA.INTEIRO){
+                } else if (aux == TipoLA.INTEIRO) {
                     saida.append("int " + parametro);
-                }
-                else if(aux == TipoLA.REAL){
+                } else if (aux == TipoLA.REAL) {
                     saida.append("float " + parametro);
                 }
-                if(i != parametros.size()-1){
+                if (i != parametros.size() - 1) {
                     saida.append(",");
                 }
                 i++;
             }
             saida.append("){\n");
-            for(LAParser.Declaracao_localContext ident: ctx.declaracao_local()){
+            for (LAParser.Declaracao_localContext ident : ctx.declaracao_local()) {
                 visitDeclaracao_local(ident);
             }
             for (LAParser.CmdContext ident : ctx.cmd()) {
                 visitCmd(ident);
             }
             saida.append("}\n");
-            
+
         }
-        //funcao
-        else{
+        // funcao
+        else {
             if (retornoFuncao == TipoLA.LITERAL) {
                 saida.append("char* ");
             } else if (retornoFuncao == TipoLA.INTEIRO) {
@@ -721,22 +703,20 @@ public class LAGeradorC extends LABaseVisitor<Void> {
             int i = 0;
             for (String parametro : parametros) {
                 TipoLA aux = tabela.verificar(parametro);
-                if(aux == TipoLA.LITERAL){
+                if (aux == TipoLA.LITERAL) {
                     saida.append("char* " + parametro);
-                }
-                else if(aux == TipoLA.INTEIRO){
+                } else if (aux == TipoLA.INTEIRO) {
                     saida.append("int " + parametro);
-                }
-                else if(aux == TipoLA.REAL){
+                } else if (aux == TipoLA.REAL) {
                     saida.append("float " + parametro);
                 }
-                if(i != parametros.size()-1){
+                if (i != parametros.size() - 1) {
                     saida.append(",");
                 }
                 i++;
             }
             saida.append("){\n");
-            for(LAParser.Declaracao_localContext ident: ctx.declaracao_local()){
+            for (LAParser.Declaracao_localContext ident : ctx.declaracao_local()) {
                 visitDeclaracao_local(ident);
             }
             for (LAParser.CmdContext ident : ctx.cmd()) {
@@ -744,20 +724,15 @@ public class LAGeradorC extends LABaseVisitor<Void> {
             }
             saida.append("}\n");
         }
-        
+
         return null;
     }
 
     @Override
     public Void visitCmdRetorne(LAParser.CmdRetorneContext ctx) {
         saida.append("return " + LAGeradorCUtils.imprimirConteudo(ctx.expressao()) + ";\n");
-        
-        
+
         return null;
     }
-    
-    
-    
-    
-    
+
 }

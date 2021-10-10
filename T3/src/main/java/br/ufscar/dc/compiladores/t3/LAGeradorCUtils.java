@@ -1,16 +1,14 @@
 package br.ufscar.dc.compiladores.t3;
 
 import br.ufscar.dc.compiladores.t3.TabelaDeSimbolos.TipoLA;
-import java.util.ArrayList;
 import java.util.List;
-import org.antlr.v4.runtime.Token;
 
 public class LAGeradorCUtils {
 
     // exp_aritmetica: termo (op1 termo)*;
-    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List <String> variaveis, LAParser.Exp_aritmeticaContext ctx) {
+    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List<String> variaveis,
+            LAParser.Exp_aritmeticaContext ctx) {
         String retorno = "";
-        String ret = null;
         for (int i = 0; i < ctx.termo().size(); i++) {
 
             if (i != 0) {
@@ -23,9 +21,9 @@ public class LAGeradorCUtils {
     }
 
     // termo: fator (op2 fator)*;
-    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List <String> variaveis, LAParser.TermoContext ctx) {
+    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List<String> variaveis,
+            LAParser.TermoContext ctx) {
         String retorno = "";
-        String ret = null;
         for (int i = 0; i < ctx.fator().size(); i++) {
 
             if (i != 0) {
@@ -38,10 +36,10 @@ public class LAGeradorCUtils {
     }
 
     // fator: parcela (op3 parcela)*;
-    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List <String> variaveis, LAParser.FatorContext ctx) {
+    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List<String> variaveis,
+            LAParser.FatorContext ctx) {
 
         String retorno = "";
-        String ret = null;
         for (int i = 0; i < ctx.parcela().size(); i++) {
 
             if (i != 0) {
@@ -54,25 +52,23 @@ public class LAGeradorCUtils {
     }
 
     // parcela: (op_unario)? parcela_unario | parcela_nao_unario;
-    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List <String> variaveis, LAParser.ParcelaContext ctx) {
+    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List<String> variaveis,
+            LAParser.ParcelaContext ctx) {
 
         if (ctx.parcela_unario() != null) {
-            //System.out.println("122 " + ctx.parcela_unario().getText());
             String pu = imprimirConteudoFormatado(tabela, variaveis, ctx.parcela_unario());
             return pu;
-        } else /* (ctx.parcela_nao_unario()!= null) */ {
-            //System.out.println("126");
-//            String nu = imprimirConteudoFormatado(TabelaDeSimbolos tabela, List <String> variaveis, ctx.parcela_nao_unario());
+        } else {
             return imprimirConteudoFormatado(tabela, variaveis, ctx.parcela_nao_unario());
         }
 
     }
 
-    /*
-     * parcela_unario: ('^')? identificador | IDENT '(' expressao (',' expressao)*
-     * ')' | NUM_INT | NUM_REAL | '(' expressao ')';
-     */
-    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List <String> variaveis, LAParser.Parcela_unarioContext ctx) {
+    // parcela_unario: ('^')? identificador | IDENT '(' expressao (',' expressao)*
+    // ')' | NUM_INT | NUM_REAL | '(' expressao ')';
+
+    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List<String> variaveis,
+            LAParser.Parcela_unarioContext ctx) {
         if (ctx.NUM_INT() != null) {
             return ctx.NUM_INT().getText() + " ";
         }
@@ -80,13 +76,10 @@ public class LAGeradorCUtils {
             return ctx.NUM_REAL().getText() + " ";
         }
         if (ctx.IDENT() != null) {
-            //talvez tenha que fazer essa parte
             return ctx.IDENT().getText() + " ";
         }
         if (ctx.identificador() != null) {
-            //System.out.println("161 " + ctx.identificador().getText());
             if (ctx.INICIO_ENDERECO() != null) {
-                //System.out.println("163 " + ctx.identificador().getText());
                 return "&" + ctx.identificador().getText();
             } else {
                 TipoLA tipoVar = tabela.verificar(ctx.identificador().getText());
@@ -108,32 +101,23 @@ public class LAGeradorCUtils {
         }
         // se não for nenhum dos tipos acima, só pode ser uma expressão
         // entre parêntesis
-        // ---------------------probelma aqui, a expressao nao esta aceitando fora de
-        // vetor------------------------
         return "(" + imprimirConteudoFormatado(tabela, variaveis, ctx.expressao(0)) + ")";
     }
 
-    /*
-     * parcela_nao_unario: '&' identificador | CADEIA;
-     */
-    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List <String> variaveis, LAParser.Parcela_nao_unarioContext ctx) {
+    // parcela_nao_unario: '&' identificador | CADEIA;
+    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List<String> variaveis,
+            LAParser.Parcela_nao_unarioContext ctx) {
         if (ctx.identificador() != null) {
             return ctx.getText();
         }
 
-        // String
-        // if (ctx.CADEIA() != null) {
-        return ctx.CADEIA().getText().substring(1, ctx.CADEIA().getText().length()-1);
-        // }
-
+        return ctx.CADEIA().getText().substring(1, ctx.CADEIA().getText().length() - 1);
     }
 
-    /*
-     * expressao: termo_logico (op_logico_1 termo_logico)*;
-     */
-    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List <String> variaveis, LAParser.ExpressaoContext ctx) {
+    // expressao: termo_logico (op_logico_1 termo_logico)*;
+    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List<String> variaveis,
+            LAParser.ExpressaoContext ctx) {
         String retorno = "";
-        String ret = null;
         for (int i = 0; i < ctx.termo_logico().size(); i++) {
 
             if (i != 0) {
@@ -146,7 +130,8 @@ public class LAGeradorCUtils {
     }
 
     // termo_logico: fator_logico (op_logico_2 fator_logico)*;
-    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List <String> variaveis, LAParser.Termo_logicoContext ctx) {
+    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List<String> variaveis,
+            LAParser.Termo_logicoContext ctx) {
 
         String retorno = "";
         for (int i = 0; i < ctx.fator_logico().size(); i++) {
@@ -161,7 +146,8 @@ public class LAGeradorCUtils {
     }
 
     // fator_logico: (OP_NAO)? parcela_logica;
-    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List <String> variaveis, LAParser.Fator_logicoContext ctx) {
+    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List<String> variaveis,
+            LAParser.Fator_logicoContext ctx) {
 
         if (ctx.OP_NAO() != null) {
             return " !" + imprimirConteudoFormatado(tabela, variaveis, ctx.parcela_logica());
@@ -169,10 +155,9 @@ public class LAGeradorCUtils {
         return imprimirConteudoFormatado(tabela, variaveis, ctx.parcela_logica());
     }
 
-    /*
-     * parcela_logica: OP_bool | exp_relacional;
-     */
-    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List <String> variaveis, LAParser.Parcela_logicaContext ctx) {
+    // parcela_logica: OP_bool | exp_relacional;
+    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List<String> variaveis,
+            LAParser.Parcela_logicaContext ctx) {
 
         if (ctx.exp_relacional() != null) {
             return imprimirConteudoFormatado(tabela, variaveis, ctx.exp_relacional());
@@ -187,7 +172,8 @@ public class LAGeradorCUtils {
     }
 
     // exp_relacional: exp_aritmetica (op_relacional exp_aritmetica)?;
-    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List <String> variaveis, LAParser.Exp_relacionalContext ctx) {
+    public static String imprimirConteudoFormatado(TabelaDeSimbolos tabela, List<String> variaveis,
+            LAParser.Exp_relacionalContext ctx) {
 
         String retorno = imprimirConteudoFormatado(tabela, variaveis, ctx.exp_aritmetica(0));
         String op = "";
@@ -199,15 +185,14 @@ public class LAGeradorCUtils {
                 op = "!=";
             }
 
-            retorno = retorno +" " + op + " " + imprimirConteudoFormatado(tabela, variaveis, ctx.exp_aritmetica(1));
+            retorno = retorno + " " + op + " " + imprimirConteudoFormatado(tabela, variaveis, ctx.exp_aritmetica(1));
         }
         return retorno;
     }
 
-     // exp_aritmetica: termo (op1 termo)*;
+    // exp_aritmetica: termo (op1 termo)*;
     public static String imprimirConteudo(LAParser.Exp_aritmeticaContext ctx) {
         String retorno = "";
-        String ret = null;
         for (int i = 0; i < ctx.termo().size(); i++) {
 
             if (i != 0) {
@@ -222,7 +207,6 @@ public class LAGeradorCUtils {
     // termo: fator (op2 fator)*;
     public static String imprimirConteudo(LAParser.TermoContext ctx) {
         String retorno = "";
-        String ret = null;
         for (int i = 0; i < ctx.fator().size(); i++) {
 
             if (i != 0) {
@@ -238,7 +222,6 @@ public class LAGeradorCUtils {
     public static String imprimirConteudo(LAParser.FatorContext ctx) {
 
         String retorno = "";
-        String ret = null;
         for (int i = 0; i < ctx.parcela().size(); i++) {
 
             if (i != 0) {
@@ -254,21 +237,16 @@ public class LAGeradorCUtils {
     public static String imprimirConteudo(LAParser.ParcelaContext ctx) {
 
         if (ctx.parcela_unario() != null) {
-            //System.out.println("122 " + ctx.parcela_unario().getText());
             String pu = imprimirConteudo(ctx.parcela_unario());
             return pu;
-        } else /* (ctx.parcela_nao_unario()!= null) */ {
-            //System.out.println("126");
-//            String nu = imprimirConteudo(ctx.parcela_nao_unario());
+        } else {
             return ctx.parcela_nao_unario().getText();
         }
 
     }
 
-    /*
-     * parcela_unario: ('^')? identificador | IDENT '(' expressao (',' expressao)*
-     * ')' | NUM_INT | NUM_REAL | '(' expressao ')';
-     */
+    // parcela_unario: ('^')? identificador | IDENT '(' expressao (',' expressao)*
+    // ')' | NUM_INT | NUM_REAL | '(' expressao ')';
     public static String imprimirConteudo(LAParser.Parcela_unarioContext ctx) {
         if (ctx.NUM_INT() != null) {
             return ctx.NUM_INT().getText() + " ";
@@ -277,13 +255,10 @@ public class LAGeradorCUtils {
             return ctx.NUM_REAL().getText() + " ";
         }
         if (ctx.IDENT() != null) {
-            //talvez tenha que fazer essa parte
             return ctx.IDENT().getText() + " ";
         }
         if (ctx.identificador() != null) {
-            //System.out.println("161 " + ctx.identificador().getText());
             if (ctx.INICIO_ENDERECO() != null) {
-                //System.out.println("163 " + ctx.identificador().getText());
                 return "&" + ctx.identificador().getText();
             } else {
                 return ctx.identificador().getText();
@@ -291,32 +266,12 @@ public class LAGeradorCUtils {
         }
         // se não for nenhum dos tipos acima, só pode ser uma expressão
         // entre parêntesis
-        // ---------------------probelma aqui, a expressao nao esta aceitando fora de
-        // vetor------------------------
         return "(" + imprimirConteudo(ctx.expressao(0)) + ")";
     }
 
-    /*
-     * parcela_nao_unario: '&' identificador | CADEIA;
-     */
-//    public static String imprimirConteudo(LAParser.Parcela_nao_unarioContext ctx) {
-//        if (ctx.identificador() != null) {
-//            return ctx.getText();
-//        }
-//
-//        // String
-//        // if (ctx.CADEIA() != null) {
-//        return String.LITERAL;
-//        // }
-//
-//    }
-
-    /*
-     * expressao: termo_logico (op_logico_1 termo_logico)*;
-     */
+    // expressao: termo_logico (op_logico_1 termo_logico)*;
     public static String imprimirConteudo(LAParser.ExpressaoContext ctx) {
         String retorno = "";
-        String ret = null;
         for (int i = 0; i < ctx.termo_logico().size(); i++) {
 
             if (i != 0) {
@@ -330,7 +285,6 @@ public class LAGeradorCUtils {
 
     // termo_logico: fator_logico (op_logico_2 fator_logico)*;
     public static String imprimirConteudo(LAParser.Termo_logicoContext ctx) {
-
         String retorno = "";
         for (int i = 0; i < ctx.fator_logico().size(); i++) {
 
@@ -352,9 +306,7 @@ public class LAGeradorCUtils {
         return imprimirConteudo(ctx.parcela_logica());
     }
 
-    /*
-     * parcela_logica: OP_bool | exp_relacional;
-     */
+    // parcela_logica: OP_bool | exp_relacional;
     public static String imprimirConteudo(LAParser.Parcela_logicaContext ctx) {
 
         if (ctx.exp_relacional() != null) {
@@ -382,10 +334,8 @@ public class LAGeradorCUtils {
                 op = "!=";
             }
 
-            retorno = retorno +" " + op + " " + imprimirConteudo(ctx.exp_aritmetica(1));
+            retorno = retorno + " " + op + " " + imprimirConteudo(ctx.exp_aritmetica(1));
         }
         return retorno;
     }
-    
-    
 }
