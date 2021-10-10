@@ -225,10 +225,11 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                             }
                             break;
                     }
-                    saida.append(";\n");
                 }
 
             }
+            
+                    saida.append(";\n");
         } else {
             //declaracao de constante global
             if (ctx.valor_constante() != null) {
