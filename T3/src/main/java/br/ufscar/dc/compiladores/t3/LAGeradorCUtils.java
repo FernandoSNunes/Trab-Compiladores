@@ -13,7 +13,7 @@ public class LAGeradorCUtils {
         for (int i = 0; i < ctx.termo().size(); i++) {
 
             if (i != 0) {
-                retorno += (" " + ctx.op1(i - 1) + " ");
+                retorno += (" " + ctx.op1(i - 1).getText() + " ");
             }
             retorno += imprimirConteudo(ctx.termo(i));
 
@@ -184,7 +184,7 @@ public class LAGeradorCUtils {
                 op = "!=";
             }
 
-            retorno = retorno +" " + op + " " + imprimirConteudo(ctx.exp_aritmetica(0));
+            retorno = retorno +" " + op + " " + imprimirConteudo(ctx.exp_aritmetica(1));
         }
         return retorno;
     }
