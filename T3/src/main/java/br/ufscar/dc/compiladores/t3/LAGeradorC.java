@@ -2,6 +2,9 @@ package br.ufscar.dc.compiladores.t3;
 
 import com.ibm.icu.number.Rounder;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import static br.ufscar.dc.compiladores.t3.LAGeradorCUtils.imprimirConteudoFormatado;
+import java.util.List;
+import java.util.Vector;
 
 public class LAGeradorC extends LABaseVisitor<Void> {
 
@@ -66,16 +69,12 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                     //adicionar registro
                     tabela.adicionar(ident.getText(), TabelaDeSimbolos.TipoLA.REGISTRO, false);
                     TabelaDeSimbolos tabelaInterna = tabela.get_tabela_interna(ident.getText());
-                    
-                    
+
                     for (LAParser.VariavelContext varInterna : ctx.variavel().tipo().registro().variavel()) {
                         int cont2 = 0;
-                        
-                        
+
                         for (LAParser.IdentificadorContext identificadorLocal : varInterna.identificador()) {
-                            
-                            
-                            
+
                             String nomeVarInterna = identificadorLocal.getText();
                             String strTipoVarInterna = varInterna.tipo().getText();
                             TabelaDeSimbolos.TipoLA tipoVarInterna = TabelaDeSimbolos.TipoLA.INVALIDO;
@@ -279,11 +278,11 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                         break;
                 }
             } else {          //declaracao de tipo
-                
+
                 if (ctx.tipo().registro() != null) {
                     //novo tipo registro
                     saida.append("typedef struct {\n");
-                    
+
                     tabela.adicionar(ctx.IDENT().getText(), TabelaDeSimbolos.TipoLA.TIPO, false);
                     TabelaDeSimbolos tabelaInterna = tabela.get_tabela_interna(ctx.IDENT().getText());
                     for (LAParser.VariavelContext varInterna : ctx.tipo().registro().variavel()) {
@@ -348,7 +347,7 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                                                 tabelaInterna.adicionar(nomeVarInterna, tipoVarInterna, strTipoVarInterna, vetor);
                                                 if (cont2 == 0) {
                                                     saida.append(strTipoVarInterna + " " + nomeVarInterna);
-                                                    cont2   ++;
+                                                    cont2++;
                                                 } else {
                                                     saida.append(", " + nomeVarInterna);
                                                 }
@@ -365,12 +364,11 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                         }
                         saida.append(";\n");
                     }
-                    saida.append("}"+ ctx.IDENT().getText() +";\n");
+                    saida.append("}" + ctx.IDENT().getText() + ";\n");
 
                 }
             }
         }
-        
 
         return null;
     }
@@ -378,8 +376,8 @@ public class LAGeradorC extends LABaseVisitor<Void> {
     @Override
     public Void visitCmdSe(LAParser.CmdSeContext ctx) {
         saida.append("if (");
-        saida.append (LAGeradorCUtils.imprimirConteudo(ctx.expressao()) + "){\n");
-        
+        saida.append(LAGeradorCUtils.imprimirConteudo(ctx.expressao()) + "){\n");
+
         for (LAParser.CmdContext cmd : ctx.faca) {
             visitCmd(cmd);
         }
@@ -407,9 +405,9 @@ public class LAGeradorC extends LABaseVisitor<Void> {
             visitCmdAtribuicao(ctx.cmdAtribuicao());
         } else if (ctx.cmdSe() != null) {
             visitCmdSe(ctx.cmdSe());
-        } else if(ctx.cmdFaca() != null) {
+        } else if (ctx.cmdFaca() != null) {
             visitCmdFaca(ctx.cmdFaca());
-        } else if(ctx.cmdRetorne() != null) {
+        } else if (ctx.cmdRetorne() != null) {
             visitCmdRetorne(ctx.cmdRetorne());
         } else if(ctx.cmdCaso() != null){
             visitCmdCaso(ctx.cmdCaso());
@@ -445,48 +443,20 @@ public class LAGeradorC extends LABaseVisitor<Void> {
 
     @Override
     public Void visitCmdEscreva(LAParser.CmdEscrevaContext ctx) {
-        int qtdVariaveis = 0;
-        String Variaveis = "";
-        saida.append("printf(");
-        for (LAParser.ExpressaoContext ident : ctx.expressao()) {
-            if (ident.getText().contains("\"")) {
-                if (ctx.expressao(1) == null) {
-                    saida.append(ident.getText());
-                } else {
-                    String aux = ident.getText().substring(0, ident.getText().length() - 1);
-                    saida.append(aux);
-                }
-            } else {
-                String nomeVar = ident.getText();
-                TabelaDeSimbolos.TipoLA tipoVar = LASemanticoUtils.verificarTipo(tabela, ident);
-                String aux = "";
-                switch (tipoVar) {
-                    case INTEIRO:
-                        aux = "%d";
-                        break;
-                    case REAL:
-                        aux = "%f";
-                        break;
-                    case LITERAL:
-                        aux = "%s";
-                        break;
-                }
-                if (ctx.expressao(1) == null) {
-                    saida.append("\"" + aux + "\"");
-                    Variaveis += "," + nomeVar;
-                } else {
-                    qtdVariaveis++;
-                    Variaveis += "," + nomeVar;
-                    saida.append(aux);
-                }
+        saida.append("printf(\"");
+        List<String> variaveis = new Vector();
 
+        for (LAParser.ExpressaoContext ex : ctx.expressao()) {
+            saida.append(imprimirConteudoFormatado(tabela, variaveis, ex));
+        }
+        saida.append("\"");
+        if (variaveis.size() > 0) {      //acho que nem precisa de if
+            for (String aux : variaveis) {
+                saida.append(", " + aux);
             }
         }
-        if (qtdVariaveis > 0) {
-            saida.append("\"" + Variaveis + ");\n");
-        } else {
-            saida.append(Variaveis + ");\n");
-        }
+        saida.append(");\n");
+
         return null;
     }
 
@@ -496,11 +466,11 @@ public class LAGeradorC extends LABaseVisitor<Void> {
         saida.append(LAGeradorCUtils.imprimirConteudo(ctx.expressao()) + ";\n");
         return null;
     }
-    
+
     @Override
     public Void visitCmdFaca(LAParser.CmdFacaContext ctx) {
         saida.append("do{\n");
-        for (LAParser.CmdContext ident : ctx.cmd()){
+        for (LAParser.CmdContext ident : ctx.cmd()) {
             visitCmd(ident);
         }
         saida.append("while(");
