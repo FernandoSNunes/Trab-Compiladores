@@ -20,6 +20,7 @@ public class LAGeradorC extends LABaseVisitor<Void> {
     public Void visitPrograma(LAParser.ProgramaContext ctx) {
         saida.append("#include <stdio.h>\n");
         saida.append("#include <stdlib.h>\n");
+        //saida.append("#include <string.h>\n");
 
         ctx.declaracoes().decl_local_global().forEach(dec -> visitDecl_local_global(dec));
 
@@ -68,16 +69,19 @@ public class LAGeradorC extends LABaseVisitor<Void> {
             int erro_tipo = 0;
 
             int cont = 0;
+            List<String> variaveis = new Vector();
+            if (ctx.variavel().tipo().registro() != null) {
+                saida.append("struct {\n");
+            }
             for (LAParser.IdentificadorContext ident : ctx.variavel().identificador()) {
                 if (ctx.variavel().tipo().registro() != null) {
-                    saida.append("typedef struct {\n");
                     //adicionar registro
+                    variaveis.add(ident.getText());
                     tabela.adicionar(ident.getText(), TabelaDeSimbolos.TipoLA.REGISTRO, false);
                     TabelaDeSimbolos tabelaInterna = tabela.get_tabela_interna(ident.getText());
 
                     for (LAParser.VariavelContext varInterna : ctx.variavel().tipo().registro().variavel()) {
                         int cont2 = 0;
-
                         for (LAParser.IdentificadorContext identificadorLocal : varInterna.identificador()) {
 
                             String nomeVarInterna = identificadorLocal.getText();
@@ -100,7 +104,7 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                                     tipoVarInterna = TabelaDeSimbolos.TipoLA.LITERAL;
                                     tabelaInterna.adicionar(nomeVarInterna, tipoVarInterna, vetor);
                                     if (cont2 == 0) {
-                                        saida.append("char[500] " + nomeVarInterna);
+                                        saida.append("char " + nomeVarInterna + "[500]");
                                         cont2++;
                                     } else {
                                         saida.append(", " + nomeVarInterna);
@@ -163,7 +167,9 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                         }
                         saida.append(";\n");
                     }
-                    saida.append("};");
+                    if (ctx.variavel().tipo().registro() == null) {
+                        saida.append("};");
+                    }
 
                 } else {
                     // verificacao do tipo
@@ -233,6 +239,15 @@ public class LAGeradorC extends LABaseVisitor<Void> {
                     }
                 }
 
+            }
+            if (ctx.variavel().tipo().registro() != null) {
+                saida.append("}" + variaveis.get(0));
+                if (variaveis.size() > 1) {
+                    for (int i = 1; i < variaveis.size(); i++) {
+                        saida.append(", " + variaveis.get(i));
+                    }
+
+                }
             }
 
             saida.append(";\n");
@@ -428,10 +443,17 @@ public class LAGeradorC extends LABaseVisitor<Void> {
 
     @Override
     public Void visitCmdAtribuicao(LAParser.CmdAtribuicaoContext ctx) {
-        if (ctx.getText().charAt(0) == '^')
-            saida.append("*");
-        saida.append(ctx.identificador().getText() + " = ");
-        saida.append(LAGeradorCUtils.imprimirConteudo(ctx.expressao()) + ";\n");
+
+        if (tabela.verificar(ctx.identificador().getText()) != TabelaDeSimbolos.TipoLA.LITERAL) {
+            if (ctx.getText().charAt(0) == '^') {
+                saida.append("*");
+            }
+            saida.append(ctx.identificador().getText() + " = ");
+            saida.append(LAGeradorCUtils.imprimirConteudo(ctx.expressao()) + ";\n");
+        } else {
+            saida.append("strcpy(" + ctx.identificador().getText() + ", " + LAGeradorCUtils.imprimirConteudo(ctx.expressao()) + ");\n");
+
+        }
         return null;
     }
 
