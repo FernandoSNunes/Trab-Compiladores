@@ -395,7 +395,7 @@ public class LAGeradorC extends LABaseVisitor<Void> {
             visitCmdRetorne(ctx.cmdRetorne());
         } else if (ctx.cmdCaso() != null) {
             visitCmdCaso(ctx.cmdCaso());
-        } else if(ctx.cmdPara() != null){
+        } else if (ctx.cmdPara() != null) {
             visitCmdPara(ctx.cmdPara());
         } else {
             System.out.println("FALTA CHAMAR OU IMPLEMENTAR ESSE METODO SEU VAGABUNDO");
@@ -432,23 +432,22 @@ public class LAGeradorC extends LABaseVisitor<Void> {
         List<String> variaveis = new Vector();
 
         for (LAParser.ExpressaoContext ex : ctx.expressao()) {
-            if(ex.getText().charAt(0) == '\"')
+            if (ex.getText().charAt(0) == '\"') {
                 saida.append(imprimirConteudoFormatado(tabela, variaveis, ex));
-            else{
+            } else {
                 variaveis.add(ex.getText());
                 TipoLA tipo = verificarTipo(tabela, ex);
-                if (tipo == TipoLA.INTEIRO){
+                if (tipo == TipoLA.INTEIRO) {
                     saida.append("%d");
                 }
-                if (tipo == TipoLA.REAL){
+                if (tipo == TipoLA.REAL) {
                     saida.append("%f");
                 }
-                if (tipo == TipoLA.LITERAL){
+                if (tipo == TipoLA.LITERAL) {
                     saida.append("%s");
                 }
             }
-                
-                
+
         }
         saida.append("\"");
         if (variaveis.size() > 0) {      //acho que nem precisa de if
@@ -542,25 +541,23 @@ public class LAGeradorC extends LABaseVisitor<Void> {
 
     @Override
     public Void visitCmdPara(LAParser.CmdParaContext ctx) {
-        
+
         saida.append("for(" + ctx.IDENT() + " = " + LAGeradorCUtils.imprimirConteudo(ctx.exp1) + ";");
-        if(Integer.parseInt(ctx.exp1.getText()) <= Integer.parseInt(ctx.exp2.getText()) ){
+        if (Integer.parseInt(ctx.exp1.getText()) <= Integer.parseInt(ctx.exp2.getText())) {
             saida.append(ctx.IDENT() + " <= " + ctx.exp2.getText() + ";");
             saida.append(ctx.IDENT() + "++){\n");
-        }
-        else if(Integer.parseInt(ctx.exp1.getText()) > Integer.parseInt(ctx.exp2.getText())){
+        } else if (Integer.parseInt(ctx.exp1.getText()) > Integer.parseInt(ctx.exp2.getText())) {
             saida.append(ctx.IDENT() + " > " + ctx.exp2.getText() + ";");
             saida.append(ctx.IDENT() + "--){\n");
         }
-        
+
         for (LAParser.CmdContext ident : ctx.cmd()) {
             visitCmd(ident);
         }
-        
+
         saida.append("}");
         System.out.println(ctx.IDENT());
-        
-        
+
         return null;
     }
 
@@ -571,9 +568,113 @@ public class LAGeradorC extends LABaseVisitor<Void> {
             visitCmd(ident);
         }
         saida.append("}");
-        
+
         return null;
     }
-    
-    
+
+    @Override
+    public Void visitDeclaracao_global(LAParser.Declaracao_globalContext ctx) {
+        TipoLA novotipo;
+        if (ctx.FUNCAO() != null) {
+            novotipo = TipoLA.FUNCAO;
+            tabela.novo_local(false);
+        } else {
+            novotipo = TipoLA.PROCEDIMENTO;
+            tabela.novo_local(true);
+        }
+        List<String> parametros = new Vector<>();
+        List<TipoLA> tipoDosParametros = new Vector<>();
+        TipoLA retornoFuncao = TipoLA.INVALIDO;
+
+        if (novotipo == TipoLA.FUNCAO) {
+            String strTipoRetornoFuncao = ctx.tipo_estendido().getText();
+
+            switch (strTipoRetornoFuncao) {
+                case "inteiro":
+                    retornoFuncao = TipoLA.INTEIRO;
+                    break;
+                case "literal":
+                    retornoFuncao = TipoLA.LITERAL;
+                    break;
+                case "real":
+                    retornoFuncao = TipoLA.REAL;
+                    break;
+                case "logico":
+                    retornoFuncao = TipoLA.LOGICO;
+                    break;
+                default:
+                    if ('^' == strTipoRetornoFuncao.charAt(0)) {
+                        retornoFuncao = TipoLA.ENDERECO;
+                    } else {
+                        // se for um tipo declarado anteriormente
+                        if (tabela.existe(strTipoRetornoFuncao)) {
+                            TipoLA tipo_variavel_encontrada = tabela.verificar(strTipoRetornoFuncao);
+                            retornoFuncao = TipoLA.CUSTOMIZADO;
+                        } else {
+                            LASemanticoUtils.adicionarErroSemantico(ctx.start,
+                                    "tipo " + strTipoRetornoFuncao + " nao declarado");
+                        }
+                    }
+                    break;
+            }
+        } else {
+            retornoFuncao = TipoLA.INVALIDO;
+        }
+
+        int erro_tipo = 0;
+        for (LAParser.ParametroContext pa : ctx.parametros().parametro()) {
+
+            String strTipoVar = pa.tipo_estendido().getText();
+            String nomeVar = pa.identificador(0).getText();
+            TipoLA tipoVar = TipoLA.INVALIDO;
+            switch (strTipoVar) {
+                case "inteiro":
+                    tipoVar = TipoLA.INTEIRO;
+                    break;
+                case "literal":
+                    tipoVar = TipoLA.LITERAL;
+                    break;
+                case "real":
+                    tipoVar = TipoLA.REAL;
+                    break;
+                case "logico":
+                    tipoVar = TipoLA.LOGICO;
+                    break;
+                default:
+                    if ('^' == strTipoVar.charAt(0)) {
+                        tipoVar = TipoLA.ENDERECO;
+                    } else {
+                        // se for um tipo declarado anteriormente
+                        if (tabela.existe(strTipoVar)) {
+                            TipoLA tipo_variavel_encontrada = tabela.verificar(strTipoVar);
+                            tipoVar = TipoLA.CUSTOMIZADO;
+                            if (tipo_variavel_encontrada == TipoLA.TIPO) {
+                                tabela.adicionar(nomeVar, tipoVar, strTipoVar, false);
+                            } else {
+                                tabela.adicionar(nomeVar, tipoVar, strTipoVar, false);
+                                LASemanticoUtils.adicionarErroSemantico(ctx.start,
+                                        "tipo " + strTipoVar + " nao declarado");
+                            }
+                        }
+                    }
+                    break;
+            }
+            if (tipoVar != TipoLA.INVALIDO) {
+                if (tipoVar != TipoLA.CUSTOMIZADO) {
+                    tabela.adicionar(nomeVar, tipoVar);
+                }
+                tipoDosParametros.add(tipoVar);
+                parametros.add(nomeVar);
+
+            }
+
+        }
+
+        // checar tipo dos parametros
+        // //System.out.println(parametros);
+        tabela.adicionar_funcproc(ctx.IDENT().getText(), novotipo, tipoDosParametros, retornoFuncao);
+        System.out.println("nome da " + novotipo + ": " + ctx.IDENT().getText() + "\nParametros: " + parametros + "\nTipos dos parametros: " + tipoDosParametros + "\nRetorno: " + retornoFuncao);
+        return null;
+    }
+
 }
