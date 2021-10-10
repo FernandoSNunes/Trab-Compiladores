@@ -3,6 +3,8 @@ package br.ufscar.dc.compiladores.t3;
 import com.ibm.icu.number.Rounder;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import static br.ufscar.dc.compiladores.t3.LAGeradorCUtils.imprimirConteudoFormatado;
+import static br.ufscar.dc.compiladores.t3.LASemanticoUtils.verificarTipo;
+import br.ufscar.dc.compiladores.t3.TabelaDeSimbolos.TipoLA;
 import java.util.List;
 import java.util.Vector;
 
@@ -430,7 +432,23 @@ public class LAGeradorC extends LABaseVisitor<Void> {
         List<String> variaveis = new Vector();
 
         for (LAParser.ExpressaoContext ex : ctx.expressao()) {
-            saida.append(imprimirConteudoFormatado(tabela, variaveis, ex));
+            if(ex.getText().charAt(0) == '\"')
+                saida.append(imprimirConteudoFormatado(tabela, variaveis, ex));
+            else{
+                variaveis.add(ex.getText());
+                TipoLA tipo = verificarTipo(tabela, ex);
+                if (tipo == TipoLA.INTEIRO){
+                    saida.append("%d");
+                }
+                if (tipo == TipoLA.REAL){
+                    saida.append("%f");
+                }
+                if (tipo == TipoLA.LITERAL){
+                    saida.append("%s");
+                }
+            }
+                
+                
         }
         saida.append("\"");
         if (variaveis.size() > 0) {      //acho que nem precisa de if
