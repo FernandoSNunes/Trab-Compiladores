@@ -545,5 +545,17 @@ public class LAGeradorC extends LABaseVisitor<Void> {
         
         return null;
     }
+
+    @Override
+    public Void visitCmdEnquanto(LAParser.CmdEnquantoContext ctx) {
+        saida.append("while(" + LAGeradorCUtils.imprimirConteudo(ctx.expressao()) + "){");
+        for (LAParser.CmdContext ident : ctx.cmd()) {
+            visitCmd(ident);
+        }
+        saida.append("}");
+        
+        return null;
+    }
+    
     
 }
