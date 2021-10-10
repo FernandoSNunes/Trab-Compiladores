@@ -398,7 +398,9 @@ public class LAGeradorC extends LABaseVisitor<Void> {
         } else if (ctx.cmdPara() != null) {
             visitCmdPara(ctx.cmdPara());
         } else {
-            System.out.println("FALTA CHAMAR OU IMPLEMENTAR ESSE METODO SEU VAGABUNDO");
+            System.out.println(ctx.getText());
+            saida.append(ctx.getText() + ";\n");
+            //System.out.println("FALTA CHAMAR OU IMPLEMENTAR ESSE METODO SEU VAGABUNDO");
         }
         return null;
     }
@@ -674,6 +676,43 @@ public class LAGeradorC extends LABaseVisitor<Void> {
         // //System.out.println(parametros);
         tabela.adicionar_funcproc(ctx.IDENT().getText(), novotipo, tipoDosParametros, retornoFuncao);
         System.out.println("nome da " + novotipo + ": " + ctx.IDENT().getText() + "\nParametros: " + parametros + "\nTipos dos parametros: " + tipoDosParametros + "\nRetorno: " + retornoFuncao);
+        
+        //procedimento
+        System.out.println(ctx.getText());
+        if(retornoFuncao == TipoLA.INVALIDO){
+            saida.append("void " + ctx.IDENT().getText() + "(");
+            int i = 0;
+            for (String parametro : parametros) {
+                TipoLA aux = tabela.verificar(parametro);
+                if(aux == TipoLA.LITERAL){
+                    saida.append("char* " + parametro);
+                }
+                else if(aux == TipoLA.INTEIRO){
+                    saida.append("int " + parametro);
+                }
+                else if(aux == TipoLA.REAL){
+                    saida.append("float " + parametro);
+                }
+                if(i != parametros.size()-1){
+                    saida.append(",");
+                }
+                i++;
+            }
+            saida.append("){\n");
+            for(LAParser.Declaracao_localContext ident: ctx.declaracao_local()){
+                visitDeclaracao_local(ident);
+            }
+            for (LAParser.CmdContext ident : ctx.cmd()) {
+                visitCmd(ident);
+            }
+            saida.append("}\n");
+            
+        }
+        //funcao
+        else{
+            
+        }
+        
         return null;
     }
 
