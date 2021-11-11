@@ -1,0 +1,33 @@
+PRODUTOS: 
+
+pao = 9.98/kg 
+cadeira = 40/un
+
+// verificacao semantica se o produto declarado acima tem imposto
+// verificacao semantica se o imposto nao é maior que 100%
+// verificacao semantica se o imposto nao é negativo
+IMPOSTOS:
+
+pao, leite = 20%
+cadeira = 45%
+batata = 15%
+
+
+TAXAS_EXTRAS:
+garcom = 10%
+aniversariante = -10%
+
+LOJA:
+NOME = Armazem do sucesso
+CNPJ = 24.786.831/0001-90
+
+
+NOTA:
+
+0.400 pao
+0.3 cadeira // verificação semantica de preço unitário não poder ser valor real
+CPF 001.892.019-76
+
+
+
+
