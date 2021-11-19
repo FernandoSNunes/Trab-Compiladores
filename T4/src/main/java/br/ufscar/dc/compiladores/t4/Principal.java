@@ -11,50 +11,109 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 
 public class Principal {
-
-    public static void main(String args[]) throws IOException {
+    public static boolean hasErrosLexicos(String args[], PrintWriter pw) throws IOException {
         CharStream cs = CharStreams.fromFileName(args[0]);
         CFLexer lexer = new CFLexer(cs);
 
-        //parte do trabalho 1, verifica erros lexicos
         Token t = null;
-        try (
-                // arquivo de saida
-            PrintWriter pw = new PrintWriter(new File(args[1]))) {
-            boolean continuar = true;
-            while ((t = lexer.nextToken()).getType() != Token.EOF && continuar) {
-                //erros na parte do trab 1
-                if ("ERRO".equals(CFLexer.VOCABULARY.getDisplayName(t.getType()))) {
-                    pw.println("Linha " + t.getLine() + ": " + t.getText() + " - simbolo nao identificado");
-                    continuar = false;
-                } else if ("ERRO_CADEIA".equals(CFLexer.VOCABULARY.getDisplayName(t.getType()))) {
-                    pw.println("Linha " + t.getLine() + ": cadeia literal nao fechada");
-                    continuar = false;
-                } else if ("ERRO_COMENTARIO".equals(CFLexer.VOCABULARY.getDisplayName(t.getType()))) {
-                    pw.println("Linha " + t.getLine() + ": comentario nao fechado");
-                    continuar = false;
+        boolean hasError = false;
+
+        while ((t = lexer.nextToken()).getType() != Token.EOF && !hasError) {
+            if ("ERRO".equals(CFLexer.VOCABULARY.getDisplayName(t.getType()))) {
+                pw.println("Linha " + t.getLine() + ": " + t.getText() + " - simbolo nao identificado");
+                hasError = true;
+            } else if ("ERRO_CADEIA".equals(CFLexer.VOCABULARY.getDisplayName(t.getType()))) {
+                pw.println("Linha " + t.getLine() + ": cadeia literal nao fechada");
+                hasError = true;
+            } else if ("ERRO_COMENTARIO".equals(CFLexer.VOCABULARY.getDisplayName(t.getType()))) {
+                pw.println("Linha " + t.getLine() + ": comentario nao fechado");
+                hasError = true;
+            } else {
+                // para rodar os casos de testes léxicos,
+                // descomentar essa linha e a linha de "Fim da compilacao" na função principal
+                // pw.println("<'" + t.getText() + "'," + CFLexer.VOCABULARY.getDisplayName(t.getType()) + ">");
+            }
+        }
+
+        return hasError;
+    }
+
+    public static boolean hasErrosSintaticos(String args[], PrintWriter pw) throws IOException {
+        CharStream cs = CharStreams.fromFileName(args[0]);
+        CFLexer lexer = new CFLexer(cs);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        CFParser parser = new CFParser(tokens);
+
+        boolean hasError = false;
+
+        parser.removeErrorListeners();
+        CFSintatico mcel = new CFSintatico(pw);
+        parser.addErrorListener(mcel);
+
+        // tratamento de erros sintáticos agora é feito com exceções,
+        // dessa forma é mais prático para o erro "subir" de instância
+        try {
+            parser.programa();
+        } catch (Exception e) {
+            pw.println(e.getMessage());
+            hasError = true;
+        }
+
+        return hasError;
+    }
+
+    public static boolean hasErrosSemanticos(String args[], PrintWriter pw) throws IOException {
+        CharStream cs = CharStreams.fromFileName(args[0]);
+        CFLexer lexer = new CFLexer(cs);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        CFParser parser = new CFParser(tokens);
+        ProgramaContext arvore = parser.programa();
+        CFSemantico as = new CFSemantico();
+        as.visitPrograma(arvore);
+        CFSemantico.errosSemanticos.forEach((s) -> pw.println(s));
+
+        // retorna false se a lista de erros semanticos estiver vazia
+        // ou seja, false = não há erros
+        return !CFSemantico.errosSemanticos.isEmpty();
+    }
+
+    public static void main(String args[]) throws IOException {
+        try (PrintWriter pw = new PrintWriter(new File(args[1]))) {
+            boolean hasErrosLexicos = hasErrosLexicos(args, pw);
+            boolean hasErrosSintaticos = false;
+            boolean hasErrosSemanticos = false;
+
+            if (!hasErrosLexicos) {
+                hasErrosSintaticos = hasErrosSintaticos(args, pw);
+
+                if (!hasErrosSintaticos) {
+                    hasErrosSemanticos = hasErrosSemanticos(args, pw);
+
+//                    if (!hasErrosSemanticos) {
+//                        CharStream cs = CharStreams.fromFileName(args[0]);
+//                        CFLexer lexer = new CFLexer(cs);
+//                        CommonTokenStream tokens = new CommonTokenStream(lexer);
+//                        CFParser parser = new CFParser(tokens);
+//                        ProgramaContext arvore = parser.programa();
+//                        CFSemantico as = new CFSemantico();
+//                        as.visitPrograma(arvore);
+//                        CFGeradorC lagc = new CFGeradorC();;
+//                        lagc.visitPrograma(arvore);
+//                        try{
+//                            pw.print(lagc.saida.toString());
+//                        }
+//                        catch(Exception e){
+//                            e.printStackTrace();
+//                        }
+//                    }
                 }
-
-                pw.println("<" + CFLexer.VOCABULARY.getDisplayName(t.getType()) + "," + t.getText() + ">");
             }
-            
-            //para caso ja tenha encontrado erros lexicos
-            if (continuar) {
-                //reinicia a lista de tokens para analisar a sintaxe
-                lexer.reset();
-                CommonTokenStream tokens = new CommonTokenStream(lexer);
-                CFParser parser = new CFParser(tokens);
 
-                //remover os erros padroes do terminal
-                parser.removeErrorListeners();
-                // Registrar o error lister personalizado aqui
-                MyCustomErrorListener mcel = new MyCustomErrorListener(pw);
-                parser.addErrorListener(mcel);
-
-                parser.programa();
+            if (hasErrosLexicos || hasErrosSintaticos || hasErrosSemanticos) {
+                pw.println("Fim da compilacao");
             }
-            //necessario pros testes disponibilizados pelo professor
-        pw.println("Fim da compilacao");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -56,23 +56,23 @@ ERRO: . ;
 
 programa: produtos impostos (taxas)? loja nota+ EOF;
 
-produtos: 'PRODUTOS' DELIM precos*;
+produtos: 'PRODUTOS' DELIM precos+;
 
-precos: (nome (',' nome)* '=' (NUM_INT | NUM_REAL) BARRA UNIDADE_MEDIDA)+;
+precos: nome (',' nome)* '=' (NUM_INT | NUM_REAL) BARRA UNIDADE_MEDIDA;
 
 nome: (IDENT)+ ;
 
-impostos: 'IMPOSTOS' DELIM porcentagens*;
+impostos: 'IMPOSTOS' DELIM porcentagens+;
 
-porcentagens: (nome (',' nome)* '=' (NEGATIVO)? (NUM_INT | NUM_REAL) PORCENTAGEM)+;
+porcentagens: nome (',' nome)* '=' (NEGATIVO)? (NUM_INT | NUM_REAL) PORCENTAGEM;
 
 taxas: 'TAXAS_EXTRAS' DELIM porcentagens*;
 
 loja: 'LOJA' DELIM 'NOME' '=' (nome) 'CNPJ' '=' CNPJ | 'LOJA' DELIM 'CNPJ' '=' CNPJ 'LOJA' DELIM 'NOME' '=' nome;
 
-nota: 'NOTA' DELIM itens* (infos)?;
+nota: 'NOTA' DELIM itens+ (infos)?;
 
-itens : ((NUM_INT | NUM_REAL) nome)+;
+itens : (NUM_INT | NUM_REAL) nome;
 
 infos: 'CPF' CPF;
 

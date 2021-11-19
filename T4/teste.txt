@@ -1,6 +1,6 @@
 PRODUTOS: 
 
-pao = 9.98/kg 
+pao de queijo = 9.98/kg 
 cadeira = 40/un
 
 // verificacao semantica se o produto declarado acima tem imposto
@@ -8,7 +8,7 @@ cadeira = 40/un
 // verificacao semantica se o imposto nao é negativo
 IMPOSTOS:
 
-pao, leite = 20%
+pao de queijo, leite = 20%
 cadeira = 45%
 batata = 15%
 
