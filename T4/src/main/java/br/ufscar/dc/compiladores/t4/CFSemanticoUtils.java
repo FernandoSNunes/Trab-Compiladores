@@ -27,13 +27,13 @@ public class CFSemanticoUtils {
         return valor;
     }
 
-    static String getNomePorcentagem(CFParser.NomeContext porcentagem) {
+    static String getNome(CFParser.NomeContext vetorNome) {
         String nome = "";
 
-        for (int i = 0; i < porcentagem.IDENT().size(); i++) {
+        for (int i = 0; i < vetorNome.IDENT().size(); i++) {
             if (i > 0)
                 nome += " ";
-            nome += porcentagem.IDENT(i).getText();
+            nome += vetorNome.IDENT(i).getText();
         }
 
         return nome;

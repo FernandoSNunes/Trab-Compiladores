@@ -34,12 +34,7 @@ public class CFSemantico extends CFBaseVisitor<Void> {
                     : TipoCF.QUILO;
 
             for (CFParser.NomeContext no : ctx.precos(i).nome()) {
-                String nome = "";
-                for (int j = 0; j < no.IDENT().size(); j++) {
-                    if (j > 0)
-                        nome += " ";
-                    nome += no.IDENT(j).getText();
-                }
+                String nome = CFSemanticoUtils.getNome(no);
 
                 if (tabela.existe(nome)) {
                     adicionarErroSemantico(no.start, "Produto " + nome + " duplicado");
@@ -58,7 +53,7 @@ public class CFSemantico extends CFBaseVisitor<Void> {
         for (PorcentagensContext porcentagemCtx : ctx.porcentagens()) {
 
             for (CFParser.NomeContext porcentagem : porcentagemCtx.nome()) {
-                String nome = CFSemanticoUtils.getNomePorcentagem(porcentagem);
+                String nome = CFSemanticoUtils.getNome(porcentagem);
 
                 if (!tabela.existe(nome)) {
                     adicionarErroSemantico(porcentagem.start, "Produto " + nome + " nao foi declarado em PRODUTOS");
@@ -83,7 +78,7 @@ public class CFSemantico extends CFBaseVisitor<Void> {
         for (PorcentagensContext porcentagemCtx : ctx.porcentagens()) {
 
             for (CFParser.NomeContext porcentagem : porcentagemCtx.nome()) {
-                String nome = CFSemanticoUtils.getNomePorcentagem(porcentagem);
+                String nome = CFSemanticoUtils.getNome(porcentagem);
 
                 if (tabela.existe(nome)) {
                     adicionarErroSemantico(porcentagem.start, nome + " ja declarado anteriormente");
@@ -98,4 +93,7 @@ public class CFSemantico extends CFBaseVisitor<Void> {
         return super.visitTaxas(ctx);
     }
 
+    
+    
+    
 }
