@@ -2,6 +2,8 @@ PRODUTOS:
 
 pao de queijo = 9.98/kg 
 cadeira = 40/un
+leite = 3.98/un
+batata = 3.20/kg
 
 // verificacao semantica se o produto declarado acima tem imposto
 // verificacao semantica se o imposto nao é maior que 100%
@@ -9,7 +11,7 @@ cadeira = 40/un
 IMPOSTOS:
 
 pao de queijo, leite = 20%
-cadeira = 45%
+cadeira = 450%
 batata = 15%
 
 

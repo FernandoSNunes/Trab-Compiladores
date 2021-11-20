@@ -1,3 +1,0 @@
-Linha 11: Produto leite nao foi declarado em PRODUTOS
-Linha 13: Produto batata nao foi declarado em PRODUTOS
-Fim da compilacao
