@@ -31,6 +31,10 @@ public class TabelaDeSimbolos {
         private void EntradaImposto(double imposto){
             this.imposto = imposto;
         }
+        
+        private double getImposto(){
+                return this.imposto;
+        }
     }
 
     private final Map<String, EntradaTabelaDeSimbolos> tabela;
@@ -76,4 +80,16 @@ public class TabelaDeSimbolos {
         return -1;
 
     }
+    
+    
+    
+    public boolean impostoRegistrado(String nome){
+        EntradaTabelaDeSimbolos aux = tabela.get(nome);
+        if (aux != null) {
+            if (aux.getImposto() != -1)
+                return true;
+        }
+        return false;
+        
+    } 
 }

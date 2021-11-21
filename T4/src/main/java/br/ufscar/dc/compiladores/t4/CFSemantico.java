@@ -33,8 +33,8 @@ public class CFSemantico extends CFBaseVisitor<Void> {
         for (PrecosContext preco : ctx.precos()) {
 
             TabelaDeSimbolos.TipoCF tipo = preco.UNIDADE_MEDIDA().getText().equals("un")
-                ? TipoCF.UNIDADE
-                : TipoCF.QUILO;
+                    ? TipoCF.UNIDADE
+                    : TipoCF.QUILO;
 
             for (CFParser.NomeContext nome : preco.nome()) {
                 String nomeProduto = CFUtils.getNome(nome);
@@ -63,15 +63,18 @@ public class CFSemantico extends CFBaseVisitor<Void> {
                     adicionarErroSemantico(porcentagemCtx.start, "Imposto nao pode ser negativo");
                 } else if (CFUtils.getValorPorcentagem(porcentagemCtx) > 100) {
                     adicionarErroSemantico(porcentagemCtx.start, "Imposto nao pode ser maior que 100%");
-                }
-                else{
+                } else {
                     tabela.adicionarImposto(CFUtils.getValorPorcentagem(porcentagemCtx), nome);
                 }
             }
         }
-        
+
         Object[] produtos = tabela.teste();
-        System.out.println(produtos[1]);
+        for (int i = 0; i < produtos.length; i++) {
+            if (! tabela.impostoRegistrado(produtos[i].toString())) {
+                adicionarErroSemantico(ctx.start, "Imposto de " + produtos[i].toString() + " nao declarado");
+            }
+        }
         //tabela.teste();
 
         return super.visitImpostos(ctx);
