@@ -50,8 +50,6 @@ public class Principal {
         CFSintatico mcel = new CFSintatico(pw);
         parser.addErrorListener(mcel);
 
-        // tratamento de erros sintáticos agora é feito com exceções,
-        // dessa forma é mais prático para o erro "subir" de instância
         try {
             parser.programa();
         } catch (Exception e) {
@@ -72,8 +70,6 @@ public class Principal {
         as.visitPrograma(arvore);
         CFSemantico.errosSemanticos.forEach((s) -> pw.println(s));
 
-        // retorna false se a lista de erros semanticos estiver vazia
-        // ou seja, false = não há erros
         return !CFSemantico.errosSemanticos.isEmpty();
     }
 
@@ -89,23 +85,23 @@ public class Principal {
                 if (!hasErrosSintaticos) {
                     hasErrosSemanticos = hasErrosSemanticos(args, pw);
 
-//                    if (!hasErrosSemanticos) {
-//                        CharStream cs = CharStreams.fromFileName(args[0]);
-//                        CFLexer lexer = new CFLexer(cs);
-//                        CommonTokenStream tokens = new CommonTokenStream(lexer);
-//                        CFParser parser = new CFParser(tokens);
-//                        ProgramaContext arvore = parser.programa();
-//                        CFSemantico as = new CFSemantico();
-//                        as.visitPrograma(arvore);
-//                        CFGeradorC lagc = new CFGeradorC();;
-//                        lagc.visitPrograma(arvore);
-//                        try{
-//                            pw.print(lagc.saida.toString());
-//                        }
-//                        catch(Exception e){
-//                            e.printStackTrace();
-//                        }
-//                    }
+                   if (!hasErrosSemanticos) {
+                       CharStream cs = CharStreams.fromFileName(args[0]);
+                       CFLexer lexer = new CFLexer(cs);
+                       CommonTokenStream tokens = new CommonTokenStream(lexer);
+                       CFParser parser = new CFParser(tokens);
+                       ProgramaContext arvore = parser.programa();
+                       CFSemantico as = new CFSemantico();
+                       as.visitPrograma(arvore);
+                       CFGerador gerador = new CFGerador();
+                       gerador.visitPrograma(arvore);
+                       try{
+                           pw.print(gerador.saida.toString());
+                       }
+                       catch(Exception e){
+                           e.printStackTrace();
+                       }
+                   }
                 }
             }
 

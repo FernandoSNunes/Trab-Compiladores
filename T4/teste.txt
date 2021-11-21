@@ -10,9 +10,9 @@ batata = 3.20/kg
 // verificacao semantica se o imposto nao é negativo
 IMPOSTOS:
 
-pao de queijo, leite = 20%
-cadeira = 450%
-batata = 15%
+pao de queijo, leite = 10%
+cadeira = 10%
+batata = 10%
 
 
 TAXAS_EXTRAS:
@@ -26,8 +26,8 @@ CNPJ = 24.786.831/0001-90
 
 NOTA:
 
-0.400 pao
-0.3 cadeira // verificação semantica de preço unitário não poder ser valor real
+0.400 pao de queijo
+1 cadeira // verificação semantica de preço unitário não poder ser valor real
 CPF 001.892.019-76
 
 

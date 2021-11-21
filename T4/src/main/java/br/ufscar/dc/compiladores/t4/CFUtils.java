@@ -1,6 +1,7 @@
 package br.ufscar.dc.compiladores.t4;
 
 import br.ufscar.dc.compiladores.t4.CFParser.PorcentagensContext;
+import br.ufscar.dc.compiladores.t4.CFParser.PrecosContext;
 
 public class CFUtils {
     static Double getValorPorcentagem(PorcentagensContext porcentagem) {
@@ -14,6 +15,18 @@ public class CFUtils {
 
         if (isPorcentagemNegativa(porcentagem)) {
             valor = -valor;
+        }
+
+        return valor;
+    }
+
+    static Double getValorPreco(PrecosContext preco) {
+        Double valor = -1.0;
+
+        if (preco.NUM_INT() != null && preco.NUM_INT().getText() != "") {
+            valor = Double.parseDouble(preco.NUM_INT().getText());
+        } else if (preco.NUM_REAL() != null && preco.NUM_REAL().getText() != "") {
+            valor = Double.parseDouble(preco.NUM_REAL().getText());
         }
 
         return valor;

@@ -3,6 +3,7 @@ package br.ufscar.dc.compiladores.t4;
 import br.ufscar.dc.compiladores.t4.CFParser.ItensContext;
 import br.ufscar.dc.compiladores.t4.CFParser.NotaContext;
 import br.ufscar.dc.compiladores.t4.CFParser.PorcentagensContext;
+import br.ufscar.dc.compiladores.t4.CFParser.PrecosContext;
 import br.ufscar.dc.compiladores.t4.CFParser.TaxasContext;
 import br.ufscar.dc.compiladores.t4.TabelaDeSimbolos.TipoCF;
 import java.util.ArrayList;
@@ -29,18 +30,19 @@ public class CFSemantico extends CFBaseVisitor<Void> {
     @Override
     public Void visitProdutos(CFParser.ProdutosContext ctx) {
 
-        for (int i = 0; i < ctx.precos().size(); i++) {
+        for (PrecosContext preco : ctx.precos()) {
 
-            TabelaDeSimbolos.TipoCF tipo = ctx.precos(i).UNIDADE_MEDIDA().getText().equals("un") ? TipoCF.UNIDADE
-                    : TipoCF.QUILO;
+            TabelaDeSimbolos.TipoCF tipo = preco.UNIDADE_MEDIDA().getText().equals("un")
+                ? TipoCF.UNIDADE
+                : TipoCF.QUILO;
 
-            for (CFParser.NomeContext no : ctx.precos(i).nome()) {
-                String nome = CFUtils.getNome(no);
+            for (CFParser.NomeContext nome : preco.nome()) {
+                String nomeProduto = CFUtils.getNome(nome);
 
-                if (tabela.existe(nome)) {
-                    adicionarErroSemantico(no.start, "Produto " + nome + " duplicado");
+                if (tabela.existe(nomeProduto)) {
+                    adicionarErroSemantico(nome.start, "Produto " + nomeProduto + " duplicado");
                 } else {
-                    tabela.adicionar(nome, tipo);
+                    tabela.adicionar(nomeProduto, tipo);
                 }
             }
         }
@@ -51,8 +53,8 @@ public class CFSemantico extends CFBaseVisitor<Void> {
     public Void visitImpostos(CFParser.ImpostosContext ctx) {
 
         for (PorcentagensContext porcentagemCtx : ctx.porcentagens()) {
-
             for (CFParser.NomeContext porcentagem : porcentagemCtx.nome()) {
+
                 String nome = CFUtils.getNome(porcentagem);
 
                 if (!tabela.existe(nome)) {
@@ -72,7 +74,6 @@ public class CFSemantico extends CFBaseVisitor<Void> {
     public Void visitTaxas(TaxasContext ctx) {
 
         for (PorcentagensContext porcentagemCtx : ctx.porcentagens()) {
-
             for (CFParser.NomeContext porcentagem : porcentagemCtx.nome()) {
                 String nome = CFUtils.getNome(porcentagem);
 
