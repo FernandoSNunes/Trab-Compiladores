@@ -64,8 +64,15 @@ public class CFSemantico extends CFBaseVisitor<Void> {
                 } else if (CFUtils.getValorPorcentagem(porcentagemCtx) > 100) {
                     adicionarErroSemantico(porcentagemCtx.start, "Imposto nao pode ser maior que 100%");
                 }
+                else{
+                    tabela.adicionarImposto(CFUtils.getValorPorcentagem(porcentagemCtx), nome);
+                }
             }
         }
+        
+        Object[] produtos = tabela.teste();
+        System.out.println(produtos[1]);
+        //tabela.teste();
 
         return super.visitImpostos(ctx);
     }

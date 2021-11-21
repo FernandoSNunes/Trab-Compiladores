@@ -1,7 +1,9 @@
 package br.ufscar.dc.compiladores.t4;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class TabelaDeSimbolos {
 
@@ -17,11 +19,17 @@ public class TabelaDeSimbolos {
 
         String nome;
         TipoCF tipo;
-
+        double imposto;
+        
+        
         private EntradaTabelaDeSimbolos(String nome, TipoCF tipo) {
             this.nome = nome;
             this.tipo = tipo;
-
+            this.imposto = -1;
+        }
+        
+        private void EntradaImposto(double imposto){
+            this.imposto = imposto;
         }
     }
 
@@ -30,7 +38,12 @@ public class TabelaDeSimbolos {
     public TabelaDeSimbolos() {
         this.tabela = new HashMap<>();
     }
-
+    
+    public Object[] teste(){
+        return this.tabela.keySet().toArray();
+        //System.out.println(this.tabela.keySet());
+    }
+    
     public TipoCF verificar(String nome) {
         EntradaTabelaDeSimbolos aux = tabela.get(nome);
         if (aux != null) {
@@ -53,5 +66,14 @@ public class TabelaDeSimbolos {
             System.out.println(obj.getKey() + " - " + obj.getValue().tipo);
         }
     }
+    
+    public int adicionarImposto(double imposto, String nome){
+        EntradaTabelaDeSimbolos aux = tabela.get(nome);
+        if (aux != null) {
+            aux.EntradaImposto(imposto);
+            return 1;
+        }
+        return -1;
 
+    }
 }
