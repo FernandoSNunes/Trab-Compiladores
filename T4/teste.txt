@@ -14,6 +14,8 @@ pao de queijo, leite = 10%
 cadeira = 10%
 batata = 10%
 
+IMPOSTOS:
+PRODUTOS:
 
 TAXAS_EXTRAS:
 garcom = 10%
@@ -29,7 +31,3 @@ NOTA:
 0.400 pao de queijo
 1 cadeira // verificação semantica de preço unitário não poder ser valor real
 CPF 001.892.019-76
-
-
-
-

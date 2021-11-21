@@ -1,0 +1,26 @@
+PRODUTOS: 
+
+pao de queijo = 10/kg 
+cadeira = 50/un
+leite = 3.98/un
+// batata = 3.20/kg // batata comentada vai dar dois erros semanticos
+
+IMPOSTOS:
+
+pao de queijo, leite = 10%
+cadeira = 450% // imposto maior que 100%
+batata = 10%
+
+
+LOJA:
+NOME = Armazem do sucesso
+CNPJ = 24.786.831/0001-90
+
+
+NOTA:
+
+1.0 pao de queijo
+1 cadeira
+3 leite
+3.220 batata
+CPF 001.892.019-76

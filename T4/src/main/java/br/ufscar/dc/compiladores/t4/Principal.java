@@ -22,16 +22,6 @@ public class Principal {
             if ("ERRO".equals(CFLexer.VOCABULARY.getDisplayName(t.getType()))) {
                 pw.println("Linha " + t.getLine() + ": " + t.getText() + " - simbolo nao identificado");
                 hasError = true;
-            } else if ("ERRO_CADEIA".equals(CFLexer.VOCABULARY.getDisplayName(t.getType()))) {
-                pw.println("Linha " + t.getLine() + ": cadeia literal nao fechada");
-                hasError = true;
-            } else if ("ERRO_COMENTARIO".equals(CFLexer.VOCABULARY.getDisplayName(t.getType()))) {
-                pw.println("Linha " + t.getLine() + ": comentario nao fechado");
-                hasError = true;
-            } else {
-                // para rodar os casos de testes léxicos,
-                // descomentar essa linha e a linha de "Fim da compilacao" na função principal
-                // pw.println("<'" + t.getText() + "'," + CFLexer.VOCABULARY.getDisplayName(t.getType()) + ">");
             }
         }
 

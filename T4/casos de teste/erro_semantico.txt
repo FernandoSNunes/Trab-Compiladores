@@ -1,0 +1,20 @@
+PRODUTOS: 
+
+larger = 15/un
+pilsen = 10/un
+bock = 13/un
+
+IMPOSTOS:
+
+larger, pilsen, bock = 35%
+
+LOJA:
+NOME = Chopperia
+CNPJ = 24.786.831/0001-90
+
+
+NOTA:
+
+3.5 pilsen
+1.3 bock
+CPF 001.892.019-76

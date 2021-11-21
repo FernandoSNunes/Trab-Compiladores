@@ -1,6 +1,6 @@
-br/ufscar/dc/compiladores/t4/TabelaDeSimbolos$1.class
-br/ufscar/dc/compiladores/t4/CFSintatico.class
-br/ufscar/dc/compiladores/t4/TabelaDeSimbolos$EntradaTabelaDeSimbolos.class
-br/ufscar/dc/compiladores/t4/TabelaDeSimbolos$TipoCF.class
-br/ufscar/dc/compiladores/t4/TabelaDeSimbolos.class
-br/ufscar/dc/compiladores/t4/CFGerador.class
+br\ufscar\dc\compiladores\t4\TabelaDeSimbolos$EntradaTabelaDeSimbolos.class
+br\ufscar\dc\compiladores\t4\TabelaDeSimbolos$1.class
+br\ufscar\dc\compiladores\t4\TabelaDeSimbolos.class
+br\ufscar\dc\compiladores\t4\CFGerador.class
+br\ufscar\dc\compiladores\t4\TabelaDeSimbolos$TipoCF.class
+br\ufscar\dc\compiladores\t4\CFSintatico.class

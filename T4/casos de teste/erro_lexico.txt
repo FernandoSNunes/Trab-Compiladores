@@ -1,0 +1,19 @@
+PRODUTOS: 
+
+queijo = 9.98/kg
+caixao = 800/un
+
+IMPOSTOS:
+*
+queijo = 10%
+
+LOJA:
+NOME = Armazem do sucesso
+CNPJ = 24.786.831/0001-90
+
+NOTA:
+
+0,35 queijo
+1 caixao
+CPF 001.892.019-76
+*

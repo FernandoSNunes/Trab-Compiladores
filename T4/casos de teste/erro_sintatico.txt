@@ -1,0 +1,23 @@
+PRODUTOS: 
+
+leite = 3.98/un
+batata = 3.20/kg
+
+IMPOSTOS:
+
+leite = 5%
+batata = 15%
+
+TAXAS_EXTRAS
+garcom = 10%
+aniversariante = -10%
+
+LOJA:
+NOME = Ferramentaria panificadora
+CNPJ = 24.786.831/0001-90
+
+NOTA:
+
+1 leite
+5 batata
+CPF 001.892.019-76
