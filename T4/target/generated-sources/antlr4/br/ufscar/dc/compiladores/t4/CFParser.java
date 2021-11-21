@@ -1,4 +1,4 @@
-// Generated from br\u005Cufscar\dc\compiladores\t4\CF.g4 by ANTLR 4.7.2
+// Generated from br/ufscar/dc/compiladores/t4/CF.g4 by ANTLR 4.7.2
 package br.ufscar.dc.compiladores.t4;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -229,20 +229,20 @@ public class CFParser extends Parser {
 			match(T__0);
 			setState(36);
 			match(DELIM);
-			setState(40);
+			setState(38); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==IDENT) {
+			do {
 				{
 				{
 				setState(37);
 				precos();
 				}
 				}
-				setState(42);
+				setState(40); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			}
+			} while ( _la==IDENT );
 			}
 		}
 		catch (RecognitionException re) {
@@ -263,26 +263,11 @@ public class CFParser extends Parser {
 		public NomeContext nome(int i) {
 			return getRuleContext(NomeContext.class,i);
 		}
-		public List<TerminalNode> ATRIBUICAO() { return getTokens(CFParser.ATRIBUICAO); }
-		public TerminalNode ATRIBUICAO(int i) {
-			return getToken(CFParser.ATRIBUICAO, i);
-		}
-		public List<TerminalNode> BARRA() { return getTokens(CFParser.BARRA); }
-		public TerminalNode BARRA(int i) {
-			return getToken(CFParser.BARRA, i);
-		}
-		public List<TerminalNode> UNIDADE_MEDIDA() { return getTokens(CFParser.UNIDADE_MEDIDA); }
-		public TerminalNode UNIDADE_MEDIDA(int i) {
-			return getToken(CFParser.UNIDADE_MEDIDA, i);
-		}
-		public List<TerminalNode> NUM_INT() { return getTokens(CFParser.NUM_INT); }
-		public TerminalNode NUM_INT(int i) {
-			return getToken(CFParser.NUM_INT, i);
-		}
-		public List<TerminalNode> NUM_REAL() { return getTokens(CFParser.NUM_REAL); }
-		public TerminalNode NUM_REAL(int i) {
-			return getToken(CFParser.NUM_REAL, i);
-		}
+		public TerminalNode ATRIBUICAO() { return getToken(CFParser.ATRIBUICAO, 0); }
+		public TerminalNode BARRA() { return getToken(CFParser.BARRA, 0); }
+		public TerminalNode UNIDADE_MEDIDA() { return getToken(CFParser.UNIDADE_MEDIDA, 0); }
+		public TerminalNode NUM_INT() { return getToken(CFParser.NUM_INT, 0); }
+		public TerminalNode NUM_REAL() { return getToken(CFParser.NUM_REAL, 0); }
 		public List<TerminalNode> VIRGULA() { return getTokens(CFParser.VIRGULA); }
 		public TerminalNode VIRGULA(int i) {
 			return getToken(CFParser.VIRGULA, i);
@@ -311,61 +296,42 @@ public class CFParser extends Parser {
 		enterRule(_localctx, 4, RULE_precos);
 		int _la;
 		try {
-			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(56); 
+			setState(42);
+			nome();
+			setState(47);
 			_errHandler.sync(this);
-			_alt = 1;
-			do {
-				switch (_alt) {
-				case 1:
-					{
-					{
-					setState(43);
-					nome();
-					setState(48);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					while (_la==VIRGULA) {
-						{
-						{
-						setState(44);
-						match(VIRGULA);
-						setState(45);
-						nome();
-						}
-						}
-						setState(50);
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-					}
-					setState(51);
-					match(ATRIBUICAO);
-					setState(52);
-					_la = _input.LA(1);
-					if ( !(_la==NUM_INT || _la==NUM_REAL) ) {
-					_errHandler.recoverInline(this);
-					}
-					else {
-						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-						_errHandler.reportMatch(this);
-						consume();
-					}
-					setState(53);
-					match(BARRA);
-					setState(54);
-					match(UNIDADE_MEDIDA);
-					}
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
+			_la = _input.LA(1);
+			while (_la==VIRGULA) {
+				{
+				{
+				setState(43);
+				match(VIRGULA);
+				setState(44);
+				nome();
 				}
-				setState(58); 
+				}
+				setState(49);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
-			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+				_la = _input.LA(1);
+			}
+			setState(50);
+			match(ATRIBUICAO);
+			setState(51);
+			_la = _input.LA(1);
+			if ( !(_la==NUM_INT || _la==NUM_REAL) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(52);
+			match(BARRA);
+			setState(53);
+			match(UNIDADE_MEDIDA);
 			}
 		}
 		catch (RecognitionException re) {
@@ -410,17 +376,17 @@ public class CFParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(61); 
+			setState(56); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(60);
+				setState(55);
 				match(IDENT);
 				}
 				}
-				setState(63); 
+				setState(58); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==IDENT );
@@ -471,24 +437,24 @@ public class CFParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(65);
+			setState(60);
 			match(T__1);
-			setState(66);
+			setState(61);
 			match(DELIM);
-			setState(70);
+			setState(63); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==IDENT) {
+			do {
 				{
 				{
-				setState(67);
+				setState(62);
 				porcentagens();
 				}
 				}
-				setState(72);
+				setState(65); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			}
+			} while ( _la==IDENT );
 			}
 		}
 		catch (RecognitionException re) {
@@ -509,30 +475,15 @@ public class CFParser extends Parser {
 		public NomeContext nome(int i) {
 			return getRuleContext(NomeContext.class,i);
 		}
-		public List<TerminalNode> ATRIBUICAO() { return getTokens(CFParser.ATRIBUICAO); }
-		public TerminalNode ATRIBUICAO(int i) {
-			return getToken(CFParser.ATRIBUICAO, i);
-		}
-		public List<TerminalNode> PORCENTAGEM() { return getTokens(CFParser.PORCENTAGEM); }
-		public TerminalNode PORCENTAGEM(int i) {
-			return getToken(CFParser.PORCENTAGEM, i);
-		}
-		public List<TerminalNode> NUM_INT() { return getTokens(CFParser.NUM_INT); }
-		public TerminalNode NUM_INT(int i) {
-			return getToken(CFParser.NUM_INT, i);
-		}
-		public List<TerminalNode> NUM_REAL() { return getTokens(CFParser.NUM_REAL); }
-		public TerminalNode NUM_REAL(int i) {
-			return getToken(CFParser.NUM_REAL, i);
-		}
+		public TerminalNode ATRIBUICAO() { return getToken(CFParser.ATRIBUICAO, 0); }
+		public TerminalNode PORCENTAGEM() { return getToken(CFParser.PORCENTAGEM, 0); }
+		public TerminalNode NUM_INT() { return getToken(CFParser.NUM_INT, 0); }
+		public TerminalNode NUM_REAL() { return getToken(CFParser.NUM_REAL, 0); }
 		public List<TerminalNode> VIRGULA() { return getTokens(CFParser.VIRGULA); }
 		public TerminalNode VIRGULA(int i) {
 			return getToken(CFParser.VIRGULA, i);
 		}
-		public List<TerminalNode> NEGATIVO() { return getTokens(CFParser.NEGATIVO); }
-		public TerminalNode NEGATIVO(int i) {
-			return getToken(CFParser.NEGATIVO, i);
-		}
+		public TerminalNode NEGATIVO() { return getToken(CFParser.NEGATIVO, 0); }
 		public PorcentagensContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -557,69 +508,50 @@ public class CFParser extends Parser {
 		enterRule(_localctx, 10, RULE_porcentagens);
 		int _la;
 		try {
-			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(88); 
+			setState(67);
+			nome();
+			setState(72);
 			_errHandler.sync(this);
-			_alt = 1;
-			do {
-				switch (_alt) {
-				case 1:
-					{
-					{
-					setState(73);
-					nome();
-					setState(78);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					while (_la==VIRGULA) {
-						{
-						{
-						setState(74);
-						match(VIRGULA);
-						setState(75);
-						nome();
-						}
-						}
-						setState(80);
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-					}
-					setState(81);
-					match(ATRIBUICAO);
-					setState(83);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					if (_la==NEGATIVO) {
-						{
-						setState(82);
-						match(NEGATIVO);
-						}
-					}
-
-					setState(85);
-					_la = _input.LA(1);
-					if ( !(_la==NUM_INT || _la==NUM_REAL) ) {
-					_errHandler.recoverInline(this);
-					}
-					else {
-						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-						_errHandler.reportMatch(this);
-						consume();
-					}
-					setState(86);
-					match(PORCENTAGEM);
-					}
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
+			_la = _input.LA(1);
+			while (_la==VIRGULA) {
+				{
+				{
+				setState(68);
+				match(VIRGULA);
+				setState(69);
+				nome();
 				}
-				setState(90); 
+				}
+				setState(74);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
-			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+				_la = _input.LA(1);
+			}
+			setState(75);
+			match(ATRIBUICAO);
+			setState(77);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==NEGATIVO) {
+				{
+				setState(76);
+				match(NEGATIVO);
+				}
+			}
+
+			setState(79);
+			_la = _input.LA(1);
+			if ( !(_la==NUM_INT || _la==NUM_REAL) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(80);
+			match(PORCENTAGEM);
 			}
 		}
 		catch (RecognitionException re) {
@@ -667,21 +599,21 @@ public class CFParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(92);
+			setState(82);
 			match(T__2);
-			setState(93);
+			setState(83);
 			match(DELIM);
-			setState(97);
+			setState(87);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==IDENT) {
 				{
 				{
-				setState(94);
+				setState(84);
 				porcentagens();
 				}
 				}
-				setState(99);
+				setState(89);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -734,54 +666,54 @@ public class CFParser extends Parser {
 		LojaContext _localctx = new LojaContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_loja);
 		try {
-			setState(119);
+			setState(109);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,11,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(100);
+				setState(90);
 				match(T__3);
-				setState(101);
+				setState(91);
 				match(DELIM);
-				setState(102);
+				setState(92);
 				match(T__4);
-				setState(103);
+				setState(93);
 				match(ATRIBUICAO);
 				{
-				setState(104);
+				setState(94);
 				nome();
 				}
-				setState(105);
+				setState(95);
 				match(T__5);
-				setState(106);
+				setState(96);
 				match(ATRIBUICAO);
-				setState(107);
+				setState(97);
 				match(CNPJ);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(109);
+				setState(99);
 				match(T__3);
-				setState(110);
+				setState(100);
 				match(DELIM);
-				setState(111);
+				setState(101);
 				match(T__5);
-				setState(112);
+				setState(102);
 				match(ATRIBUICAO);
-				setState(113);
+				setState(103);
 				match(CNPJ);
-				setState(114);
+				setState(104);
 				match(T__3);
-				setState(115);
+				setState(105);
 				match(DELIM);
-				setState(116);
+				setState(106);
 				match(T__4);
-				setState(117);
+				setState(107);
 				match(ATRIBUICAO);
-				setState(118);
+				setState(108);
 				nome();
 				}
 				break;
@@ -835,30 +767,30 @@ public class CFParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(121);
+			setState(111);
 			match(T__6);
-			setState(122);
+			setState(112);
 			match(DELIM);
-			setState(126);
+			setState(114); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==NUM_INT || _la==NUM_REAL) {
+			do {
 				{
 				{
-				setState(123);
+				setState(113);
 				itens();
 				}
 				}
-				setState(128);
+				setState(116); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			}
-			setState(130);
+			} while ( _la==NUM_INT || _la==NUM_REAL );
+			setState(119);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__7) {
 				{
-				setState(129);
+				setState(118);
 				infos();
 				}
 			}
@@ -877,20 +809,11 @@ public class CFParser extends Parser {
 	}
 
 	public static class ItensContext extends ParserRuleContext {
-		public List<NomeContext> nome() {
-			return getRuleContexts(NomeContext.class);
+		public NomeContext nome() {
+			return getRuleContext(NomeContext.class,0);
 		}
-		public NomeContext nome(int i) {
-			return getRuleContext(NomeContext.class,i);
-		}
-		public List<TerminalNode> NUM_INT() { return getTokens(CFParser.NUM_INT); }
-		public TerminalNode NUM_INT(int i) {
-			return getToken(CFParser.NUM_INT, i);
-		}
-		public List<TerminalNode> NUM_REAL() { return getTokens(CFParser.NUM_REAL); }
-		public TerminalNode NUM_REAL(int i) {
-			return getToken(CFParser.NUM_REAL, i);
-		}
+		public TerminalNode NUM_INT() { return getToken(CFParser.NUM_INT, 0); }
+		public TerminalNode NUM_REAL() { return getToken(CFParser.NUM_REAL, 0); }
 		public ItensContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -915,39 +838,20 @@ public class CFParser extends Parser {
 		enterRule(_localctx, 18, RULE_itens);
 		int _la;
 		try {
-			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(134); 
-			_errHandler.sync(this);
-			_alt = 1;
-			do {
-				switch (_alt) {
-				case 1:
-					{
-					{
-					setState(132);
-					_la = _input.LA(1);
-					if ( !(_la==NUM_INT || _la==NUM_REAL) ) {
-					_errHandler.recoverInline(this);
-					}
-					else {
-						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-						_errHandler.reportMatch(this);
-						consume();
-					}
-					setState(133);
-					nome();
-					}
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
-				}
-				setState(136); 
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
-			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+			setState(121);
+			_la = _input.LA(1);
+			if ( !(_la==NUM_INT || _la==NUM_REAL) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(122);
+			nome();
 			}
 		}
 		catch (RecognitionException re) {
@@ -988,9 +892,9 @@ public class CFParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(138);
+			setState(124);
 			match(T__7);
-			setState(139);
+			setState(125);
 			match(CPF);
 			}
 		}
@@ -1006,43 +910,37 @@ public class CFParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\32\u0090\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\32\u0082\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\3\2\3\2\3\2\5\2\34\n\2\3\2\3\2\6\2 \n\2\r\2\16\2!\3\2\3"+
-		"\2\3\3\3\3\3\3\7\3)\n\3\f\3\16\3,\13\3\3\4\3\4\3\4\7\4\61\n\4\f\4\16\4"+
-		"\64\13\4\3\4\3\4\3\4\3\4\3\4\6\4;\n\4\r\4\16\4<\3\5\6\5@\n\5\r\5\16\5"+
-		"A\3\6\3\6\3\6\7\6G\n\6\f\6\16\6J\13\6\3\7\3\7\3\7\7\7O\n\7\f\7\16\7R\13"+
-		"\7\3\7\3\7\5\7V\n\7\3\7\3\7\3\7\6\7[\n\7\r\7\16\7\\\3\b\3\b\3\b\7\bb\n"+
-		"\b\f\b\16\be\13\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t"+
-		"\3\t\3\t\3\t\3\t\3\t\3\t\5\tz\n\t\3\n\3\n\3\n\7\n\177\n\n\f\n\16\n\u0082"+
-		"\13\n\3\n\5\n\u0085\n\n\3\13\3\13\6\13\u0089\n\13\r\13\16\13\u008a\3\f"+
-		"\3\f\3\f\3\f\2\2\r\2\4\6\b\n\f\16\20\22\24\26\2\3\3\2\16\17\2\u0093\2"+
-		"\30\3\2\2\2\4%\3\2\2\2\6:\3\2\2\2\b?\3\2\2\2\nC\3\2\2\2\fZ\3\2\2\2\16"+
-		"^\3\2\2\2\20y\3\2\2\2\22{\3\2\2\2\24\u0088\3\2\2\2\26\u008c\3\2\2\2\30"+
-		"\31\5\4\3\2\31\33\5\n\6\2\32\34\5\16\b\2\33\32\3\2\2\2\33\34\3\2\2\2\34"+
-		"\35\3\2\2\2\35\37\5\20\t\2\36 \5\22\n\2\37\36\3\2\2\2 !\3\2\2\2!\37\3"+
-		"\2\2\2!\"\3\2\2\2\"#\3\2\2\2#$\7\2\2\3$\3\3\2\2\2%&\7\3\2\2&*\7\21\2\2"+
-		"\')\5\6\4\2(\'\3\2\2\2),\3\2\2\2*(\3\2\2\2*+\3\2\2\2+\5\3\2\2\2,*\3\2"+
-		"\2\2-\62\5\b\5\2./\7\22\2\2/\61\5\b\5\2\60.\3\2\2\2\61\64\3\2\2\2\62\60"+
-		"\3\2\2\2\62\63\3\2\2\2\63\65\3\2\2\2\64\62\3\2\2\2\65\66\7\25\2\2\66\67"+
-		"\t\2\2\2\678\7\24\2\289\7\27\2\29;\3\2\2\2:-\3\2\2\2;<\3\2\2\2<:\3\2\2"+
-		"\2<=\3\2\2\2=\7\3\2\2\2>@\7\30\2\2?>\3\2\2\2@A\3\2\2\2A?\3\2\2\2AB\3\2"+
-		"\2\2B\t\3\2\2\2CD\7\4\2\2DH\7\21\2\2EG\5\f\7\2FE\3\2\2\2GJ\3\2\2\2HF\3"+
-		"\2\2\2HI\3\2\2\2I\13\3\2\2\2JH\3\2\2\2KP\5\b\5\2LM\7\22\2\2MO\5\b\5\2"+
-		"NL\3\2\2\2OR\3\2\2\2PN\3\2\2\2PQ\3\2\2\2QS\3\2\2\2RP\3\2\2\2SU\7\25\2"+
-		"\2TV\7\26\2\2UT\3\2\2\2UV\3\2\2\2VW\3\2\2\2WX\t\2\2\2XY\7\23\2\2Y[\3\2"+
-		"\2\2ZK\3\2\2\2[\\\3\2\2\2\\Z\3\2\2\2\\]\3\2\2\2]\r\3\2\2\2^_\7\5\2\2_"+
-		"c\7\21\2\2`b\5\f\7\2a`\3\2\2\2be\3\2\2\2ca\3\2\2\2cd\3\2\2\2d\17\3\2\2"+
-		"\2ec\3\2\2\2fg\7\6\2\2gh\7\21\2\2hi\7\7\2\2ij\7\25\2\2jk\5\b\5\2kl\7\b"+
-		"\2\2lm\7\25\2\2mn\7\f\2\2nz\3\2\2\2op\7\6\2\2pq\7\21\2\2qr\7\b\2\2rs\7"+
-		"\25\2\2st\7\f\2\2tu\7\6\2\2uv\7\21\2\2vw\7\7\2\2wx\7\25\2\2xz\5\b\5\2"+
-		"yf\3\2\2\2yo\3\2\2\2z\21\3\2\2\2{|\7\t\2\2|\u0080\7\21\2\2}\177\5\24\13"+
-		"\2~}\3\2\2\2\177\u0082\3\2\2\2\u0080~\3\2\2\2\u0080\u0081\3\2\2\2\u0081"+
-		"\u0084\3\2\2\2\u0082\u0080\3\2\2\2\u0083\u0085\5\26\f\2\u0084\u0083\3"+
-		"\2\2\2\u0084\u0085\3\2\2\2\u0085\23\3\2\2\2\u0086\u0087\t\2\2\2\u0087"+
-		"\u0089\5\b\5\2\u0088\u0086\3\2\2\2\u0089\u008a\3\2\2\2\u008a\u0088\3\2"+
-		"\2\2\u008a\u008b\3\2\2\2\u008b\25\3\2\2\2\u008c\u008d\7\n\2\2\u008d\u008e"+
-		"\7\r\2\2\u008e\27\3\2\2\2\21\33!*\62<AHPU\\cy\u0080\u0084\u008a";
+		"\2\3\3\3\3\3\3\6\3)\n\3\r\3\16\3*\3\4\3\4\3\4\7\4\60\n\4\f\4\16\4\63\13"+
+		"\4\3\4\3\4\3\4\3\4\3\4\3\5\6\5;\n\5\r\5\16\5<\3\6\3\6\3\6\6\6B\n\6\r\6"+
+		"\16\6C\3\7\3\7\3\7\7\7I\n\7\f\7\16\7L\13\7\3\7\3\7\5\7P\n\7\3\7\3\7\3"+
+		"\7\3\b\3\b\3\b\7\bX\n\b\f\b\16\b[\13\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t"+
+		"\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\5\tp\n\t\3\n\3\n\3\n\6\n"+
+		"u\n\n\r\n\16\nv\3\n\5\nz\n\n\3\13\3\13\3\13\3\f\3\f\3\f\3\f\2\2\r\2\4"+
+		"\6\b\n\f\16\20\22\24\26\2\3\3\2\16\17\2\u0082\2\30\3\2\2\2\4%\3\2\2\2"+
+		"\6,\3\2\2\2\b:\3\2\2\2\n>\3\2\2\2\fE\3\2\2\2\16T\3\2\2\2\20o\3\2\2\2\22"+
+		"q\3\2\2\2\24{\3\2\2\2\26~\3\2\2\2\30\31\5\4\3\2\31\33\5\n\6\2\32\34\5"+
+		"\16\b\2\33\32\3\2\2\2\33\34\3\2\2\2\34\35\3\2\2\2\35\37\5\20\t\2\36 \5"+
+		"\22\n\2\37\36\3\2\2\2 !\3\2\2\2!\37\3\2\2\2!\"\3\2\2\2\"#\3\2\2\2#$\7"+
+		"\2\2\3$\3\3\2\2\2%&\7\3\2\2&(\7\21\2\2\')\5\6\4\2(\'\3\2\2\2)*\3\2\2\2"+
+		"*(\3\2\2\2*+\3\2\2\2+\5\3\2\2\2,\61\5\b\5\2-.\7\22\2\2.\60\5\b\5\2/-\3"+
+		"\2\2\2\60\63\3\2\2\2\61/\3\2\2\2\61\62\3\2\2\2\62\64\3\2\2\2\63\61\3\2"+
+		"\2\2\64\65\7\25\2\2\65\66\t\2\2\2\66\67\7\24\2\2\678\7\27\2\28\7\3\2\2"+
+		"\29;\7\30\2\2:9\3\2\2\2;<\3\2\2\2<:\3\2\2\2<=\3\2\2\2=\t\3\2\2\2>?\7\4"+
+		"\2\2?A\7\21\2\2@B\5\f\7\2A@\3\2\2\2BC\3\2\2\2CA\3\2\2\2CD\3\2\2\2D\13"+
+		"\3\2\2\2EJ\5\b\5\2FG\7\22\2\2GI\5\b\5\2HF\3\2\2\2IL\3\2\2\2JH\3\2\2\2"+
+		"JK\3\2\2\2KM\3\2\2\2LJ\3\2\2\2MO\7\25\2\2NP\7\26\2\2ON\3\2\2\2OP\3\2\2"+
+		"\2PQ\3\2\2\2QR\t\2\2\2RS\7\23\2\2S\r\3\2\2\2TU\7\5\2\2UY\7\21\2\2VX\5"+
+		"\f\7\2WV\3\2\2\2X[\3\2\2\2YW\3\2\2\2YZ\3\2\2\2Z\17\3\2\2\2[Y\3\2\2\2\\"+
+		"]\7\6\2\2]^\7\21\2\2^_\7\7\2\2_`\7\25\2\2`a\5\b\5\2ab\7\b\2\2bc\7\25\2"+
+		"\2cd\7\f\2\2dp\3\2\2\2ef\7\6\2\2fg\7\21\2\2gh\7\b\2\2hi\7\25\2\2ij\7\f"+
+		"\2\2jk\7\6\2\2kl\7\21\2\2lm\7\7\2\2mn\7\25\2\2np\5\b\5\2o\\\3\2\2\2oe"+
+		"\3\2\2\2p\21\3\2\2\2qr\7\t\2\2rt\7\21\2\2su\5\24\13\2ts\3\2\2\2uv\3\2"+
+		"\2\2vt\3\2\2\2vw\3\2\2\2wy\3\2\2\2xz\5\26\f\2yx\3\2\2\2yz\3\2\2\2z\23"+
+		"\3\2\2\2{|\t\2\2\2|}\5\b\5\2}\25\3\2\2\2~\177\7\n\2\2\177\u0080\7\r\2"+
+		"\2\u0080\27\3\2\2\2\16\33!*\61<CJOYovy";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
