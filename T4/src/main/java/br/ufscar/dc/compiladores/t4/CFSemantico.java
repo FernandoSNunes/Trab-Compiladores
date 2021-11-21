@@ -61,8 +61,10 @@ public class CFSemantico extends CFBaseVisitor<Void> {
                     adicionarErroSemantico(porcentagem.start, "Produto " + nome + " nao foi declarado em PRODUTOS");
                 } else if (CFUtils.isPorcentagemNegativa(porcentagemCtx)) {
                     adicionarErroSemantico(porcentagemCtx.start, "Imposto nao pode ser negativo");
+                    tabela.adicionarImposto(CFUtils.getValorPorcentagem(porcentagemCtx), nome);
                 } else if (CFUtils.getValorPorcentagem(porcentagemCtx) > 100) {
                     adicionarErroSemantico(porcentagemCtx.start, "Imposto nao pode ser maior que 100%");
+                    tabela.adicionarImposto(CFUtils.getValorPorcentagem(porcentagemCtx), nome);
                 } else {
                     tabela.adicionarImposto(CFUtils.getValorPorcentagem(porcentagemCtx), nome);
                 }
