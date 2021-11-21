@@ -1,5 +1,7 @@
 package br.ufscar.dc.compiladores.t4;
 
+import br.ufscar.dc.compiladores.t4.CFParser.ItensContext;
+import br.ufscar.dc.compiladores.t4.CFParser.NotaContext;
 import br.ufscar.dc.compiladores.t4.CFParser.PorcentagensContext;
 import br.ufscar.dc.compiladores.t4.CFParser.TaxasContext;
 import br.ufscar.dc.compiladores.t4.TabelaDeSimbolos.TipoCF;
@@ -27,14 +29,13 @@ public class CFSemantico extends CFBaseVisitor<Void> {
     @Override
     public Void visitProdutos(CFParser.ProdutosContext ctx) {
 
-        // for (CFParser.PrecosContext pr: ctx.precos()){
         for (int i = 0; i < ctx.precos().size(); i++) {
 
             TabelaDeSimbolos.TipoCF tipo = ctx.precos(i).UNIDADE_MEDIDA().getText().equals("un") ? TipoCF.UNIDADE
                     : TipoCF.QUILO;
 
             for (CFParser.NomeContext no : ctx.precos(i).nome()) {
-                String nome = CFSemanticoUtils.getNome(no);
+                String nome = CFUtils.getNome(no);
 
                 if (tabela.existe(nome)) {
                     adicionarErroSemantico(no.start, "Produto " + nome + " duplicado");
@@ -49,25 +50,20 @@ public class CFSemantico extends CFBaseVisitor<Void> {
     @Override
     public Void visitImpostos(CFParser.ImpostosContext ctx) {
 
-        // for (CFParser.PrecosContext pr: ctx.precos()){
         for (PorcentagensContext porcentagemCtx : ctx.porcentagens()) {
 
             for (CFParser.NomeContext porcentagem : porcentagemCtx.nome()) {
-                String nome = CFSemanticoUtils.getNome(porcentagem);
+                String nome = CFUtils.getNome(porcentagem);
 
                 if (!tabela.existe(nome)) {
                     adicionarErroSemantico(porcentagem.start, "Produto " + nome + " nao foi declarado em PRODUTOS");
-                } else if (CFSemanticoUtils.isPorcentagemNegativa(porcentagemCtx)) {
+                } else if (CFUtils.isPorcentagemNegativa(porcentagemCtx)) {
                     adicionarErroSemantico(porcentagemCtx.start, "Imposto nao pode ser negativo");
-                } else if (CFSemanticoUtils.getValorPorcentagem(porcentagemCtx) > 100) {
+                } else if (CFUtils.getValorPorcentagem(porcentagemCtx) > 100) {
                     adicionarErroSemantico(porcentagemCtx.start, "Imposto nao pode ser maior que 100%");
-                } else {
-                    CFSemanticoUtils.adicionarImposto(nome, porcentagemCtx);
                 }
             }
         }
-
-        CFSemanticoUtils.printImpostos();
 
         return super.visitImpostos(ctx);
     }
@@ -78,22 +74,30 @@ public class CFSemantico extends CFBaseVisitor<Void> {
         for (PorcentagensContext porcentagemCtx : ctx.porcentagens()) {
 
             for (CFParser.NomeContext porcentagem : porcentagemCtx.nome()) {
-                String nome = CFSemanticoUtils.getNome(porcentagem);
+                String nome = CFUtils.getNome(porcentagem);
 
                 if (tabela.existe(nome)) {
                     adicionarErroSemantico(porcentagem.start, nome + " ja declarado anteriormente");
-                } else {
-                    CFSemanticoUtils.adicionarTaxa(nome, porcentagemCtx);
                 }
             }
         }
 
-        CFSemanticoUtils.printTaxas();
-
         return super.visitTaxas(ctx);
     }
 
-    
-    
-    
+    @Override
+    public Void visitNota(NotaContext ctx) {
+        for (ItensContext item : ctx.itens()) {
+            String nome = CFUtils.getNome(item.nome());
+
+            if (!tabela.existe(nome)) {
+                adicionarErroSemantico(item.start, "Item " + nome + " nao foi declarado em PRODUTOS");
+            } else if (item.NUM_REAL() != null && item.NUM_REAL().getText() != "" && tabela.verificar(nome) == TipoCF.UNIDADE) {
+                adicionarErroSemantico(item.start, "Item " + nome + " foi declarado como UNIDADE mas possui quantidade real");
+            }
+        }
+
+        return super.visitNota(ctx);
+    }
+
 }

@@ -49,7 +49,7 @@ public class TabelaDeSimbolos {
     }
 
     public void printTabela() {
-        for(Map.Entry<String, EntradaTabelaDeSimbolos> obj : tabela.entrySet()) {
+        for (Map.Entry<String, EntradaTabelaDeSimbolos> obj : tabela.entrySet()) {
             System.out.println(obj.getKey() + " - " + obj.getValue().tipo);
         }
     }
