@@ -121,10 +121,10 @@ public class CFGerador extends CFBaseVisitor<Void> {
             codigo++;
         }
 
+        saida.append("\n----------------------------------\n\n");
+
         // verifica se ha taxas adicionais ou descontos
         if (utils.getTaxas().size() > 0) {
-
-            saida.append("\n----------------------------------\n\n");
             saida.append("ADICIONAIS\n\n");
 
             Double totalTaxas = 0.0;
