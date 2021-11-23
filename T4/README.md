@@ -15,3 +15,5 @@ Autores:
 
 
 ##### Nota: existem comentários em diversas classes sobre o funcionamento do código
+
+Vídeo explicativo sobre o projeto e como usá-lo: https://youtu.be/wKHcl2Gm0T0
