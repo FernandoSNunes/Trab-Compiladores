@@ -155,7 +155,7 @@ public class CFGerador extends CFBaseVisitor<Void> {
 
 
         saida.append("\n----------------------------------\n\n");
-        saida.append("VOLTE SEMPRE!!");
+        saida.append("VOLTE SEMPRE!!\n\n");
 
         return super.visitNota(ctx);
     }

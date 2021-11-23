@@ -11,11 +11,8 @@ batata = 3.20/kg
 IMPOSTOS:
 
 pao de queijo, leite = 10%
+cadeira = 10%
 batata = 10%
-
-TAXAS_EXTRAS:
-garcom = 10%
-aniversariante = -10%
 
 LOJA:
 NOME = Armazem do sucesso
@@ -26,4 +23,10 @@ NOTA:
 
 0.400 pao de queijo
 1 cadeira // verificação semantica de preço unitário não poder ser valor real
+CPF 001.892.019-76
+
+NOTA:
+
+0.35 batata
+5 cadeira // verificação semantica de preço unitário não poder ser valor real
 CPF 001.892.019-76

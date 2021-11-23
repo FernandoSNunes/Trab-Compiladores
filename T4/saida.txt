@@ -1,4 +1,47 @@
-Linha 11: Imposto nao pode ser maior que 100%
-Linha 12: Produto batata nao foi declarado em PRODUTOS
-Linha 25: Item batata nao foi declarado em PRODUTOS
-Fim da compilacao
+---------- CUPOM FISCAL ----------
+
+Armazem do sucesso
+CNPJ: 24.786.831/0001-90
+
+----------------------------------
+
+ITEM | DESC | QTD | VL UNI | TOTAL
+001 | pao de queijo | 0.400 | 10,98 | R$ 4,39
+002 | cadeira | 1 | 44,00 | R$ 44,00
+
+----------------------------------
+
+TOTAL: R$ 48,39
+
+----------------------------------
+
+IMPOSTOS TOTAIS: R$ 4,40
+
+----------------------------------
+
+CONSUMIDOR: 001.892.019-76
+
+----------------------------------
+
+VOLTE SEMPRE!!
+
+ITEM | DESC | QTD | VL UNI | TOTAL
+001 | batata | 0.35 | 3,52 | R$ 1,23
+002 | cadeira | 5 | 44,00 | R$ 220,00
+
+----------------------------------
+
+TOTAL: R$ 221,23
+
+----------------------------------
+
+IMPOSTOS TOTAIS: R$ 20,11
+
+----------------------------------
+
+CONSUMIDOR: 001.892.019-76
+
+----------------------------------
+
+VOLTE SEMPRE!!
+
